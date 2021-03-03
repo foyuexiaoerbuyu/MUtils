@@ -1,0 +1,62 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "cn.mvp"
+        minSdkVersion 17
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+
+greendao {
+    schemaVersion 1 //数据库版本号
+    daoPackage 'cn.mvp.db'// 设置DaoMaster、DaoSession、Dao 包名
+    targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation project(path: ':MLibs')
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    //万能适配器 https://github.com/smuyyh/EasyAdapter
+    implementation 'com.yuyh.easyadapter:library:1.2.0'
+    /*fastJson*/
+    implementation 'com.alibaba:fastjson:1.2.47'
+
+    implementation 'com.kongzue.dialog_v3:dialog:3.1.6'
+    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'com.hjq:xxpermissions:6.2'
+    implementation 'com.hjq:toast:8.0'
+    implementation 'com.tencent:mmkv-static:1.2.1'
+    implementation 'com.bigmercu.cBox:cbox:1.08'
+
+    /*greenDAO相关*/
+    implementation 'org.greenrobot:greendao:3.3.0' // add library
+
+
+}

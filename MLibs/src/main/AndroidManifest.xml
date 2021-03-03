@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.mvp.mlibs">
+
+    <application >
+        <provider
+            android:name=".fileprovider.FileProvider7"
+            android:authorities="${applicationId}.android7.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths7" />
+        </provider>
+    </application>
+
+</manifest>
