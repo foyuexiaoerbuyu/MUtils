@@ -4,6 +4,7 @@ package cn.mvp.mlibs.utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.FeatureInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -393,6 +394,88 @@ public class DeviceUtils {
 //    public static final String TYPE = null;   //build的类型
 //    public static final String UNKNOWN = "unknown";
 //    public static final String USER = null;
+
+
+    /**
+     * 遍历获取所有信息
+     * Field[] fields = Build.class.getDeclaredFields();
+     * for (Field field : fields) {
+     * try {
+     * field.setAccessible(true);
+     * XLog.showArgsInfo(field.getName() + "=" + field.get(null).toString());
+     * } catch (Exception e) {
+     * XLog.printExceptionInfo(e);
+     * }
+     * }
+     * 手机信息
+     * [   App Version: 1.8.7_7    OS Version: 8.1.0_27    Vendor: 360    PRODUCT: QK1809    Model: 1809-A01    DEVICE: QK1809    CPU ABI: arm64-v8a    参考唯一Id（可能会变,仅供参考）: 6f7d8ba9-f0bd-353c-84dd-599945878267  安装时间: 2020-08-12 08:44:37    更新时间: 2020-08-12 16:55:04]
+     *
+     * @return 手机信息
+     */
+    public String getPhoneInfo(Context context) {
+        StringBuilder phnInfo = new StringBuilder();
+        phnInfo.append("手机相关信息[");
+        //应用的版本名称和版本号
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
+            phnInfo.append("    App Version: ");
+            phnInfo.append(pi.versionName);
+            phnInfo.append('_');
+            phnInfo.append(pi.versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            phnInfo.append("获取版本信息失败:").append(Log.getStackTraceString(e));
+        }
+
+        //android版本号
+        phnInfo.append("    OS Version: ");
+        phnInfo.append(Build.VERSION.RELEASE);
+        phnInfo.append("_");
+        phnInfo.append(Build.VERSION.SDK_INT);
+
+        //手机制造商
+        phnInfo.append("    Vendor: ");
+        phnInfo.append(Build.MANUFACTURER);
+
+        //产品型号，产品全称
+        phnInfo.append("    PRODUCT: ");
+        phnInfo.append(Build.PRODUCT);
+
+        //手机型号
+        phnInfo.append("    Model: ");
+        phnInfo.append(Build.MODEL);
+
+        /*设备名*/
+        phnInfo.append("    DEVICE: ");
+        phnInfo.append(Build.DEVICE);
+
+        //cpu架构
+        phnInfo.append("    CPU ABI: ");
+        phnInfo.append(Build.CPU_ABI);
+
+        //参考唯一Id(可能会变,仅供参考)//需要 READ_PHONE_STATE 权限。 (Android 6.0 以上需要用户手动赋予该权限)。
+        phnInfo.append("    参考唯一Id(可能会变,仅供参考): ");
+        try {
+            phnInfo.append(DeviceUtils.id(context));
+        } catch (Exception e) {
+            e.printStackTrace();
+            phnInfo.append("参考唯一Id获取失败:\n").append(Log.getStackTraceString(e));
+        }
+
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            phnInfo.append("    安装时间: ").append(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME, packageInfo.firstInstallTime));
+            phnInfo.append("    更新时间: ").append(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME, packageInfo.lastUpdateTime));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            phnInfo.append("    更新时间获取失败 ").append(Log.getStackTraceString(e));
+
+        }
+        phnInfo.append("]");
+        return phnInfo.toString();
+    }
 
 
 }
