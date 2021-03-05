@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cn.mvp.mlibs">
 
-    <application >
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <application>
         <provider
             android:name=".fileprovider.FileProvider7"
             android:authorities="${applicationId}.android7.fileprovider"
