@@ -1,6 +1,5 @@
-package cn.mvp.other;
+package cn.mvp.mlibs.service.imgbackup;
 
-import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -10,7 +9,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 
 /**
- * 拍照截图观察者
+ * 拍照截图观察者,拍照截图备份
  * 使用:
  * 1.
  * screenShotContentObserver = new ScreenShotContentObserver(new Handler(), this) {

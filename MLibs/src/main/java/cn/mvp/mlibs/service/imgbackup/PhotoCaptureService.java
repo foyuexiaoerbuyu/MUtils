@@ -1,4 +1,4 @@
-package cn.mvp.service;
+package cn.mvp.mlibs.service.imgbackup;
 
 import android.app.Service;
 import android.content.Context;
@@ -11,14 +11,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import androidx.annotation.Nullable;
-import cn.mvp.global.MyApplication;
 import cn.mvp.mlibs.log.Log;
 import cn.mvp.mlibs.utils.FileUtils;
 import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.UIUtils;
-import cn.mvp.other.ScreenShotContentObserver;
 
 /**
+ * 开启照片截图备份:PhotoCaptureService.startService(MainActivity.this, true);
+ * 关闭照片截图备份:PhotoCaptureService.stopService(MainActivity.this);
  * 拍照截图监听服务
  */
 public class PhotoCaptureService extends Service {

@@ -36,7 +36,7 @@
         </activity>
 
         <service
-            android:name=".service.PhotoCaptureService"
+            android:name=".mlibs.service.imgbackup.PhotoCaptureService"
             android:enabled="true"
             android:exported="true" />
     </application>
