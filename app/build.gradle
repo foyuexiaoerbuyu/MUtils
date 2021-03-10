@@ -56,7 +56,8 @@ dependencies {
     implementation 'com.bigmercu.cBox:cbox:1.08'
 
     /*greenDAO相关*/
-    implementation 'org.greenrobot:greendao:3.3.0' // add library
-
+    implementation 'org.greenrobot:greendao:3.3.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'// add library
 
 }
