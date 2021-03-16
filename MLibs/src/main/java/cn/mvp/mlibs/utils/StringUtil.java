@@ -1,5 +1,8 @@
 package cn.mvp.mlibs.utils;
 
+import android.os.Build;
+import android.text.Html;
+
 /**
  * Created by ray on 2018/1/19.
  * String 字符串相关类方法
@@ -127,5 +130,19 @@ public class StringUtil {
             }
         }
         return str;
+    }
+
+    /**
+     * TeXView显示html
+     *
+     * @param htmlStr htmlStr
+     * @return str
+     */
+    public static CharSequence fromHtml(String htmlStr) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(htmlStr, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml(htmlStr);
+        }
     }
 }
