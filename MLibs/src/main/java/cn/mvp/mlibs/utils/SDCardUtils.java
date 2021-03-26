@@ -8,12 +8,19 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import androidx.core.content.ContextCompat;
 import cn.mvp.mlibs.log.LogUtils;
 
 import static android.os.Environment.getExternalStorageState;
+import static cn.mvp.mlibs.utils.UIUtils.getResources;
 
 /**
  * SD卡工具箱
@@ -203,6 +210,82 @@ public class SDCardUtils {
                     LogUtils.d("文件:" + f.getPath());
             }
         }
+    }
+
+    /** 读取Raw文件 R.raw.文件名   只能读不能写 */
+    public static String readRaw(int id) {
+        //有汉字用字符流来读
+        StringBuilder sbd = new StringBuilder();
+        BufferedReader reader = null;
+        InputStream is = null;
+        is = getResources().openRawResource(id);
+        reader = new BufferedReader(new InputStreamReader(is));
+        String row = "";
+        try {
+            while ((row = reader.readLine()) != null) {
+                sbd.append(row);
+                sbd.append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sbd.toString();
+    }
+
+    /**
+     * 复制res/raw中的文件到指定目录
+     *
+     * @param context     上下文
+     * @param id          资源ID R.raw.文件名
+     * @param fileName    文件名
+     * @param storagePath 目标文件夹的路径
+     */
+    public static void copyFilesFromRaw(Context context, int id, String fileName, String storagePath) {
+        InputStream inputStream = context.getResources().openRawResource(id);
+        File file = new File(storagePath);
+        if (!file.exists()) {//如果文件夹不存在，则创建新的文件夹
+            file.mkdirs();
+        }
+        readInputStream(storagePath + File.separator + fileName, inputStream);
+    }
+
+    /**
+     * 读取输入流中的数据写入输出流
+     *
+     * @param storagePath 目标文件路径
+     * @param inputStream 输入流
+     */
+    public static void readInputStream(String storagePath, InputStream inputStream) {
+        File file = new File(storagePath);
+        try {
+            if (!file.exists()) {
+                // 1.建立通道对象
+                FileOutputStream fos = new FileOutputStream(file);
+                // 2.定义存储空间
+                byte[] buffer = new byte[inputStream.available()];
+                // 3.开始读文件
+                int lenght = 0;
+                while ((lenght = inputStream.read(buffer)) != -1) {// 循环从输入流读取buffer字节
+                    // 将Buffer中的数据写到outputStream对象中
+                    fos.write(buffer, 0, lenght);
+                }
+                fos.flush();// 刷新缓冲区
+                // 4.关闭流
+                fos.close();
+                inputStream.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

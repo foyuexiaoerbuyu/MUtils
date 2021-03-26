@@ -20,6 +20,7 @@ import cn.mvp.mlibs.log.LogUtil;
 /**
  * <uses-permission android:name="android.permission.READ_CONTACTS" />
  * <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+ * 通讯录工具类
  */
 public class ContactUtils {
     /**
