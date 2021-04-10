@@ -16,7 +16,6 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -52,8 +51,8 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
     //用来存储设备信息和异常信息
     private Map<String, String> infos = new HashMap<>();
 
-    //用于格式化日期,作为日志文件名的一部分
-    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.CHINA);
+//    //用于格式化日期,作为日志文件名的一部分
+//    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.CHINA);
     private String crashTip = "很抱歉，程序出现异常，即将退出！";
 
     public String getCrashTip() {
@@ -201,9 +200,8 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
         String result = writer.toString();
         sb.append(result);
         try {
-            long timestamp = System.currentTimeMillis();
-            String time = formatter.format(new Date());
-            String fileName = "crash-" + time + "-" + timestamp + ".log";
+//            String time = formatter.format(new Date());
+            String fileName = "crash-" + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE) + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 String path = Environment.getExternalStorageDirectory().getPath() + "/crash/";
                 File dir = new File(path);
