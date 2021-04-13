@@ -145,4 +145,15 @@ public class StringUtil {
             return Html.fromHtml(htmlStr);
         }
     }
+
+    /**
+     * @param arg    字符串参数
+     * @param tipMsg 提示信息
+     * @throws NullPointerException 空异常
+     */
+    public static void checkBlank(String arg, String tipMsg) throws NullPointerException {
+        if (arg == null || arg.trim().length() == 0) {
+            throw new NullPointerException(tipMsg);
+        }
+    }
 }
