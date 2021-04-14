@@ -3,6 +3,8 @@ package cn.mvp.mlibs.utils;
 import android.os.Build;
 import android.text.Html;
 
+import java.io.IOException;
+
 /**
  * Created by ray on 2018/1/19.
  * String 字符串相关类方法
@@ -149,11 +151,10 @@ public class StringUtil {
     /**
      * @param arg    字符串参数
      * @param tipMsg 提示信息
-     * @throws NullPointerException 空异常
      */
-    public static void checkBlank(String arg, String tipMsg) throws NullPointerException {
+    public static void checkBlank(String arg, String tipMsg) throws IOException {
         if (arg == null || arg.trim().length() == 0) {
-            throw new NullPointerException(tipMsg);
+            throw new IOException(tipMsg);
         }
     }
 }
