@@ -179,7 +179,7 @@ public class DateUtil {
      * @param regex    格式
      * @param beginStr 开始时间 2021年01月01日
      * @param endStr   结束时间 2021年01月04日
-     * @return 返回两时间的时间间隔（以天计算） -3
+     * @return 返回两时间的时间间隔（以天计算） 3
      */
     public static long getDateDiffByDay(String regex, String beginStr, String endStr) {
         long day = 1;
@@ -187,7 +187,7 @@ public class DateUtil {
             SimpleDateFormat format = getFormatter(regex);
             Date begin = format.parse(beginStr);
             Date end = format.parse(endStr);
-            return (begin.getTime() - end.getTime()) / (1000 * 3600 * 24);
+            return (end.getTime() - begin.getTime()) / (1000 * 3600 * 24);
         } catch (ParseException e) {
             e.printStackTrace();
         }
