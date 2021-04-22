@@ -37,7 +37,7 @@ import cn.mvp.mlibs.fileprovider.FileProvider7;
 public class InstallUtils {
 
     //安装应用的流程
-    public static void installProcess(Context context, File apk, InstallUtilsPermissions installUtilsPermissions) {
+    public static void installProcess(Context context, File apk, InstallUtilsPermissions installUtilsPermissions, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //先获取是否有安装未知来源应用的权限
             boolean haveInstallPermission = context.getPackageManager().canRequestPackageInstalls();
@@ -57,25 +57,25 @@ public class InstallUtils {
             }
         }
         //有权限，开始安装应用程序
-        installApk(context, apk);
+        installApk(context, apk, requestCode);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void startInstallPermissionSettingActivity(Context context) {
+    public static void startInstallPermissionSettingActivity(Context context, int requestCode) {
         //注意这个是8.0新API
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES);
-            ((Activity) context).startActivityForResult(intent, 10086);
+            ((Activity) context).startActivityForResult(intent, requestCode);
         }
     }
 
     /** 安装应用 使用时需要适配8.0安装权限(已经适配7.0 uri问题) */
-    public static void installApk(Context context, File apk) {
+    public static void installApk(Context context, File apk, int requestCode) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         FileProvider7.setIntentDataAndType(context, intent, "application/vnd.android.package-archive", apk, false);
         intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        ((Activity) context).startActivityForResult(intent, requestCode);
     }
 
     /**
@@ -83,11 +83,11 @@ public class InstallUtils {
      *
      * @param httpUrlApk apk地址
      */
-    public static void installAPKWithBrower(Context context, String httpUrlApk) {
+    public static void installAPKWithBrower(Context context, String httpUrlApk, int requestCode) {
         Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(httpUrlApk));
         viewIntent.addCategory(Intent.CATEGORY_BROWSABLE);
         viewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(viewIntent);
+        ((Activity) context).startActivityForResult(viewIntent, requestCode);
     }
 
     public interface InstallUtilsPermissions {

@@ -143,6 +143,9 @@ public class StringUtil {
      * @return str
      */
     public static CharSequence fromHtml(String htmlStr) {
+        if (isBlank(htmlStr)) {
+            return "";
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(htmlStr, Html.FROM_HTML_MODE_LEGACY);
         } else {

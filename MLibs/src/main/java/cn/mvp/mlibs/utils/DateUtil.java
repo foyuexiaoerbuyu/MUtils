@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import cn.mvp.mlibs.log.Log;
-import cn.mvp.mlibs.log.LogUtils;
 
 public class DateUtil {
     /** yyyy-MM-dd */
@@ -174,5 +173,25 @@ public class DateUtil {
     /** 格式化当前日期 */
     public static String formatCurrentDate(String regex) {
         return getFormatter(regex).format(new Date(System.currentTimeMillis()));
+    }
+
+    /**
+     * @param regex    格式
+     * @param beginStr 开始时间 2021年01月01日
+     * @param endStr   结束时间 2021年01月04日
+     * @return 返回两时间的时间间隔（以天计算） 3
+     */
+    public static long getDateDiffByDay(String regex, String beginStr, String endStr) {
+        long day = 1;
+        try {
+            SimpleDateFormat format = getFormatter(regex);
+            Date begin = format.parse(beginStr);
+            Date end = format.parse(endStr);
+            return (end.getTime() - begin.getTime()) / (1000 * 3600 * 24);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return day;
     }
 }
