@@ -2,6 +2,8 @@ package cn.mvp.mlibs.encryption;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.support.annotation.IntDef;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -19,11 +21,6 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import androidx.annotation.IntDef;
-import androidx.annotation.RequiresApi;
-
-//import android.support.annotation.IntDef;
-//import android.support.annotation.RequiresApi;
 
 /**
  * by y on 22/11/2017.

@@ -6,8 +6,7 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.CancellationSignal;
 import android.os.Handler;
-
-import androidx.annotation.RequiresApi;
+import android.support.annotation.RequiresApi;
 
 /**
  * <uses-permission android:name="android.permission.USE_BIOMETRIC" />

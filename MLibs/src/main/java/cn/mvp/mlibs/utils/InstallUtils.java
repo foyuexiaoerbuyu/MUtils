@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 
 import java.io.File;
 
-import androidx.annotation.RequiresApi;
 import cn.mvp.mlibs.fileprovider.FileProvider7;
 
 /*

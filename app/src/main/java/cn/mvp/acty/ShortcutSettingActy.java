@@ -6,10 +6,10 @@ import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.Arrays;
 
-import androidx.appcompat.app.AppCompatActivity;
 import cn.mvp.MainActivity;
 import cn.mvp.R;
 import cn.mvp.mlibs.utils.DeviceUtils;

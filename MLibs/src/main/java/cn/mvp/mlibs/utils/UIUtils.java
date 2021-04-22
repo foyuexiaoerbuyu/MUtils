@@ -6,6 +6,8 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,6 @@ import android.widget.Toast;
 
 import com.hjq.toast.ToastUtils;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import cn.mvp.mlibs.MLibs;
 
 public class UIUtils {

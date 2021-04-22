@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
@@ -16,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import androidx.core.content.ContextCompat;
 import cn.mvp.mlibs.log.LogUtils;
 
 import static android.os.Environment.getExternalStorageState;
@@ -25,6 +25,7 @@ import static cn.mvp.mlibs.utils.UIUtils.getResources;
 /**
  * SD卡工具箱
  * 内部存储;外部存储;SD卡;扩展卡(可拔插存储卡)
+ * https://blog.csdn.net/csdn_aiyang/article/details/80665185
  */
 public class SDCardUtils {
     /**
@@ -286,6 +287,42 @@ public class SDCardUtils {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * @param path 文件夹路径
+     * @return 剩余控空间
+     */
+    public long getFreeSpace(String path) {
+        if (FileUtils.isFolderExist(path)) {
+            File file = new File(path);
+            return file.getFreeSpace();
+        }
+        return 0;
+    }
+
+    /** 清除本应用内部缓存(/data/data/com.xxx.xxx/files) */
+    public static void cleanInternalAllFiles(Context context) {
+        deleteFile(context.getFilesDir());
+    }
+
+    /**
+     * 删除文件(会删除文件夹)
+     */
+    private static boolean deleteFile(File dir) {
+        if (dir == null || !dir.exists()) {
+            return false;
+        }
+        if (dir.isDirectory()) {
+            File[] children = dir.listFiles();
+            for (File child : children) {
+                boolean success = deleteFile(child);
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
     }
 
 }

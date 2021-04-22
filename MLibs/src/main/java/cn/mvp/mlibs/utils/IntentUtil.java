@@ -7,12 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
+import android.support.v4.app.Fragment;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.fragment.app.Fragment;
 
 public class IntentUtil {
 

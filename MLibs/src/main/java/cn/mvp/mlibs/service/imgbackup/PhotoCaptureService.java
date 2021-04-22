@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import androidx.annotation.Nullable;
 import cn.mvp.mlibs.log.Log;
 import cn.mvp.mlibs.utils.FileUtils;
 import cn.mvp.mlibs.utils.SDCardUtils;

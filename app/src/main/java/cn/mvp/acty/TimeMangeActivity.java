@@ -1,17 +1,17 @@
 package cn.mvp.acty;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
 import cn.mvp.R;
 import cn.mvp.adapter.TimeMangeAdapter;
 import cn.mvp.db.DbHelp;
 import cn.mvp.db.TodosDao;
 import cn.mvp.test.TestData;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 
 /**
  * 任务管理器Activity(没做完)

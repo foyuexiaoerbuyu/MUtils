@@ -1,8 +1,7 @@
 package cn.mvp.acty;
 
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import cn.mvp.utils.XLog;
 
 public class BaseActivity extends AppCompatActivity {

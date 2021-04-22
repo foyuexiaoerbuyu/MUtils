@@ -6,11 +6,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.content.FileProvider;
 
 import java.io.File;
 import java.util.List;
 
-import androidx.core.content.FileProvider;
 
 /**
  * Android 7.0 行为变更 通过FileProvider在应用间共享文件

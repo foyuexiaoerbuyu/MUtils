@@ -2,6 +2,7 @@ package cn.mvp.utils;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
 
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
@@ -9,7 +10,6 @@ import com.hjq.permissions.XXPermissions;
 
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
 import cn.mvp.mlibs.utils.UIUtils;
 
 public class PermissionsUtils {
