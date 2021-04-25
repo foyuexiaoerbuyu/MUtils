@@ -6,8 +6,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.mvp.mlibs.log.LogUtils;
 
 /**
  * Created by dhl on 2016/9/1.
@@ -249,5 +255,50 @@ public class NetworkUtils {
             default:
                 return "NETWORK_UNKNOWN";
         }
+    }
+
+
+    /**
+     * 阿里公网:223.5.5.5
+     *
+     * @return 判断单个应用是个可以联网, 原理:ping网络
+     */
+    public static boolean isNetworkOnline(String ip) {
+
+        Runtime runtime = Runtime.getRuntime();
+        Process ipProcess = null;
+        try {
+            ipProcess = runtime.exec("ping -c 5 -w 4 " + (ip == null ? "223.5.5.5" : ip));
+            InputStream input = ipProcess.getInputStream();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            StringBuilder ipProcessInfo = new StringBuilder();
+            String content = "";
+            while ((content = in.readLine()) != null) {
+                ipProcessInfo.append(content);
+            }
+
+            int exitValue = ipProcess.waitFor();
+            if (exitValue == 0) {
+                //WiFi连接，网络正常
+                return true;
+            } else {
+                if (ipProcessInfo.indexOf("100% packet loss") != -1) {
+                    LogUtils.i("网络丢包严重，判断为网络未连接");
+                    return false;
+                } else {
+                    LogUtils.i("网络未丢包，判断为网络连接");
+                    return true;
+                }
+            }
+        } catch (IOException | InterruptedException e) {
+            LogUtils.printExceptionInfo(e);
+        } finally {
+            if (ipProcess != null) {
+                ipProcess.destroy();
+            }
+            runtime.gc();
+        }
+        return false;
     }
 }

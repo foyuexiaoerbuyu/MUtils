@@ -1,15 +1,26 @@
 package cn.mvp.mlibs.log;
 
 
+import android.util.Log;
+
+import java.io.FileOutputStream;
+import java.util.Arrays;
+
+import cn.mvp.mlibs.MLibs;
+import cn.mvp.mlibs.utils.FileUtils;
+import cn.mvp.mlibs.utils.IOUtils;
+import cn.mvp.mlibs.utils.SDCardUtils;
+import cn.mvp.mlibs.utils.StringUtil;
+
 /**
  * @author nesger.zhan
  */
 public class LogUtils {
 
     /** 总开关 */
-    public final static boolean SWITCH = true;
+    private static boolean SWITCH = true;
 
-    private final static String DEFT_AG = "调试信息";
+    private static String DEFT_AG = "调试信息";
     private static int stepNumber = 0;
     private static int MaxLength = 1024 * 3;
 
@@ -18,6 +29,13 @@ public class LogUtils {
     private final static boolean I = SWITCH && true;
     private final static boolean W = SWITCH && true;
     private final static boolean E = SWITCH && true;
+
+    public static void init(boolean isEnable, String tag) {
+        SWITCH = isEnable;
+        if (!StringUtil.isEmpty(tag)) {
+            DEFT_AG = tag;
+        }
+    }
 
     public static void v(String tag, String msg) {
         if (V) {
@@ -57,6 +75,12 @@ public class LogUtils {
         }
     }
 
+    public static void e(String tag, String msg, Throwable tr) {
+        if (E) {
+            android.util.Log.e(tag + ":" + getScope(), msg, tr);
+        }
+    }
+
     public static void v(String msg) {
         if (V) {
             android.util.Log.v(DEFT_AG + ":" + getScope(), msg);
@@ -72,6 +96,18 @@ public class LogUtils {
     public static void i(String msg) {
         if (I) {
             android.util.Log.i(DEFT_AG + ":" + getScope(), msg);
+        }
+    }
+
+    /**
+     * 打印错误信息
+     */
+    public static void i(Object... args) {
+        if (I) {
+            StringBuilder inputArgs = new StringBuilder();
+            inputArgs.append("传入的数据:   ");
+            String msg = Arrays.toString(args);
+            android.util.Log.i(DEFT_AG + ":" + getScope(), msg.substring(1, msg.length() - 1));
         }
     }
 
@@ -97,7 +133,6 @@ public class LogUtils {
             android.util.Log.e(DEFT_AG + ":" + getScope(), "", e);
         }
     }
-
 
     private static final int DEFAULT_STACK_TRACE_LINE_COUNT = 4;
 
@@ -135,6 +170,26 @@ public class LogUtils {
     public static void printExceptionInfo(Exception e) {
         if (E) {
             android.util.Log.e(DEFT_AG + ":", getScope() + "  " + "", e);
+        }
+    }
+
+    public static void file(String logPath, String content) {
+        if (!SDCardUtils.isAvailable() || !SDCardUtils.isHasPermission(MLibs.getContext())) {
+            LogUtils.e("读写日志失败,可能没有权限或SD卡有问题");
+            return;
+        }
+        if (!FileUtils.makeDirs(logPath)) {
+            Log.e(DEFT_AG, "创建日志文件夹失败!!!");
+            return;
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(logPath, true);
+            fos.write(content.getBytes());
+        } catch (Exception e) {
+            printExceptionInfo(e);
+        } finally {
+            IOUtils.close(fos);
         }
     }
 }

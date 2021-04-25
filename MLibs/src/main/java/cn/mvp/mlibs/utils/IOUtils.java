@@ -1,10 +1,9 @@
 package cn.mvp.mlibs.utils;
 
-
-import android.util.Log;
-
 import java.io.Closeable;
 import java.io.IOException;
+
+import cn.mvp.mlibs.log.LogUtils;
 
 /**
  * @author wlj
@@ -26,7 +25,7 @@ public class IOUtils {
             try {
                 closeable.close();
             } catch (IOException e) {
-                Log.e("调试信息", "close: ", e);
+                LogUtils.e("调试信息", "close: ", e);
 //                LogUtils.d("IOUtils",e.toString());
             }
         }
