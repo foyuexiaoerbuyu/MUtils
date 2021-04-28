@@ -1,5 +1,7 @@
 package cn.mvp.mlibs.log;
 
+import cn.mvp.mlibs.utils.StringUtil;
+
 /**
  * 导入项目使用
  * 全局替换//import android.util.Log;
@@ -14,7 +16,7 @@ public class Log {
     /**
      * 启用默认tag(自定义tag实效)
      */
-    public final static boolean IS_ENABLE_DEF_TAG = true;
+    public static boolean IS_ENABLE_DEF_TAG = true;
 
     private final static String DEFT_AG = "调试信息";
     private static int stepNumber = 0;
@@ -26,47 +28,91 @@ public class Log {
     private final static boolean W = SWITCH && true;
     private final static boolean E = SWITCH && true;
 
+    public static void cv(String tag, String msg) {
+        if (V) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.v(tag, msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
+            android.util.Log.v(tag, msg);
+        }
+    }
+
+    public static void cd(String tag, String msg) {
+        if (D) {
+            android.util.Log.d(tag, msg);
+        }
+    }
+
+    public static void cd(String tag, String msg, Object... args) {
+        if (D) {
+            android.util.Log.d(tag, String.format(msg, args));
+        }
+    }
+
+    public static void ci(String tag, String msg) {
+        if (I) {
+            android.util.Log.i(tag, msg);
+        }
+    }
+
+    public static void cw(String tag, String msg) {
+        if (W) {
+            android.util.Log.w(tag, msg);
+        }
+    }
+
+    public static void ce(String tag, String msg) {
+        if (E) {
+            android.util.Log.e(tag, msg);
+        }
+    }
+
     public static void v(String tag, String msg) {
         if (V) {
             if (msg.length() > MaxLength) {
                 for (int i = 0; i < msg.length() / MaxLength; i++) {
                     if (msg.length() > MaxLength) {
-                        android.util.Log.v(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, getScope() + "  " + msg.substring(0, MaxLength));
+                        android.util.Log.v(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg.substring(0, MaxLength));
                         msg = msg.substring(MaxLength);
                     }
                 }
             }
-            android.util.Log.v(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, getScope() + "  " + msg);
+            android.util.Log.v(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
         }
     }
 
     public static void d(String tag, String msg) {
         if (D) {
-            android.util.Log.d(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, getScope() + "  " + msg);
+            android.util.Log.d(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
         }
     }
 
     public static void d(String tag, String msg, Object... args) {
         if (D) {
-            android.util.Log.d(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, String.format(msg, args));
+            android.util.Log.d(StringUtil.defaultIfBlank(tag, DEFT_AG), String.format(msg, args));
         }
     }
 
     public static void i(String tag, String msg) {
         if (I) {
-            android.util.Log.i(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, getScope() + "  " + msg);
+            android.util.Log.i(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
         }
     }
 
     public static void w(String tag, String msg) {
         if (W) {
-            android.util.Log.w(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, getScope() + "  " + msg);
+            android.util.Log.w(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
         }
     }
 
     public static void e(String tag, String msg) {
         if (E) {
-            android.util.Log.e(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, getScope() + "  " + msg);
+            android.util.Log.e(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
         }
     }
 
@@ -137,7 +183,7 @@ public class Log {
 
     private static String getScope() {
         StackTraceElement trace = Thread.currentThread().getStackTrace()[4];
-        return "(" + trace.getFileName() + ":" + trace.getLineNumber() + ")" + "#" + trace.getMethodName() + "    ";
+        return "(" + trace.getFileName() + ":" + trace.getLineNumber() + ")" + "#" + trace.getMethodName() + " ";
 
 //        Thread.currentThread().getStackTrace()[4].toString().substring(23).replaceFirst("\\.", "#");
 
@@ -164,7 +210,7 @@ public class Log {
     /** 打印步骤 */
     public static void showStepLogInfo() {
         if (V) {
-            android.util.Log.v("步骤" + ":", getScope() + "  " + "" + stepNumber++);
+            android.util.Log.v("步骤: ", getScope() + "  " + "" + stepNumber++);
         }
     }
 
@@ -175,13 +221,13 @@ public class Log {
 
     public static void e(String tag, String s, Exception ex) {
         if (E) {
-            android.util.Log.e(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, getScope() + "  " + s, ex);
+            android.util.Log.e(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + s, ex);
         }
     }
 
     public static void e(String tag, String msg, Throwable e, Object... args) {
         if (E) {
-            android.util.Log.e(IS_ENABLE_DEF_TAG ? DEFT_AG : tag, String.format(msg, args), e);
+            android.util.Log.e(StringUtil.defaultIfBlank(tag, DEFT_AG), String.format(msg, args), e);
         }
     }
 
