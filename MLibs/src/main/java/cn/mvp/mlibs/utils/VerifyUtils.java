@@ -3,6 +3,9 @@ package cn.mvp.mlibs.utils;
 
 import android.text.TextUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -157,6 +160,23 @@ public class VerifyUtils {
     public static boolean isPostCode(String data) {
         String expr = "^[0-9]{6,10}";
         return data.matches(expr);
+    }
+
+
+    /**
+     * @param arg    字符串参数
+     * @param tipMsg 提示信息
+     */
+    public static void checkBlank(String arg, String tipMsg) throws IOException {
+        if (arg == null || arg.trim().length() == 0) {
+            throw new IOException(tipMsg);
+        }
+    }
+
+    public static void checkSame(String arg0, String arg1, String tipMsg) throws IOException {
+        if (StringUtils.equals(arg0, arg1)) {
+            throw new IOException(tipMsg);
+        }
     }
 
 }

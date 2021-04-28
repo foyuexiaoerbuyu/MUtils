@@ -44,25 +44,62 @@ public class Log {
 
     public static void cd(String tag, String msg) {
         if (D) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.d(tag, msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.d(tag, msg);
         }
     }
 
     public static void cd(String tag, String msg, Object... args) {
         if (D) {
-            android.util.Log.d(tag, String.format(msg, args));
+            msg = String.format(msg, args);
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.d(tag, msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
+            android.util.Log.d(tag, msg);
         }
     }
 
     public static void ci(String tag, String msg) {
         if (I) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.i(tag, msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.i(tag, msg);
+
+
         }
     }
 
     public static void cw(String tag, String msg) {
         if (W) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.w(tag, msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.w(tag, msg);
+
+
         }
     }
 
@@ -89,23 +126,61 @@ public class Log {
     public static void d(String tag, String msg) {
         if (D) {
             android.util.Log.d(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.d(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
+            android.util.Log.d(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
+
+
         }
     }
 
     public static void d(String tag, String msg, Object... args) {
         if (D) {
-            android.util.Log.d(StringUtil.defaultIfBlank(tag, DEFT_AG), String.format(msg, args));
+            msg = String.format(msg, args);
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.d(StringUtil.defaultIfBlank(tag, DEFT_AG), msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
+            android.util.Log.d(StringUtil.defaultIfBlank(tag, DEFT_AG), msg);
+
+
         }
     }
 
     public static void i(String tag, String msg) {
         if (I) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.i(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.i(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
         }
     }
 
     public static void w(String tag, String msg) {
         if (W) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.w(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.w(StringUtil.defaultIfBlank(tag, DEFT_AG), getScope() + "  " + msg);
         }
     }
@@ -118,30 +193,70 @@ public class Log {
 
     public static void v(String msg) {
         if (V) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.v(DEFT_AG + ":", getScope() + "  " + msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.v(DEFT_AG + ":", getScope() + "  " + msg);
         }
     }
 
     public static void d(String msg) {
         if (D) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.d(DEFT_AG + ":", getScope() + "  " + msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.d(DEFT_AG + ":", getScope() + "  " + msg);
         }
     }
 
     public static void i(String msg) {
         if (I) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.i(DEFT_AG + ":", getScope() + "  " + msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.i(DEFT_AG + ":", getScope() + "  " + msg);
         }
     }
 
     public static void w(String msg) {
         if (W) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.w(DEFT_AG + ":", getScope() + "  " + msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.w(DEFT_AG + ":", getScope() + "  " + msg);
         }
     }
 
     public static void e(String msg) {
         if (E) {
+            if (msg.length() > MaxLength) {
+                for (int i = 0; i < msg.length() / MaxLength; i++) {
+                    if (msg.length() > MaxLength) {
+                        android.util.Log.e(DEFT_AG + ":", getScope() + "  " + msg.substring(0, MaxLength));
+                        msg = msg.substring(MaxLength);
+                    }
+                }
+            }
             android.util.Log.e(DEFT_AG + ":", getScope() + "  " + msg);
         }
     }
