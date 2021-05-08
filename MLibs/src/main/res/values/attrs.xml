@@ -7,4 +7,12 @@
             <enum name="vercal" value="2" />
         </attr>
     </declare-styleable>
+
+    <!--支持圆角的TextView-->
+    <declare-styleable name="RoundTextView">
+        <attr name="rtvBgColor" format="color" />
+        <attr name="rtvBorderWidth" format="dimension" />
+        <attr name="rtvBorderColor" format="dimension" />
+        <attr name="rtvRadius" format="dimension" />
+    </declare-styleable>
 </resources>

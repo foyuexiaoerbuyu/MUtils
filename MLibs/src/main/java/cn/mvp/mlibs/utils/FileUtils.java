@@ -545,4 +545,22 @@ public class FileUtils {
             }
         }
     }
+
+    /**
+     * 图片格式;bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,psd,cdr,pcd,dxf,ufo,eps,ai,raw,WMF,webp,avif
+     */
+    public boolean isImg(File file) {
+        if (file == null) {
+            return false;
+        }
+        String ss = "bmp,jpg,png,tif,gif,pcx,tga,exif,fpx,svg,psd,cdr,pcd,dxf,ufo,eps,ai,raw,WMF,webp,avif";
+        String[] split = ss.split(",");
+        for (String s : split) {
+            if (file.getName().endsWith(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

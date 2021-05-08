@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -302,4 +303,40 @@ public class IntentUtil {
         }
         activity.startActivityForResult(intent, requestCode);
     }
+
+
+    /**
+     * 打开文件
+     */
+    public static Intent openFile(File file) {
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Intent.ACTION_VIEW);
+        String type = getMIMEType(file);
+        intent.setDataAndType(Uri.fromFile(file), type);
+        return intent;
+    }
+
+    /**
+     * 识别文件的类型
+     */
+    private static String getMIMEType(File f) {
+        String end = f.getName().substring(f.getName().lastIndexOf(".") + 1,
+                f.getName().length()).toLowerCase();
+        String type;
+        if (end.equals("mp3") || end.equals("aac") || end.equals("amr") || end.equals("mpeg") || end.equals("mp4")) {
+            type = "audio";
+        } else if (end.equals("jpg") || end.equals("gif") || end.equals("png") || end.equals("jpeg")) {
+            type = "image";
+        } else if (end.equals("doc") || end.equals("docx") || end.equals("pdf")
+                || end.equals("txt")) {
+            type = "application/msword";
+            return type;
+        } else {
+            type = "*";
+        }
+        type += "/*";
+        return type;
+    }
+
 }
