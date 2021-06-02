@@ -179,7 +179,7 @@ public class DateUtil {
      * @param regex    格式
      * @param beginStr 开始时间 2021年01月01日
      * @param endStr   结束时间 2021年01月04日
-     * @return 返回两时间的时间间隔（以天计算） 3
+     * @return 返回两时间的时间间隔（以天计算） 3 两个日期相同,相差天数为0,开始日期早于结束日期为正值,反之为负值
      */
     public static long getDateDiffByDay(String regex, String beginStr, String endStr) {
         long day = 1;

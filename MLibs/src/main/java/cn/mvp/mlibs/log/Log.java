@@ -11,22 +11,24 @@ import cn.mvp.mlibs.utils.StringUtil;
 public class Log {
 
     /** 总开关 */
-    public final static boolean SWITCH = true;
+    public static boolean SWITCH = true;
 
-    /**
-     * 启用默认tag(自定义tag实效)
-     */
-    public static boolean IS_ENABLE_DEF_TAG = true;
-
-    private final static String DEFT_AG = "调试信息";
+    private static String DEFT_AG = "调试信息";
     private static int stepNumber = 0;
     private static int MaxLength = 1024 * 3;
 
-    private final static boolean V = SWITCH && true;
-    private final static boolean D = SWITCH && true;
-    private final static boolean I = SWITCH && true;
-    private final static boolean W = SWITCH && true;
-    private final static boolean E = SWITCH && true;
+    private static boolean V = SWITCH && true;
+    private static boolean D = SWITCH && true;
+    private static boolean I = SWITCH && true;
+    private static boolean W = SWITCH && true;
+    private static boolean E = SWITCH && true;
+
+    public static void init(boolean isShowLog, String tag) {
+        SWITCH = isShowLog;
+        if (tag != null) {
+            DEFT_AG = tag;
+        }
+    }
 
     public static void cv(String tag, String msg) {
         if (V) {
@@ -300,4 +302,14 @@ public class Log {
         }
     }
 
+    private int last;
+
+    private String randomKey() {
+        int random = (int) (10 * Math.random());
+        if (random == last) {
+            random = (random + 1) % 10;
+        }
+        last = random;
+        return String.valueOf(random);
+    }
 }
