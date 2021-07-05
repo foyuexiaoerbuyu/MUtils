@@ -179,4 +179,10 @@ public class VerifyUtils {
         }
     }
 
+    public static void checkTrue(boolean arg0, String tipMsg) throws IOException {
+        if (arg0) {
+            throw new IOException(tipMsg);
+        }
+    }
+
 }
