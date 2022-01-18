@@ -3,10 +3,6 @@ package cn.mvp.mlibs.utils;
 import android.os.Build;
 import android.text.Html;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.IOException;
-
 /**
  * Created by ray on 2018/1/19.
  * String 字符串相关类方法
@@ -153,19 +149,50 @@ public class StringUtil {
         }
     }
 
+    // Equals
+    //-----------------------------------------------------------------------
     /**
-     * @param arg    字符串参数
-     * @param tipMsg 提示信息
+     * <p>Compares two CharSequences, returning {@code true} if they represent
+     * equal sequences of characters.</p>
+     *
+     * <p>{@code null}s are handled without exceptions. Two {@code null}
+     * references are considered to be equal. The comparison is <strong>case sensitive</strong>.</p>
+     *
+     * <pre>
+     * StringUtils.equals(null, null)   = true
+     * StringUtils.equals(null, "abc")  = false
+     * StringUtils.equals("abc", null)  = false
+     * StringUtils.equals("abc", "abc") = true
+     * StringUtils.equals("abc", "ABC") = false
+     * </pre>
+     *
+     * @param cs1  the first CharSequence, may be {@code null}
+     * @param cs2  the second CharSequence, may be {@code null}
+     * @return {@code true} if the CharSequences are equal (case-sensitive), or both {@code null}
+     * @since 3.0 Changed signature from equals(String, String) to equals(CharSequence, CharSequence)
+     * @see Object#equals(Object)
+     * @see #equalsIgnoreCase(CharSequence, CharSequence)
      */
-    public static void checkBlank(String arg, String tipMsg) throws IOException {
-        if (arg == null || arg.trim().length() == 0) {
-            throw new IOException(tipMsg);
+    public static boolean equals(final CharSequence cs1, final CharSequence cs2) {
+        if (cs1 == cs2) {
+            return true;
         }
-    }
-
-    public static void checkSame(String arg0, String arg1, String tipMsg) throws IOException {
-        if (StringUtils.equals(arg0, arg1)) {
-            throw new IOException(tipMsg);
+        if (cs1 == null || cs2 == null) {
+            return false;
         }
+        if (cs1.length() != cs2.length()) {
+            return false;
+        }
+        if (cs1 instanceof String && cs2 instanceof String) {
+            return cs1.equals(cs2);
+        }
+        // Step-wise comparison
+        final int length = cs1.length();
+        for (int i = 0; i < length; i++) {
+            if (cs1.charAt(i) != cs2.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

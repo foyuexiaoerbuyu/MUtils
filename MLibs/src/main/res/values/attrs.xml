@@ -15,4 +15,10 @@
         <attr name="rtvBorderColor" format="dimension" />
         <attr name="rtvRadius" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="RequiredTextView">
+        <attr name="android:text" />
+        <attr name="prefix" format="string|reference" />
+        <attr name="prefix_color" format="color|reference" />
+    </declare-styleable>
 </resources>

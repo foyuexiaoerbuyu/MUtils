@@ -3,8 +3,6 @@ package cn.mvp.mlibs.utils;
 
 import android.text.TextUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -174,7 +172,7 @@ public class VerifyUtils {
     }
 
     public static void checkSame(String arg0, String arg1, String tipMsg) throws IOException {
-        if (StringUtils.equals(arg0, arg1)) {
+        if (StringUtil.equals(arg0, arg1)) {
             throw new IOException(tipMsg);
         }
     }
