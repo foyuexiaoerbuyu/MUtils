@@ -47,10 +47,11 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
     private Context mContext;
     //保存路径
     private String mPath = Environment.getExternalStorageDirectory().getPath() + "/crash/";
+    private OnCrashListener mOnCrashListener;
     //用来存储设备信息和异常信息
     private Map<String, String> infos = new HashMap<>();
 
-//    //用于格式化日期,作为日志文件名的一部分
+    //    //用于格式化日期,作为日志文件名的一部分
 //    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.CHINA);
     private String crashTip = "很抱歉，程序出现异常，即将退出！";
 
@@ -94,10 +95,27 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
      * 初始化
      *
      * @param context 上下文
+     * @param path 存储路径
      */
-    public void init(Context context,String path) {
+    public void init(Context context, String path) {
         mPath = path;
         init(context);
+    }
+
+    /**
+     * 初始化
+     *
+     * @param context 上下文
+     * @param path 存储路径
+     * @param onCrashListener 回调
+     */
+    public void init(Context context, String path, OnCrashListener onCrashListener) {
+        mOnCrashListener = onCrashListener;
+        init(context, path);
+    }
+
+    public interface OnCrashListener {
+        void onCrash(String crashInfo, Throwable e);
     }
 
     /**
@@ -148,6 +166,9 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
         collectDeviceInfo(mContext);
         //保存日志文件
         saveCrashInfo2File(throwable);
+        if (mOnCrashListener != null) {
+            mOnCrashListener.onCrash(infos.toString(), throwable);
+        }
         Log.e(throwable);
         return true;
     }
