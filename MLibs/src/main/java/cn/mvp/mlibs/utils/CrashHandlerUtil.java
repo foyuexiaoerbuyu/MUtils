@@ -14,10 +14,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import cn.mvp.mlibs.log.Log;
@@ -48,6 +45,8 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
     private static CrashHandlerUtil INSTANCE = new CrashHandlerUtil();
     //程序的Context对象
     private Context mContext;
+    //保存路径
+    private String mPath = Environment.getExternalStorageDirectory().getPath() + "/crash/";
     //用来存储设备信息和异常信息
     private Map<String, String> infos = new HashMap<>();
 
@@ -89,6 +88,16 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         //设置该CrashHandler为程序的默认处理器
         Thread.setDefaultUncaughtExceptionHandler(this);
+    }
+
+    /**
+     * 初始化
+     *
+     * @param context 上下文
+     */
+    public void init(Context context,String path) {
+        mPath = path;
+        init(context);
     }
 
     /**
@@ -148,7 +157,7 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
      *
      * @param ctx 上下文
      */
-    public void collectDeviceInfo(Context ctx) {
+    private void collectDeviceInfo(Context ctx) {
         try {
             PackageManager pm = ctx.getPackageManager();
             PackageInfo pi = pm.getPackageInfo(ctx.getPackageName(), PackageManager.GET_ACTIVITIES);
@@ -203,12 +212,11 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
 //            String time = formatter.format(new Date());
             String fileName = "crash-" + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE) + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                String path = Environment.getExternalStorageDirectory().getPath() + "/crash/";
-                File dir = new File(path);
+                File dir = new File(mPath);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                FileOutputStream fos = new FileOutputStream(path + fileName);
+                FileOutputStream fos = new FileOutputStream(mPath + fileName);
                 fos.write(sb.toString().getBytes());
                 fos.close();
             }
