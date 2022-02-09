@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
@@ -127,8 +128,12 @@ public class UIUtils {
 
     /*----------------判断是运行在主线程-----------------------*/
     public static Boolean isRunOnUIThread() {
-        //获取当前线程id，如果当前线程和主线程id相同，那么当前就是主线程。
-        return android.os.Process.myTid() == getMainThreadId();
+        //获取当前线程id，如果当前线程和主线程id相同，那么当前就是主线程。此方法有可能会阻塞线程
+//        return android.os.Process.myTid() == getMainThreadId();
+        return Looper.getMainLooper() == Looper.myLooper()||
+                Looper.getMainLooper().getThread() == Thread.currentThread()||
+                Looper.getMainLooper().getThread().getId() == Thread.currentThread().getId()||
+                android.os.Process.myTid() == getMainThreadId();
     }
 
     //运行在主线程
