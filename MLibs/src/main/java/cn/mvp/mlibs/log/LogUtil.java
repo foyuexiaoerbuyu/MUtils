@@ -22,6 +22,7 @@ import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,6 +30,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
+import cn.mvp.mlibs.MLibs;
+import cn.mvp.mlibs.utils.FileUtils;
+import cn.mvp.mlibs.utils.IOUtils;
+import cn.mvp.mlibs.utils.SDCardUtils;
 
 /**
  * 日志相关类:默认是测试环境<br>
@@ -40,6 +46,17 @@ import java.util.Locale;
 public class LogUtil {
     private static boolean isShowLog = true;
     private static String TAG = "调试信息";
+
+    /*==================新加常用================*/
+
+    private static int stepNumber = 0;
+
+    public static void init(boolean isShowLog, String TAG) {
+        LogUtil.isShowLog = isShowLog;
+        if (TAG != null) {
+            LogUtil.TAG = TAG;
+        }
+    }
 
     /* ========================下面的是本地存储相关的========================== */
     /**
@@ -548,10 +565,6 @@ public class LogUtil {
         return Thread.currentThread().getStackTrace()[4];
     }
 
-    /*==================新加常用================*/
-
-    private static int stepNumber = 0;
-
     /**
      * 打印步骤
      */
@@ -581,6 +594,55 @@ public class LogUtil {
             }
         }
         getTagAndDetailMessage(null, "i", inputArgs.toString());
+    }
+
+    /**
+     * 调用处子类方法所在位置
+     *
+     * @param msg smg
+     */
+    public static void getChildLog(String msg) {
+        if (isShowLog) {
+            StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[4];
+            String stackTraceMsgArr = stackTraceElement.toString();
+            android.util.Log.i(TAG, stackTraceMsgArr.substring(stackTraceMsgArr.indexOf("(")) + "#" + stackTraceElement.getMethodName() + " msg:" + msg);
+        }
+    }
+
+    /**
+     * 打印异常详细信息,推荐使用
+     *
+     * @param e e
+     */
+    public static void printExceptionInfo(Exception e) {
+        if (isShowLog) {
+            android.util.Log.e(TAG + ":", getScope() + "  " + "", e);
+        }
+    }
+
+    public static void file(String logPath, String content) {
+        if (!SDCardUtils.isAvailable() || !SDCardUtils.isHasPermission(MLibs.getContext())) {
+            android.util.Log.e(TAG, "读写日志失败,可能没有权限或SD卡有问题");
+            return;
+        }
+        if (!FileUtils.makeDirs(logPath)) {
+            android.util.Log.e(TAG, "创建日志文件夹失败!!!");
+            return;
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(logPath, true);
+            fos.write(content.getBytes());
+        } catch (Exception e) {
+            printExceptionInfo(e);
+        } finally {
+            IOUtils.close(fos);
+        }
+    }
+
+    private static String getScope() {
+        StackTraceElement trace = Thread.currentThread().getStackTrace()[4];
+        return "(" + trace.getFileName() + ":" + trace.getLineNumber() + ")" + "#" + trace.getMethodName() + "   ";
     }
 
 }

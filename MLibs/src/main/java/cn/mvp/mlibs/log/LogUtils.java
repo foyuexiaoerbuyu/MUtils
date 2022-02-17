@@ -13,8 +13,11 @@ import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 
 /**
+ * 不推荐使用,只不过获取位置方式比较简洁 后期删除
+ * 缺点:只有v能打印完全日志
  * @author nesger.zhan
  */
+@Deprecated
 public class LogUtils {
 
     /** 总开关 */
