@@ -2,6 +2,7 @@ package cn.mvp.mlibs.utils;
 
 import android.os.Build;
 import android.text.Html;
+import android.text.TextUtils;
 
 /**
  * Created by ray on 2018/1/19.
@@ -194,5 +195,43 @@ public class StringUtil {
             }
         }
         return true;
+    }
+
+    //把String转化为float
+    public static float convertToFloat(String number, float defaultValue) {
+        if (TextUtils.isEmpty(number)) {
+            return defaultValue;
+        }
+        try {
+            return Float.parseFloat(number);
+        } catch (Exception e) {
+            return defaultValue;
+        }
+
+    }
+
+    //把String转化为double
+    public static double convertToDouble(String number, double defaultValue) {
+        if (TextUtils.isEmpty(number)) {
+            return defaultValue;
+        }
+        try {
+            return Double.parseDouble(number);
+        } catch (Exception e) {
+            return defaultValue;
+        }
+
+    }
+
+    //把String转化为int
+    public static int convertToInt(String number, int defaultValue) {
+        if (TextUtils.isEmpty(number)) {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(number);
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 }
