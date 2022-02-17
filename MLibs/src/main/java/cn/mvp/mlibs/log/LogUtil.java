@@ -483,19 +483,19 @@ public class LogUtil {
     private static void showLogInfo(String tag, String level, String output, String message) {
         switch (level) {
             case "i":
-                Log.i(TAG, output + "  " + message);
+                Log.i(tag == null ? TAG : tag, output + "  " + message);
                 break;
             case "d":
-                Log.d(TAG, output + "  " + message);
+                Log.d(tag == null ? TAG : tag, output + "  " + message);
                 break;
             case "v":
-                Log.v(TAG, output + "  " + message);
+                Log.v(tag == null ? TAG : tag, output + "  " + message);
                 break;
             case "w":
-                Log.w(TAG, output + "  " + message);
+                Log.w(tag == null ? TAG : tag, output + "  " + message);
                 break;
             case "e":
-                Log.e(TAG, output + "  " + message);
+                Log.e(tag == null ? TAG : tag, output + "  " + message);
                 break;
             case "json":
                 String msg;
@@ -514,22 +514,22 @@ public class LogUtil {
                 }
                 msg = System.getProperty("line.separator") + msg;
                 String[] lines = msg.split(System.getProperty("line.separator"));
-                printLine(TAG, output, true);
+                printLine(tag == null ? TAG : tag, output, true);
                 for (String line : lines) {
-                    Log.e(TAG, output + " ║ " + line);
+                    Log.e(tag == null ? TAG : tag, output + " ║ " + line);
                 }
-                printLine(TAG, output, false);
+                printLine(tag == null ? TAG : tag, output, false);
                 break;
             default:
-                Log.i(TAG, output);
+                Log.i(tag == null ? TAG : tag, output);
         }
     }
 
     private static void printLine(String tag, String output, boolean isTop) {
         if (isTop) {
-            Log.e(TAG, output + " ╔═══════════════════════════════════════════════════════════════════════════════════════");
+            Log.e(tag == null ? TAG : tag, output + " ╔═══════════════════════════════════════════════════════════════════════════════════════");
         } else {
-            Log.e(TAG, output + " ╚═══════════════════════════════════════════════════════════════════════════════════════");
+            Log.e(tag == null ? TAG : tag, output + " ╚═══════════════════════════════════════════════════════════════════════════════════════");
         }
     }
 
@@ -643,6 +643,18 @@ public class LogUtil {
     private static String getScope() {
         StackTraceElement trace = Thread.currentThread().getStackTrace()[4];
         return "(" + trace.getFileName() + ":" + trace.getLineNumber() + ")" + "#" + trace.getMethodName() + "   ";
+    }
+
+    /**
+     * debug调试日志
+     *
+     * @param message 日志信息
+     */
+    public static void debug(String tag, String message) {
+
+        if (isShowLog && MLibs.isDebug()) {
+            Log.i(tag, message);
+        }
     }
 
 }
