@@ -21,4 +21,11 @@
         <attr name="prefix" format="string|reference" />
         <attr name="prefix_color" format="color|reference" />
     </declare-styleable>
+
+    <declare-styleable name="RefreshLayout">
+        <attr name="layout_refresh_empty" format="reference"/>
+        <attr name="layout_refresh_error" format="reference"/>
+        <attr name="layout_refresh_loading" format="reference"/>
+    </declare-styleable>
+
 </resources>
