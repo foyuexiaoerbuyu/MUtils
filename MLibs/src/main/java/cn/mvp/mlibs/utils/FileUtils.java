@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
-import cn.mvp.mlibs.log.LogUtils;
+import cn.mvp.mlibs.log.XLogUtil;
 
 /**
  * @author： wlj
@@ -80,6 +80,7 @@ public class FileUtils {
             makeDirs(filePath);
             fileWriter = new FileWriter(filePath, append);
             fileWriter.write(content);
+            IOUtils.close(fileWriter);
             return true;
         } catch (IOException e) {
             throw new RuntimeException("IOException occurred. ", e);
@@ -537,11 +538,11 @@ public class FileUtils {
         if (fs != null) {
             for (File f : fs) {
                 if (f.isDirectory()) {    //若是目录，则递归打印该目录下的文件
-                    LogUtils.d("文件夹:" + f.getPath());
+                    XLogUtil.d("文件夹:" + f.getPath());
                     scanningFilesName(f);
                 }
                 if (f.isFile())        //若是文件，直接打印
-                    LogUtils.d("文件:" + f.getPath());
+                    XLogUtil.d("文件:" + f.getPath());
             }
         }
     }

@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 
-import cn.mvp.mlibs.log.LogUtils;
+import cn.mvp.mlibs.log.XLogUtil;
 
 /**
  * ============================================================================
@@ -122,7 +122,7 @@ public class LocalBroadcastUtil {
                 else
                     stringBuilder.append(",");
             }
-            LogUtils.i(TAG, stringBuilder.toString());
+            XLogUtil.i(TAG, stringBuilder.toString());
         }
     }
 
@@ -136,7 +136,7 @@ public class LocalBroadcastUtil {
         checkNotNull(receiver);
         broadcastManager.unregisterReceiver(receiver);
         if (debugEnable) {
-            LogUtils.i(TAG, receiver.toString() + " 的监听已注销");
+            XLogUtil.i(TAG, receiver.toString() + " 的监听已注销");
         }
     }
 
@@ -160,7 +160,7 @@ public class LocalBroadcastUtil {
         checkNotNull(lifecycleOwner, receiver);
         lifecycleOwner.getLifecycle().addObserver(new OnDestroyListener(receiver,TAG));
         if (debugEnable) {
-            LogUtils.i(TAG, "将 " + receiver.toString() + " 绑定至 " + lifecycleOwner.toString() + " 的生命周期中");
+            XLogUtil.i(TAG, "将 " + receiver.toString() + " 绑定至 " + lifecycleOwner.toString() + " 的生命周期中");
         }
     }
 
@@ -183,7 +183,7 @@ public class LocalBroadcastUtil {
         checkNotNull(intent);
         broadcastManager.sendBroadcast(intent);
         if (debugEnable) {
-            LogUtils.i(TAG, "发送action为 " + intent.getAction() + " 的广播");
+            XLogUtil.i(TAG, "发送action为 " + intent.getAction() + " 的广播");
         }
     }
 

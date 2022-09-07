@@ -3,7 +3,7 @@ package cn.mvp.mlibs.utils;
 import java.io.Closeable;
 import java.io.IOException;
 
-import cn.mvp.mlibs.log.LogUtils;
+import cn.mvp.mlibs.log.XLogUtil;
 
 /**
  * @author wlj
@@ -25,8 +25,8 @@ public class IOUtils {
             try {
                 closeable.close();
             } catch (IOException e) {
-                LogUtils.e("调试信息", "close: ", e);
-//                LogUtils.d("IOUtils",e.toString());
+                XLogUtil.e("调试信息", "close: ", e);
+//                XLogUtil.d("IOUtils",e.toString());
             }
         }
     }

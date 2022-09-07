@@ -15,6 +15,9 @@
  */
 package cn.mvp.mlibs.log;
 
+import android.app.Activity;
+import android.app.Application;
+import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -43,7 +46,7 @@ import cn.mvp.mlibs.utils.SDCardUtils;
  * @author yuchao.wang
  * @since 2014-4-23
  */
-public class LogUtil {
+public class XLogUtil {
     private static boolean isShowLog = true;
     private static String TAG = "调试信息";
 
@@ -52,10 +55,51 @@ public class LogUtil {
     private static int stepNumber = 0;
 
     public static void init(boolean isShowLog, String TAG) {
-        LogUtil.isShowLog = isShowLog;
+        XLogUtil.isShowLog = isShowLog;
         if (TAG != null) {
-            LogUtil.TAG = TAG;
+            XLogUtil.TAG = TAG;
         }
+    }
+
+
+    public static void showActivity(Application application, boolean isShowLog) {
+        if (!isShowLog) return;
+        application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                Log.i("当前所在", activity.getLocalClassName());
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
     }
 
     /* ========================下面的是本地存储相关的========================== */

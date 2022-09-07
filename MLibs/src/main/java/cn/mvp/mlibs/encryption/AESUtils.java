@@ -24,6 +24,33 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * by y on 22/11/2017.
+ * 这个错误: The typedef annotation should have @Retention(RetentionPolicy.SOURCE)
+ * 解决方案:在android/build.gradle这个文件最后增加
+ *
+ * subprojects {
+ *
+ * afterEvaluate {project ->
+ *
+ * if (project.hasProperty("android")) {
+ *
+ * android {
+ *
+ * compileSdkVersion 27    
+ *
+ * buildToolsVersion "27.0.2"
+ *
+ * }
+ *
+ * }
+ *
+ * }
+ *
+ * }
+ *
+ * 作者：zy_mr
+ * 链接：https://www.jianshu.com/p/f94eadf4fe93
+ * 来源：简书
+ * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
  */
 
 public class AESUtils {

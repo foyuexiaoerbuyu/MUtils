@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.mvp.mlibs.log.LogUtils;
+import cn.mvp.mlibs.log.XLogUtil;
 
 /**
  * Created by dhl on 2016/9/1.
@@ -284,15 +284,15 @@ public class NetworkUtils {
                 return true;
             } else {
                 if (ipProcessInfo.indexOf("100% packet loss") != -1) {
-                    LogUtils.i("网络丢包严重，判断为网络未连接");
+                    XLogUtil.i("网络丢包严重，判断为网络未连接");
                     return false;
                 } else {
-                    LogUtils.i("网络未丢包，判断为网络连接");
+                    XLogUtil.i("网络未丢包，判断为网络连接");
                     return true;
                 }
             }
         } catch (IOException | InterruptedException e) {
-            LogUtils.printExceptionInfo(e);
+            XLogUtil.printExceptionInfo(e);
         } finally {
             if (ipProcess != null) {
                 ipProcess.destroy();

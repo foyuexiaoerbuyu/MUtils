@@ -8,7 +8,7 @@ import android.content.BroadcastReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import cn.mvp.mlibs.log.LogUtils;
+import cn.mvp.mlibs.log.XLogUtil;
 
 class OnDestroyListener implements LifecycleObserver {
     private final BroadcastReceiver receiver;
@@ -24,7 +24,7 @@ class OnDestroyListener implements LifecycleObserver {
         LocalBroadcastUtil.unregisterReceiver(receiver);
         lifecycleOwner.getLifecycle().removeObserver(this);
         if (LocalBroadcastUtil.debugEnable) {
-            LogUtils.i(TAG, "已自动注销 " + receiver.toString());
+            XLogUtil.i(TAG, "已自动注销 " + receiver.toString());
         }
     }
 

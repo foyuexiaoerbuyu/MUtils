@@ -14,7 +14,7 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.mvp.mlibs.log.LogUtil;
+import cn.mvp.mlibs.log.XLogUtil;
 
 
 /**
@@ -59,7 +59,7 @@ public class ContactUtils {
         // 真正添加
         ContentProviderResult[] results = context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
         for (ContentProviderResult result : results) {
-            LogUtil.d("[GlobalVariables->]BatchAddContact " + result.uri.toString());
+            XLogUtil.d("[GlobalVariables->]BatchAddContact " + result.uri.toString());
         }
     }
 
