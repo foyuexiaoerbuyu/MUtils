@@ -643,13 +643,26 @@ public class XLogUtil {
     /**
      * 调用处子类方法所在位置
      *
-     * @param msg smg
+     * @param msg msg
      */
     public static void getChildLog(String msg) {
         if (isShowLog) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[4];
             String stackTraceMsgArr = stackTraceElement.toString();
             android.util.Log.i(TAG, stackTraceMsgArr.substring(stackTraceMsgArr.indexOf("(")) + "#" + stackTraceElement.getMethodName() + " msg:" + msg);
+        }
+    }
+    /**
+     * 调用处子类方法所在位置
+     *
+     * @param tag 日志tag
+     * @param msg msg
+     */
+    public static void getChildLog(String tag,String msg) {
+        if (isShowLog) {
+            StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[4];
+            String stackTraceMsgArr = stackTraceElement.toString();
+            android.util.Log.i(tag, stackTraceMsgArr.substring(stackTraceMsgArr.indexOf("(")) + "#" + stackTraceElement.getMethodName() + " msg:" + msg);
         }
     }
 
