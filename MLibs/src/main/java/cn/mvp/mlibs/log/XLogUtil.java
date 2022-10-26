@@ -17,7 +17,9 @@ package cn.mvp.mlibs.log;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -62,6 +64,7 @@ public class XLogUtil {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static void showActivity(Application application, boolean isShowLog) {
         if (!isShowLog) return;
         application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
