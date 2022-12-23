@@ -49,6 +49,7 @@ public class UIUtils {
     //图片资源
     public static Drawable getDrawable(int id) {
         try {
+//            ResourcesCompat.getDrawable(getResources(), id, null);
             return ContextCompat.getDrawable(getContext(), id);
         } catch (Exception e) {
             return getContext().getResources().getDrawable(id);

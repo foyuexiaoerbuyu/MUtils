@@ -21,6 +21,9 @@ public class DateUtil {
     /** yyyy-MM-dd HH:mm:ss */
     public static final String REGEX_DATE_TIME = "yyyy-MM-dd kk:mm:ss";
 
+    /** yyyy-MM-dd HH:mm:ss:SSS */
+    public static final String REGEX_DATE_TIME_SSS = "yyyy-MM-dd kk:mm:ss:SSS";
+
     /** yyyy年MM月dd日 */
     public static final String REGEX_DATE_CHINESE = "yyyy年MM月dd日";
 
@@ -32,6 +35,16 @@ public class DateUtil {
     /** 获取当前日期或时间的字符串 */
     public static String formatDate(String regex) {
         return getFormatter(regex).format(new Date());
+    }
+
+    /** 获取当前日期或时间毫秒数 */
+    public static long getRegexTime(String regex, String date) {
+        try {
+            return getFormatter(regex).parse(date).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     /** 获取指定日期或时间的字符串 */
