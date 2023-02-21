@@ -22,7 +22,7 @@ public class DateUtil {
     public static final String REGEX_DATE_TIME = "yyyy-MM-dd kk:mm:ss";
 
     /** yyyy-MM-dd HH:mm:ss:SSS */
-    public static final String REGEX_DATE_TIME_SSS = "yyyy-MM-dd kk:mm:ss:SSS";
+    public static final String REGEX_DATE_TIME_MILL = "yyyy-MM-dd kk:mm:ss:SSS";
 
     /** yyyy年MM月dd日 */
     public static final String REGEX_DATE_CHINESE = "yyyy年MM月dd日";
@@ -37,7 +37,10 @@ public class DateUtil {
         return getFormatter(regex).format(new Date());
     }
 
-    /** 获取当前日期或时间毫秒数 */
+    /**
+     *获取当前日期或时间毫秒数
+     *@param regex  "yyyy-MM-dd HH:mm:ss"
+     */
     public static long getRegexTime(String regex, String date) {
         try {
             return getFormatter(regex).parse(date).getTime();

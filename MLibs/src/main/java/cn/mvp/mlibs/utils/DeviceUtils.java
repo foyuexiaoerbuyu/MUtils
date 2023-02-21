@@ -412,7 +412,7 @@ public class DeviceUtils {
      *
      * @return 手机信息
      */
-    public String getPhoneInfo(Context context) {
+    public static String getPhoneInfo(Context context) {
         StringBuilder phnInfo = new StringBuilder();
         phnInfo.append("手机相关信息[");
         //应用的版本名称和版本号

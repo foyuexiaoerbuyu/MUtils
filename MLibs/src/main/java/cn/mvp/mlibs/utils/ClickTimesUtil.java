@@ -1,4 +1,4 @@
-package cn.mvp.utils;
+package cn.mvp.mlibs.utils;
 
 import android.os.SystemClock;
 import android.util.Log;
@@ -48,5 +48,34 @@ public class ClickTimesUtil {
         void onClickListen();
     }
 
+    private static final int MIN_DELAY_TIME = 1000; // 两次点击间隔不能少于1000ms
+    private static long lastClickTime;
+
+    /**
+     *连续点击
+     */
+    public static boolean isContinuousClick() {
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= MIN_DELAY_TIME) {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
+    }
+
+    /**
+     * 防止重复点击
+     * @param minDelayTime 最小间隔时间(毫秒)
+     */
+    public static boolean isContinuousClick(int minDelayTime) {
+        boolean flag = true;
+        long currentClickTime = System.currentTimeMillis();
+        if ((currentClickTime - lastClickTime) >= minDelayTime) {
+            flag = false;
+        }
+        lastClickTime = currentClickTime;
+        return flag;
+    }
 }
 

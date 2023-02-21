@@ -13,7 +13,7 @@ import android.os.Vibrator;
  * <uses-permission android:name="android.permission.VIBRATE" />
  * 震动工具类
  */
-class VibratorUtil {
+public class VibratorUtil {
 
     /**
      * 震动100毫秒只震动一次
