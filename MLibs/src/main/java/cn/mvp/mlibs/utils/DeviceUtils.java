@@ -26,6 +26,8 @@ import java.util.UUID;
  * 系统版本信息类
  * 如：版本>=2.2、获取系统Android版本、获得设备的固件版本号、判断是否是三星、中兴的手机
  * 获取CPU的信息、是否支持闪光灯或相机
+ * Android 版本对应关系
+ * https://source.android.com/docs/setup/about/build-numbers
  */
 public class DeviceUtils {
 
@@ -102,6 +104,22 @@ public class DeviceUtils {
     /** Android版本>=10	  SDK:29 @return 是否Android版本>=10 Android10 */
     public static boolean is10_0() {
         return Build.VERSION.SDK_INT >= 29;
+    }
+    /** Android版本>=10	  SDK:30 @return 是否Android版本>=11 Android11 */
+    public static boolean is11_0() {
+        return Build.VERSION.SDK_INT >= 30;
+    }
+    /** Android版本>=10	  SDK:31 @return 是否Android版本>=12 Android12 */
+    public static boolean is12_0() {
+        return Build.VERSION.SDK_INT >= 31;
+    }
+    /** Android版本>=10	  SDK:32 @return 是否Android版本>=12L Android12L */
+    public static boolean is12L_0() {
+        return Build.VERSION.SDK_INT >= 32;
+    }
+    /** Android版本>=10	  SDK:33 @return 是否Android版本>=13 Android13 */
+    public static boolean is13_0() {
+        return Build.VERSION.SDK_INT >= 33;
     }
 
     /**

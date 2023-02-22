@@ -2,8 +2,7 @@ package cn.mvp.mlibs.other;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.view.Window;
-import android.view.WindowManager;
+import android.util.Log;
 
 public class OtherUtils {
 
@@ -23,6 +22,7 @@ public class OtherUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("调试信息", "closeDialogSafety: " + Log.getStackTraceString(e));
         }
     }
 
@@ -43,26 +43,15 @@ public class OtherUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("调试信息", "showDialogSafety: " + Log.getStackTraceString(e));
         }
     }
 
     /**
-     * 是否使屏幕常亮
-     * https://juejin.cn/post/6844903479727620103
-     * https://www.cnblogs.com/sparrowlhl/p/11249004.html
-     * 其他方式:
-     *          View.keepScreenOn(true);
-     *      　　mMediaPlayer.setScreenOnWhilePlaying(true);
+     * 杀死主进程
      */
-    public static void keepScreenLongLight(Activity activity, boolean isOpenLight) {
-//        boolean isOpenLight = CommSharedUtil.getInstance(activity).getBoolean(CommSharedUtil.FLAG_IS_OPEN_LONG_LIGHT, true);
-        Window window = activity.getWindow();
-        if (isOpenLight) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
-
+    public static void killMainProcess() {
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
 }
