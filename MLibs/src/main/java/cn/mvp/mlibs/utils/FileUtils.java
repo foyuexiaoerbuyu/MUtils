@@ -568,6 +568,20 @@ public class FileUtils {
     /**
      * @return 文件大小
      */
+    public static String getSize(String path) {
+        return getSize(new File(path).length());
+    }
+
+    /**
+     * @return 文件大小
+     */
+    public static String getSize(File file) {
+        return getSize(file.length());
+    }
+
+    /**
+     * @return 文件大小
+     */
     public static String getSize(long size) {
         //获取到的size为：1705230
         int GB = 1024 * 1024 * 1024;//定义GB的计算常量
