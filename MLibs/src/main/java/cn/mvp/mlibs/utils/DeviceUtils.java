@@ -97,28 +97,28 @@ public class DeviceUtils {
     }
 
     /** Android版本>=9	  SDK:28 @return 是否Android版本>=9 */
-    public static boolean is9_0() {
+    public static boolean is9_0_P() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
     }
 
     /** Android版本>=10	  SDK:29 @return 是否Android版本>=10 Android10 */
-    public static boolean is10_0() {
+    public static boolean is10_0_Q() {
         return Build.VERSION.SDK_INT >= 29;
     }
     /** Android版本>=10	  SDK:30 @return 是否Android版本>=11 Android11 */
-    public static boolean is11_0() {
+    public static boolean is11_0_R() {
         return Build.VERSION.SDK_INT >= 30;
     }
     /** Android版本>=10	  SDK:31 @return 是否Android版本>=12 Android12 */
-    public static boolean is12_0() {
+    public static boolean is12_0_S() {
         return Build.VERSION.SDK_INT >= 31;
     }
     /** Android版本>=10	  SDK:32 @return 是否Android版本>=12L Android12L */
-    public static boolean is12L_0() {
+    public static boolean is12L_0_S() {
         return Build.VERSION.SDK_INT >= 32;
     }
     /** Android版本>=10	  SDK:33 @return 是否Android版本>=13 Android13 */
-    public static boolean is13_0() {
+    public static boolean is13_0_T() {
         return Build.VERSION.SDK_INT >= 33;
     }
 
