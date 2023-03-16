@@ -1,8 +1,16 @@
 package cn.mvp.mlibs.utils;
 
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.TextUtils;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import cn.mvp.mlibs.other.CheckException;
 
 /**
  * Created by ray on 2018/1/19.
@@ -234,4 +242,78 @@ public class StringUtil {
             return defaultValue;
         }
     }
+
+    /**
+     * 字符串是否包含中文
+     *
+     * @param str 待校验字符串
+     * @return true 包含中文字符 false 不包含中文字符
+     */
+    public static boolean isContainChineseSimple(String str) throws CheckException {
+
+        if (StringUtils.isEmpty(str)) {
+            throw new CheckException("字符串不能为空");
+        }
+        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+        Matcher m = p.matcher(str);
+        return m.find();
+    }
+
+    /**
+     * 字符串是否包含中文
+     *
+     * @param str 待校验字符串
+     * @return true 包含中文字符 false 不包含中文字符
+     */
+    public static boolean isContainChinese(String str) throws CheckException {
+
+        if (StringUtils.isEmpty(str)) {
+            throw new CheckException("字符串不能为空");
+        }
+        Pattern p = Pattern.compile("[\u4E00-\u9FA5|\\！|\\，|\\。|\\（|\\）|\\《|\\》|\\“|\\”|\\？|\\：|\\；|\\【|\\】]");
+        Matcher m = p.matcher(str);
+        return m.find();
+    }
+
+    /**
+     * @return 字符串或空字符串
+     */
+    public static String str(Object str) {
+        return str == null ? "" : str.toString();
+    }
+
+    /**
+     * @return 字符串或空字符串
+     */
+    public static String strNull(String value) {
+        return checkStringIsNull(value) ? "" : value;
+    }
+
+    /**
+     * 检查是不是null  是不是空串  是不是"null"
+     *
+     * @param checkStr
+     * @return 非null "null" 值
+     */
+    public static boolean checkStringIsNull(String checkStr) {
+        return checkStr == null || checkStr.isEmpty() || checkStr.equals("null");
+    }
+
+    public static boolean isEmpty(@Nullable CharSequence str) {
+        return str == null || str.length() == 0;
+    }
+
+    /**
+     * 去掉所有空格
+     *
+     * @param str
+     * @return
+     */
+    public static String trim(String str) {
+        if (str == null) {
+            return "";
+        }
+        return str.replace(" ", "");
+    }
+
 }

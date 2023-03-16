@@ -291,6 +291,9 @@ public class FileUtils {
             return filePath;
         }
         int fp = filePath.lastIndexOf(File.separator);
+        if (fp==-1) {
+            fp = filePath.lastIndexOf("/");
+        }
         return (fp == -1) ? filePath : filePath.substring(fp + 1);
     }
 
