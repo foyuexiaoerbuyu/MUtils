@@ -15,10 +15,18 @@
  */
 package cn.mvp.mlibs.log;
 
+import static android.content.Context.SENSOR_SERVICE;
+import static android.hardware.Sensor.TYPE_ACCELEROMETER;
+
 import android.app.Activity;
 import android.app.Application;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
@@ -37,9 +45,11 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import cn.mvp.mlibs.MLibs;
+import cn.mvp.mlibs.other.ICallBack;
 import cn.mvp.mlibs.utils.FileUtils;
 import cn.mvp.mlibs.utils.IOUtils;
 import cn.mvp.mlibs.utils.SDCardUtils;
+import cn.mvp.mlibs.utils.VibratorUtil;
 
 /**
  * 日志相关类:默认是测试环境<br>
@@ -655,13 +665,14 @@ public class XLogUtil {
             android.util.Log.i(TAG, stackTraceMsgArr.substring(stackTraceMsgArr.indexOf("(")) + "#" + stackTraceElement.getMethodName() + " msg:" + msg);
         }
     }
+
     /**
      * 调用处子类方法所在位置
      *
      * @param tag 日志tag
      * @param msg msg
      */
-    public static void getChildLog(String tag,String msg) {
+    public static void getChildLog(String tag, String msg) {
         if (isShowLog) {
             StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[4];
             String stackTraceMsgArr = stackTraceElement.toString();
@@ -716,5 +727,54 @@ public class XLogUtil {
             Log.i(tag, message);
         }
     }
+
+    /**
+     * 锁定日志(出现异常紧急锁定日志)
+     *
+     * @param callBack 振动回调
+     */
+    public static void lockLog(@NonNull ICallBack callBack) {
+        SensorManager sensorManager = (SensorManager) MLibs.getContext().getSystemService(SENSOR_SERVICE);   //传感器管理器
+        Sensor sensor = sensorManager.getDefaultSensor(TYPE_ACCELEROMETER);     //此处传入1 也可以，Sensor中加速度传感器对应的int值为1
+
+        //参数:第一个是监听器，第二个是加速度传感器，第三个是传感器的灵敏度 从上往下灵敏度依次降低(SENSOR_DELAY_FASTEST , SENSOR_DELAY_GAME, SENSOR_DELAY_UI, SENSOR_DELAY_NORMAL)
+        sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_GAME);
+        iCallBack = callBack;
+//        vibrator = (Vibrator) MLibs.getContext().getSystemService(VIBRATOR_SERVICE);          //振动器
+    }
+
+    private static long lastTime;
+    private static SensorEventListener listener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            int type = event.sensor.getType();  //获取传感器类型
+            if (type == 1) {   //等价于  type==TYPE_ACCELEROMETER
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+
+                if (Math.abs(x) > 15 && Math.abs(y) > 15 && Math.abs(z) > 15) {     //摇动灵敏度取决于后面的常量值，这里定义了15
+                    long currentTimeMillis = System.currentTimeMillis();
+                    if (currentTimeMillis - lastTime < 1000) {
+                        return;
+                    }
+                    lastTime = currentTimeMillis;
+                    if (iCallBack != null) {
+                        iCallBack.back();
+                        VibratorUtil.vibrate(MLibs.getContext(), 500);
+                    }
+//                    vibrator.vibrate(300);  //振动时长300ms
+//                    new AlertDialog.Builder(ShakeActivity.this).setTitle("提示").setMessage("-----").show();
+
+                }
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            //灵敏度变化时调用。灵敏度级别参考：SensorManager.SENSOR_DELAY_GAME
+        }
+    };
+    private static ICallBack iCallBack;
 
 }
