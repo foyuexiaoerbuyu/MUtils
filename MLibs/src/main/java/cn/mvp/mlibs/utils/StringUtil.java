@@ -260,12 +260,23 @@ public class StringUtil {
     }
 
     /**
-     * 字符串是否包含中文
+     * @return 去除字符串所有中文
+     */
+    public static String replaceAllChinese(String str) {
+        if (str==null||str.trim().length()==0) {
+            return "";
+        }
+        //// 中文正则
+        return Pattern.compile("[\u4e00-\u9fa5]").matcher(str).replaceAll("");
+    }
+
+    /**
+     * 字符串是否包含中文及中文符号
      *
      * @param str 待校验字符串
      * @return true 包含中文字符 false 不包含中文字符
      */
-    public static boolean isContainChinese(String str) throws CheckException {
+    public static boolean isContainChinese2symbol(String str) throws CheckException {
 
         if (StringUtils.isEmpty(str)) {
             throw new CheckException("字符串不能为空");
