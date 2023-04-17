@@ -1,15 +1,15 @@
 package cn.mvp.global;
 
-import android.app.Activity;
 import android.app.Application;
-import android.os.Bundle;
-import android.util.Log;
+import android.content.Context;
 
 import com.hjq.toast.ToastUtils;
 
 import cn.mvp.db.DbHelp;
 import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.log.XLogUtil;
+import cn.mvp.mlibs.other.ClipperReceiver;
+import cn.mvp.mlibs.other.ICallBack;
 import cn.mvp.mlibs.utils.CrashHandlerUtil;
 
 /**
@@ -17,17 +17,27 @@ import cn.mvp.mlibs.utils.CrashHandlerUtil;
  */
 
 public class MyApplication extends Application {
-
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
         MLibs.init(this);
+        context = getApplicationContext();
         ToastUtils.init(this);
         CrashHandlerUtil.getInstance().init(this);
         DbHelp.init(this);
 //        MLibs.init();
-        XLogUtil.showActivity(this,true);
+        XLogUtil.showActivity(this, true);
+        XLogUtil.lockLog(new ICallBack() {
+            @Override
+            public void back() {
+
+            }
+        });
+
+        ClipperReceiver clipperReceiver = new ClipperReceiver();
+        clipperReceiver.registerReceiver(this, null);
         /*registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
@@ -66,4 +76,7 @@ public class MyApplication extends Application {
         });*/
     }
 
+    public static Context getContext() {
+        return context;
+    }
 }

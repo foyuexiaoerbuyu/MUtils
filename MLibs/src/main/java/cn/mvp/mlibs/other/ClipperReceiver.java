@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.text.ClipboardManager;
 import android.util.Log;
 
+import com.hjq.toast.ToastUtils;
+
 /*
  * Receives broadcast commands and controls clipboard accordingly.
  * The broadcast receiver is active only as long as the application, or its service is active.
@@ -46,6 +48,7 @@ public class ClipperReceiver extends BroadcastReceiver {
         if (isActionSet(intent.getAction())) {
             String text = intent.getStringExtra(EXTRA_TEXT);
             Log.d(TAG, "将文本设置为剪贴板 = " + text);
+            ToastUtils.show("已复制pc剪切板内容到手机");
             if (text != null) {
                 cb.setText(text);
                 setResultCode(Activity.RESULT_OK);
@@ -59,6 +62,7 @@ public class ClipperReceiver extends BroadcastReceiver {
             }
         } else if (isActionGet(intent.getAction())) {
             Log.d(TAG, "从剪贴板获取文本");
+            ToastUtils.show("已复制剪切板内容到pc");
             CharSequence clip = cb.getText();
             if (clip != null) {
                 Log.d(TAG, String.format("剪贴板 text: %s", clip));

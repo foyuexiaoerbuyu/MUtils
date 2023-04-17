@@ -1,16 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <cn.mvp.test.RefreshLayout
-        android:id="@+id/swipe_layout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/contact_person"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </cn.mvp.test.RefreshLayout>
-</LinearLayout>
+    </android.support.v7.widget.RecyclerView>
+
+    <com.mcxtzhang.indexlib.IndexBar.widget.IndexBar
+        android:id="@+id/indexBar"
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        app:indexBarPressBackground="@color/partTranslucent"
+        app:indexBarTextSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvSideBarHint"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_side_bar_bg"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:visibility="gone"
+        tools:text="A"
+        tools:visibility="visible"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:onClick="updateDatas"
+        android:text="更新数据源"/>
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent">-->
+
+    <!--&lt;!&ndash;    <cn.mvp.test.RefreshLayout&ndash;&gt;-->
+    <!--&lt;!&ndash;        android:id="@+id/swipe_layout"&ndash;&gt;-->
+    <!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;        android:layout_height="match_parent">&ndash;&gt;-->
+
+    <!--&lt;!&ndash;        <ListView&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:id="@+id/listview"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_height="match_parent" />&ndash;&gt;-->
+    <!--&lt;!&ndash;    </cn.mvp.test.RefreshLayout>&ndash;&gt;-->
+    <!--</LinearLayout>-->
+</FrameLayout>

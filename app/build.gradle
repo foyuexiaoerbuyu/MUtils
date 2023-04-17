@@ -3,13 +3,13 @@ apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 33
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "cn.mvp"
-        minSdkVersion 23
-        targetSdkVersion 28
+        minSdkVersion 21
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -41,11 +41,11 @@ greendao {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation fileTree(dir: "libs", include: ["*.jar,*.aar"])
     implementation 'com.android.support:support-v4:28.0.0'
 //    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation project(path: ':MLibs')
+    implementation files('libs/indexlib-release.aar')
 //    implementation project(path: ':refresh-layout')
 //    implementation project(path: ':refresh-layout-kernel')
 //    testImplementation 'junit:junit:4.12'
@@ -55,6 +55,10 @@ dependencies {
     implementation'com.android.support:appcompat-v7:28.0.0'
     //万能适配器 https://github.com/smuyyh/EasyAdapter
     implementation 'com.yuyh.easyadapter:library:1.2.0'
+    //封装ListView列表适配器  https://github.com/hongyangAndroid/baseAdapter
+    implementation 'com.zhy:base-adapter:3.0.3'
+    //封装RecyclerView列表适配器  https://github.com/hongyangAndroid/baseAdapter
+    implementation 'com.zhy:base-rvadapter:3.0.3'
     /*fastJson*/
     implementation 'com.alibaba:fastjson:1.2.47'
 
@@ -78,7 +82,17 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
 //    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'com.github.Petterpx:FloatingX:1.1.0'
+//    implementation 'com.github.Petterpx:FloatingX:1.1.0'
+    implementation 'com.github.promeg:tinypinyin:1.0.0'
+    implementation files('libs\\okhttp-3.11.0.jar')
+    implementation files('libs\\okhttputils-2_6_2.jar')
+    implementation files('libs\\okio-1.15.0.jar')
+    implementation files('libs\\sun.misc.BASE64Decoder.jar')
+//    implementation 'androidx.appcompat:appcompat:1.6.1'
+//    implementation 'com.google.android.material:material:1.4.+'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+//    implementation 'androidx.appcompat:appcompat:1.4.2'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'// ~80KB
 
 //    implementation 'androidx.appcompat:appcompat:1.4.2'
 //    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

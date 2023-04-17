@@ -20,6 +20,7 @@ import static android.hardware.Sensor.TYPE_ACCELEROMETER;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Application.ActivityLifecycleCallbacks;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -73,11 +74,14 @@ public class XLogUtil {
         }
     }
 
+    public static void registerActivityLifecycleCallbacks(Application application) {
+        application.registerActivityLifecycleCallbacks(ActivityManager.getInstance());
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static void showActivity(Application application, boolean isShowLog) {
         if (!isShowLog) return;
-        application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        application.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {
 

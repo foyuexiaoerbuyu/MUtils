@@ -190,4 +190,6 @@
     <color name="tab_indicator">#0dace6</color>
     <color name="app_orange">#f18f45</color>
     <color name="app_red">#f77453</color>
+
+    <color name="partTranslucent">#39000000</color>
 </resources>

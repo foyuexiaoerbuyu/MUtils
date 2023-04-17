@@ -19,9 +19,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import cn.mvp.BuildConfig;
+import cn.mvp.mlibs.utils.CrashHandlerUtil;
 import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.UIUtils;
+import cn.mvp.test1.CrashFileUtils;
 
 /**
  * 错误日志打印工具，带定位功能（输出调用处类型名、方法名、行，点击可追踪到）
