@@ -1,5 +1,7 @@
 package cn.mvp.chat;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,16 +18,22 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mEdt1;
     private MultiClient4 mMultiClient4;
 
+    public static void open(Context context) {
+        Intent starter = new Intent(context, ChatActivity.class);
+//        starter.putExtra();
+        context.startActivity(starter);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat1);
+        setContentView(R.layout.activity_chat);
         initPermissions();
 
         initConnent();
-        mEdt1 = findViewById(R.id.edt1);
-        findViewById(R.id.btn0).setOnClickListener(this);
-        findViewById(R.id.btn1).setOnClickListener(this);
+        mEdt1 = findViewById(R.id.chat_edt1);
+        findViewById(R.id.chat_btn0).setOnClickListener(this);
+        findViewById(R.id.chat_btn1).setOnClickListener(this);
         mEdt1.setText("自动生成信息: " + System.currentTimeMillis());
     }
 
@@ -59,10 +67,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn0:
+            case R.id.chat_btn0:
                 mEdt1.setText("自动生成信息: " + System.currentTimeMillis());
                 break;
-            case R.id.btn1:
+            case R.id.chat_btn1:
                 String inputStr = mEdt1.getText().toString() + (++tag);
                 if (mMultiClient4 != null) {
                     new Thread(new Runnable() {

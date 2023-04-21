@@ -50,8 +50,8 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat1);
-        showMessage = findViewById(R.id.show_message);
-        editText = findViewById(R.id.edit_text);
+        showMessage = findViewById(R.id.chat1_show_message);
+        editText = findViewById(R.id.chat1_edit_text);
         findViewById(R.id.send).setOnClickListener(this);
         URI serverURI = URI.create("ws://172.31.254.234:8887");
         webSocketClient = new WebSocketClient(serverURI) {

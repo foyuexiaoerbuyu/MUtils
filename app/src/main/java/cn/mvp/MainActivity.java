@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import cn.mvp.acty.BaseActivity;
+import cn.mvp.chat.ChatActivity;
+import cn.mvp.chat1.Chat1Activity;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
 
     private boolean isRefuse;
 
@@ -21,15 +23,15 @@ public class MainActivity extends BaseActivity {
         cbOpenActyShow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-
-                }
+                
             }
         });
         findViewById(R.id.btn1).setOnClickListener(v -> {
+            ChatActivity.open(MainActivity.this);
         });
 
         findViewById(R.id.btn2).setOnClickListener(v -> {
+            Chat1Activity.open(MainActivity.this);
         });
     }
 

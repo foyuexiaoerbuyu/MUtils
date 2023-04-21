@@ -12,7 +12,7 @@
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/show_message"
+            android:id="@+id/chat1_show_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </ScrollView>
@@ -23,7 +23,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/edit_text"
+            android:id="@+id/chat1_edit_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />

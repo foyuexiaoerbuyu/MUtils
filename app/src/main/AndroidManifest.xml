@@ -28,6 +28,22 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
 
+        <service
+            android:enabled="true"
+            android:exported="true"
+            android:name=".weight.MyService"
+            android:icon="@drawable/ic_launcher"
+            android:label="工具开关"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.service.quicksettings.ACTIVE_TILE"
+                android:value="true" />
+        </service>
+
         <activity
             android:name=".chat.ChatActivity"
             android:exported="false" />
@@ -58,22 +74,6 @@
             android:name=".mlibs.service.imgbackup.PhotoCaptureService"
             android:enabled="true"
             android:exported="true" />
-
-        <!--<receiver
-            android:name=".clipper.ClipperReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <data android:scheme="clipper" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="clipper.get" />
-                <action android:name="clipper.set" />
-                <action android:name="get" />
-                <action android:name="set" />
-            </intent-filter>
-        </receiver>-->
-
     </application>
 
 </manifest>

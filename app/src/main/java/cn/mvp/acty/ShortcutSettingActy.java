@@ -2,17 +2,10 @@ package cn.mvp.acty;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ShortcutInfo;
-import android.content.pm.ShortcutManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import java.util.Arrays;
-
-import cn.mvp.MainActivity;
 import cn.mvp.R;
-import cn.mvp.mlibs.utils.DeviceUtils;
 
 /**
  * 快捷方式设置类
