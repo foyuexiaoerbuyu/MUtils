@@ -15,11 +15,23 @@
         app:mid_text="biao标题"
         app:right_img="@drawable/ic_launcher" />
 
-    <CheckBox
-        android:id="@+id/main_cb_open_acty_show"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="开启当前Activity显示" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/main_btn_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扫描二维码" />
+
+        <Button
+            android:id="@+id/main_btn_creat_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="剪切板生成二维码" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -55,6 +67,13 @@
                 android:id="@+id/edt1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/main_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

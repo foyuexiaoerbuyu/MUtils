@@ -67,7 +67,7 @@ dependencies {
     implementation 'com.hjq:xxpermissions:6.2'
     implementation 'com.hjq:toast:8.0'
     implementation 'com.tencent:mmkv-static:1.2.1'
-    implementation 'com.bigmercu.cBox:cbox:1.08'
+//    implementation 'com.bigmercu.cBox:cbox:1.08'
 
     /*greenDAO相关*/
     implementation 'org.greenrobot:greendao:3.3.0'
@@ -98,4 +98,12 @@ dependencies {
 //    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+//    implementation 'androidx.appcompat:appcompat:1.6.1'
+//    implementation 'com.google.android.material:material:1.4.0'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+//    implementation 'com.blankj:utilcode:1.30.7'
+    implementation 'com.king.zxing:zxing-lite:1.1.9'
+
+
 }

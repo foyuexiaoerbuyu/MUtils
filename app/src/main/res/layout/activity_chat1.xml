@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".chat1.Chat1Activity" >
+    tools:context=".chat1.Chat1Activity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,6 +16,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/chat1_btn_conn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="连接服务器" />
+
+        <Button
+            android:id="@+id/chat1_btn_qr_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扫一扫" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +48,7 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/send"
+            android:id="@+id/chat1_tv_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"

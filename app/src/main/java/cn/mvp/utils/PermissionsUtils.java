@@ -3,6 +3,7 @@ package cn.mvp.utils;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
@@ -25,7 +26,8 @@ public class PermissionsUtils {
             @Override
             public void noPermission(List<String> denied, boolean quick) {
                 if (quick) {
-                    UIUtils.tipToast("部分权限未通过");
+                    UIUtils.tipToast("部分权限未通过" + denied);
+                    Log.i("调试信息", "noPermission:  " + denied);
                 }
             }
         });
@@ -41,7 +43,8 @@ public class PermissionsUtils {
             @Override
             public void noPermission(List<String> denied, boolean quick) {
                 if (quick) {
-                    UIUtils.tipToast("部分权限未通过");
+                    UIUtils.tipToast("部分权限未通过 " + denied);
+                    Log.i("调试信息", "noPermission:  " + denied);
                 }
             }
         });

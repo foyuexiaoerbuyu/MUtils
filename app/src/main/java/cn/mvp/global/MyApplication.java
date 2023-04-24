@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.hjq.toast.ToastUtils;
+import com.tencent.mmkv.MMKV;
 
 import cn.mvp.db.DbHelp;
 import cn.mvp.mlibs.MLibs;
@@ -23,6 +24,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         MLibs.init(this);
+        MMKV.initialize(this);
         context = getApplicationContext();
         ToastUtils.init(this);
         CrashHandlerUtil.getInstance().init(this);
