@@ -8,6 +8,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,18 +26,25 @@ public class MultiClient4 extends Thread {
     private MultiClient4() {
     }
 
-    public MultiClient4(IReceiveListener iReceiveListener) throws IOException {
+    public MultiClient4(IReceiveListener iReceiveListener, String host) throws IOException {
         mIReceiveListener = iReceiveListener;
         try {
-            this.ss = new Socket("172.31.254.234", 3243);
+//              host = "172.31.254.234";
+//            host = "192.168.1.5";
+//            host = " 192.168.1.3";
+            this.ss = new Socket(host, 3243);
             Log.i("调试信息", "服务器连接成功");
             Log.i("调试信息", "-----------聊天室-----------");
         } catch (Exception e) {
             e.printStackTrace();
-            mIReceiveListener.err(e);
             Log.e("调试信息", "MultiClient4  ", e);
             Log.e("调试信息", e.getLocalizedMessage());
             Log.i("调试信息", "e = 服务器连接失败 请检查是否在一个局域网");
+            if (e instanceof ConnectException) {
+                mIReceiveListener.err(new Exception("服务器连接失败 请检查是否在一个局域网"));
+                return;
+            }
+            mIReceiveListener.err(e);
         }
         start();
     }
@@ -112,6 +120,10 @@ public class MultiClient4 extends Thread {
         mMsg = msg;
         Scanner sc = new Scanner(System.in);
         Log.i("调试信息", " 启动线程 ");
+        if (ss == null) {
+            Log.i("调试信息", "sendMsg:  空----------");
+            return;
+        }
         byte[] by = new byte[1024];
         int res = 0;
         bos = new BufferedOutputStream(ss.getOutputStream());
@@ -150,34 +162,34 @@ public class MultiClient4 extends Thread {
 //        }
     }
 
-    public static void main(String[] args) {
-        // 主线程执行写操作，发送消息到服务器
-
-        MultiClient4 mcc = null;
-        try {
-            mcc = new MultiClient4(new IReceiveListener() {
-                @Override
-                public void receiveData(String content) {
-                    Log.i("调试信息", "接收信息content = " + content);
-                }
-
-                @Override
-                public void err(Exception e) {
-
-                }
-            });
-            int cc = 0;
-            while (true) {
-                mcc.sendMsg(new Msg("测试第一次发送", null));
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            mcc.stopMultiClient();
-
-        }
-    }
+//    public static void main(String[] args) {
+//        // 主线程执行写操作，发送消息到服务器
+//
+//        MultiClient4 mcc = null;
+//        try {
+//            mcc = new MultiClient4(new IReceiveListener() {
+//                @Override
+//                public void receiveData(String content) {
+//                    Log.i("调试信息", "接收信息content = " + content);
+//                }
+//
+//                @Override
+//                public void err(Exception e) {
+//
+//                }
+//            });
+//            int cc = 0;
+//            while (true) {
+//                mcc.sendMsg(new Msg("测试第一次发送", null));
+//
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            mcc.stopMultiClient();
+//
+//        }
+//    }
 
     private void stopMultiClient() {
         try {
