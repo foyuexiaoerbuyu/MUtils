@@ -37,7 +37,7 @@ import cn.mvp.mlibs.log.Log;
  */
 public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
 
-    public static final String TAG = "CrashHandlerUtil";
+    public static final String TAG = "调试信息";
 
     //系统默认的UncaughtException处理类
     private Thread.UncaughtExceptionHandler mDefaultHandler;

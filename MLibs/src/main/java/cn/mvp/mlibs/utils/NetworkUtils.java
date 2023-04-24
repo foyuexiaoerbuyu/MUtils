@@ -1,10 +1,16 @@
 package cn.mvp.mlibs.utils;
 
+import static android.Manifest.permission.ACCESS_WIFI_STATE;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
+import android.text.format.Formatter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -300,5 +306,13 @@ public class NetworkUtils {
             runtime.gc();
         }
         return false;
+    }
+
+    @RequiresPermission(ACCESS_WIFI_STATE)
+    public static String getIpAddressByWifi(Context context) {
+        @SuppressLint("WifiManagerLeak")
+        WifiManager wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if (wm == null) return "";
+        return Formatter.formatIpAddress(wm.getDhcpInfo().ipAddress);
     }
 }

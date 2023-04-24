@@ -15,6 +15,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
 
@@ -27,6 +29,8 @@ import cn.mvp.mlibs.log.XLogUtil;
  * @desc: 文件工具类
  */
 public class FileUtils {
+
+    private static final String TAG = "FileUtils";
 
     public final static String FILE_SUFFIX_SEPARATOR = ".";
 
@@ -169,6 +173,51 @@ public class FileUtils {
     }
 
 
+    public static void writeFile(File file, byte[] recordBuf, boolean append) {
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileOutputStream o = null;
+        try {
+            o = new FileOutputStream(file, append);
+            o.write(recordBuf, 0, recordBuf.length);
+            o.flush();
+            o.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+        }
+    }
+
+
+    public static void writeFile(String filePath, byte[] byteArray, boolean append) {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
+        File file = new File(filePath);
+        try (FileOutputStream fos = new FileOutputStream(file, append); // Open the file in append mode
+             FileChannel fileChannel = fos.getChannel()) {
+            fileChannel.write(byteBuffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("写文件失败,请重试...  " + e.getMessage());
+        }
+    }
+
+
+    public static void writeFile(String filePath, ByteBuffer byteBuffer, boolean append) {
+        File file = new File(filePath);
+        try (FileOutputStream fos = new FileOutputStream(file, append); // Open the file in append mode
+             FileChannel fileChannel = fos.getChannel()) {
+            fileChannel.write(byteBuffer);
+        } catch (IOException e) {
+            XLogUtil.e(TAG, "写文件失败,请重试...  ", e);
+        }
+    }
+
+
     /**
      * 读取源文件内容
      *
@@ -291,7 +340,7 @@ public class FileUtils {
             return filePath;
         }
         int fp = filePath.lastIndexOf(File.separator);
-        if (fp==-1) {
+        if (fp == -1) {
             fp = filePath.lastIndexOf("/");
         }
         return (fp == -1) ? filePath : filePath.substring(fp + 1);
