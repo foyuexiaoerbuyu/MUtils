@@ -31,6 +31,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="剪切板生成二维码" />
+
+        <Button
+            android:id="@+id/main_btn_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="局域网聊天" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/main_btn_ip_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ip生成二维码" />
+
+        <Button
+            android:id="@+id/main_btn_base_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取手机基本信息" />
+
+
     </LinearLayout>
 
     <ScrollView
@@ -44,12 +70,12 @@
             android:orientation="vertical">
 
             <Switch
-                android:id="@+id/btn_setting_photo_capture_backup"
+                android:id="@+id/main_btn_sw_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                android:text="拍照截图备份" />
+                android:text="复制到剪切板" />
 
             <Button
                 android:id="@+id/btn1"
@@ -68,12 +94,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/main_img"
+            <TextView
+                android:id="@+id/main_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone" />
+                android:gravity="center"
+                android:src="@drawable/ic_launcher"
+                android:text="二维码数据" />
         </LinearLayout>
     </ScrollView>
 

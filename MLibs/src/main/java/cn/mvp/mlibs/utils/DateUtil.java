@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import cn.mvp.mlibs.log.Log;
 
@@ -38,8 +39,9 @@ public class DateUtil {
     }
 
     /**
-     *获取当前日期或时间毫秒数
-     *@param regex  "yyyy-MM-dd HH:mm:ss"
+     * 获取当前日期或时间毫秒数
+     *
+     * @param regex "yyyy-MM-dd HH:mm:ss"
      */
     public static long getRegexTime(String regex, String date) {
         try {
@@ -191,6 +193,11 @@ public class DateUtil {
         return getFormatter(regex).format(new Date(System.currentTimeMillis()));
     }
 
+    /** 格式化当前日期 */
+    public static String formatCurrentDate(String regex, long timeMillis) {
+        return getFormatter(regex).format(new Date(timeMillis));
+    }
+
     /**
      * @param regex    格式
      * @param endStr   结束时间 2021年01月04日
@@ -209,5 +216,48 @@ public class DateUtil {
         }
 
         return day;
+    }
+
+
+    /**
+     * 转换时间格式为毫秒值
+     *
+     * @param pattern     格式:"yyyy-MM-dd'T'HH:mm:ss.SSS"
+     * @param dateTimeStr 日期字符串:"2023-04-27T10:31:22.000+08:00"
+     * @return 转换后的毫秒值
+     */
+    public static long convertToTimestamp(String pattern, String dateTimeStr) {
+//        String dateTimeStr = "2023-04-25T10:30:00.000+08:00";
+
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.getDefault());
+        try {
+// Extract timezone offset
+            String timeZoneString = dateTimeStr.substring(dateTimeStr.length() - 6);
+            TimeZone timeZone = TimeZone.getTimeZone("GMT" + timeZoneString);
+            sdf.setTimeZone(timeZone);
+
+// Remove timezone offset from input string
+            dateTimeStr = dateTimeStr.substring(0, dateTimeStr.length() - 6);
+
+            Date date = sdf.parse(dateTimeStr);
+            if (date != null) {
+                long timestamp = date.getTime();
+                System.out.println("Timestamp: " + timestamp);
+            } else {
+                System.out.println("Error parsing date");
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+//        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+//        try {
+//            Date date = sdf.parse(dateTimeStr);
+//            return date.getTime();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        return 0;
     }
 }

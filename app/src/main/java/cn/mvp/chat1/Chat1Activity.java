@@ -43,6 +43,7 @@ import cn.mvp.mlibs.utils.StringUtil;
 
 /**
  * https://blog.huangyuanlove.com/2017/12/25/Android%E4%B8%AD%E4%BD%BF%E7%94%A8WebSocket/
+ * WebSocketClient实现 可以用
  */
 public class Chat1Activity extends AppCompatActivity implements View.OnClickListener {
 

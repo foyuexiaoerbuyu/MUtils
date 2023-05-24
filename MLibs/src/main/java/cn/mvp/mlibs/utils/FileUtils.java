@@ -1,6 +1,9 @@
 package cn.mvp.mlibs.utils;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -13,14 +16,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import cn.mvp.mlibs.log.XLogUtil;
+import cn.mvp.mlibs.utils.ents.FileInfos;
 
 /**
  * @author： wlj
@@ -655,4 +665,223 @@ public class FileUtils {
         }
         return resultSize;
     }
+
+    /**
+     * 将文件转换为Base64字符串
+     *
+     * @param file 文件对象
+     * @return Base64编码的字符串
+     * @throws IOException 读取文件时可能抛出的异常
+     */
+    public static String fileToBase64(File file) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        byte[] bytes = new byte[(int) file.length()];
+        fileInputStream.read(bytes);
+        fileInputStream.close();
+        return encodeToString(bytes);
+    }
+
+    /**
+     * 将Base64字符串转换为文件
+     *
+     * @param base64Str Base64编码的字符串
+     * @param filePath  生成文件的路径
+     * @throws IOException 写入文件时可能抛出的异常
+     */
+    public static void base64ToFile(String base64Str, String filePath) throws IOException {
+        byte[] bytes = decode(base64Str);
+        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+        fileOutputStream.write(bytes);
+        fileOutputStream.close();
+    }
+
+    public static String encodeToString(byte[] data) {
+        return Base64.encodeToString(data, Base64.DEFAULT);
+    }
+
+    public static byte[] decode(String base64Str) {
+        return Base64.decode(base64Str, Base64.DEFAULT);
+    }
+
+    public static String getFilePath(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            if (file.mkdirs()) {
+                return path;
+            }
+        }
+        return path;
+    }
+
+    /**
+     * 获取文件基本信息
+     *
+     * @return
+     */
+    public static FileInfos getFileInfo(String filePath) {
+
+        // 创建File对象
+        File file = new File(filePath);
+        FileInfos fileInfos = new FileInfos();
+        // 获取文件基本信息
+        fileInfos.setFileName(file.getName());
+        fileInfos.setFileAbsolutePath(file.getAbsolutePath());
+        fileInfos.setFileSize(file.length());
+        fileInfos.setFile(file.isFile());
+        fileInfos.setDirectory(file.isDirectory());
+        fileInfos.setHidden(file.isHidden());
+        fileInfos.setLastModified(file.lastModified());
+
+
+        // 获取文件属性
+        try {
+            Path path = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                path = file.toPath();
+                BasicFileAttributes attributes = Files.readAttributes(path, BasicFileAttributes.class);
+                // 打印文件属性
+                fileInfos.setFileTime(attributes.creationTime());
+                fileInfos.setFileTime2(attributes.lastAccessTime());
+                fileInfos.setFileTime1(attributes.lastModifiedTime());
+                fileInfos.setDirectory(attributes.isDirectory());
+                fileInfos.setRegularFile(attributes.isRegularFile());
+                fileInfos.setSymbolicLink(attributes.isSymbolicLink());
+                fileInfos.setOther(attributes.isOther());
+                fileInfos.setSize(attributes.size());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileInfos;
+    }
+
+    /**
+     * String rawJson = FileUtils.readRawJsonFile(this, R.raw.your_raw_json_file);
+     * 读取raw文件夹下的json文件
+     *
+     * @param context 上下文
+     * @param resId   raw文件夹下的资源ID
+     * @return json文件的内容
+     */
+    public static String readRawJsonFile(Context context, int resId) {
+        InputStream inputStream = null;
+        BufferedReader reader = null;
+        StringBuilder result = new StringBuilder();
+        try {
+            inputStream = context.getResources().openRawResource(resId);
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
+
+    /**
+     * 读取assets文件夹下的json文件
+     * String assetsJson = FileUtils.readAssetsJsonFile(this, "your_assets_json_file.json");
+     *
+     * @param context  上下文
+     * @param fileName assets文件夹下的文件名
+     * @return json文件的内容
+     */
+    public static String readAssetsJsonFile(Context context, String fileName) {
+        AssetManager assetManager = context.getAssets();
+        InputStream inputStream = null;
+        BufferedReader reader = null;
+        StringBuilder result = new StringBuilder();
+        try {
+            inputStream = assetManager.open(fileName);
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result.toString();
+    }
+
+
+    /**
+     * 插入文件第一行(推荐)
+     *
+     * @param content 要插入的内容
+     * @throws IOException
+     */
+    public static void insertAtBeginning(String filePath, String content) throws IOException {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            boolean newFile = file.createNewFile();
+        }
+        try (RandomAccessFile raf = new RandomAccessFile(file, "rw")) {
+            byte[] originalContent = new byte[(int) raf.length()];
+            raf.read(originalContent);
+            raf.seek(0);
+            raf.write((content + "\n").getBytes());
+            raf.write(originalContent);
+        }
+    }
+
+    /**
+     * 插入文件第一行 推荐使用 insertAtBeginning
+     */
+    @Deprecated
+    public static void writeFileToFirstLine(String filePath, String content) {
+        File file = new File(filePath);
+        RandomAccessFile randomAccessFile = null;
+        try {
+            // 读取原始文件内容
+            byte[] originalContent = new byte[(int) file.length()];
+            randomAccessFile = new RandomAccessFile(file, "rw");
+            randomAccessFile.readFully(originalContent);
+
+            // 将文件指针移到开头
+            randomAccessFile.seek(0);
+
+            // 写入新内容
+            randomAccessFile.write(content.getBytes());
+
+            // 写入原始内容
+            randomAccessFile.write(originalContent);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (randomAccessFile != null) {
+                try {
+                    randomAccessFile.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
