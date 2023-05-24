@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 /*//将源码打包  为了保证引入的aar  包可以查看源码
 task androidSourcesJar(type: Jar) {
@@ -41,5 +45,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.0'
 //    implementation 'com.android.support:recyclerview-v7:28.0.0'
 //    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
+//    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.squareup.okio:okio:3.0.0-alpha.10'
 
 }

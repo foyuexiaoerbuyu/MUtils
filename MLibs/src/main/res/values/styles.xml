@@ -6,9 +6,24 @@
     </style>
 
     <style name="controls_wrap_content">
-        <item name="android:layout_width" >0dp</item>
-        <item name="android:layout_weight" >1</item>
-        <item name="android:gravity" >center</item>
-        <item name="android:layout_height" >wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- 自定义Dialog样式 -->
+    <style name="BottomDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
+        <item name="android:windowAnimationStyle">@style/BottomDialog_Animation</item>
+    </style>
+
+    <!-- 自定义Dialog动画样式 -->
+    <style name="BottomDialog_Animation">
+        <item name="android:windowEnterAnimation">@anim/bottom_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/bottom_dialog_exit</item>
     </style>
 </resources>

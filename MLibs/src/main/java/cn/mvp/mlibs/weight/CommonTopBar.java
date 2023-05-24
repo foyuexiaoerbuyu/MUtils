@@ -89,6 +89,7 @@ public class CommonTopBar extends FrameLayout {
 
     /**
      * init view
+     *
      * @param attrs
      */
     @SuppressLint("InflateParams")
@@ -100,6 +101,8 @@ public class CommonTopBar extends FrameLayout {
         String mid_text = ta.getString(R.styleable.CommonTopBar_mid_text);
         String left_text = ta.getString(R.styleable.CommonTopBar_left_text);
         String right_text = ta.getString(R.styleable.CommonTopBar_right_text);
+
+        final boolean leftIsBack = ta.getBoolean(R.styleable.CommonTopBar_leftIsBack, false);
 
         int mid_text_color = ta.getColor(R.styleable.CommonTopBar_mid_text_color, 0);
         int left_text_color = ta.getColor(R.styleable.CommonTopBar_left_text_color, 0);
@@ -150,6 +153,10 @@ public class CommonTopBar extends FrameLayout {
 
             @Override
             public void onClick(View v) {
+                if (leftIsBack) {
+                    ((Activity) mContext).finish();
+                    return;
+                }
                 if (mCommonTopBarClick != null)
                     mCommonTopBarClick.onClickLeft();
             }
@@ -158,6 +165,10 @@ public class CommonTopBar extends FrameLayout {
 
             @Override
             public void onClick(View v) {
+                if (leftIsBack) {
+                    ((Activity) mContext).finish();
+                    return;
+                }
                 if (mCommonTopBarClick != null)
                     mCommonTopBarClick.onClickLeft();
             }
