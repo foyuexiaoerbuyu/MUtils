@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * https://github.com/kongzue/BaseJson
  * @author: Kongzue
  * @github: https://github.com/kongzue/
  * @homepage: http://kongzue.com/

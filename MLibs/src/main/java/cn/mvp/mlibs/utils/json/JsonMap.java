@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * https://github.com/kongzue/BaseJson
  * Author: @Kongzue
  * Github: https://github.com/kongzue/
  * Homepage: http://kongzue.com/

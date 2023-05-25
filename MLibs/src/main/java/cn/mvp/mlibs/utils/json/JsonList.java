@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import java.util.List;
 
 /**
+ * https://github.com/kongzue/BaseJson
  * Author: @Kongzue
  * Github: https://github.com/kongzue/
  * Homepage: http://kongzue.com/

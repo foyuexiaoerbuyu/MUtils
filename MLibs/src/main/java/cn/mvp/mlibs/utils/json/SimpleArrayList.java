@@ -20,6 +20,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+/**
+ * @param <E> https://github.com/kongzue/BaseJson
+ */
 public class SimpleArrayList<E> extends ArrayList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
     private static final long serialVersionUID = 8683452581122892189L;
 
