@@ -47,6 +47,7 @@ import java.util.Locale;
 
 import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.other.ICallBack;
+import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.FileUtils;
 import cn.mvp.mlibs.utils.IOUtils;
 import cn.mvp.mlibs.utils.SDCardUtils;
@@ -767,9 +768,6 @@ public class XLogUtil {
                         iCallBack.back();
                         VibratorUtil.vibrate(MLibs.getContext(), 500);
                     }
-//                    vibrator.vibrate(300);  //振动时长300ms
-//                    new AlertDialog.Builder(ShakeActivity.this).setTitle("提示").setMessage("-----").show();
-
                 }
             }
         }
@@ -780,5 +778,27 @@ public class XLogUtil {
         }
     };
     private static ICallBack iCallBack;
+
+
+    /**
+     * 计时
+     */
+    private static long timingStart;
+
+    /**
+     * 开始计时
+     */
+    public static void startTiming(String exStr) {
+        timingStart = System.currentTimeMillis();
+        Log.i("调试信息", String.format("%s 开始计时:  %s", exStr, DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL, timingStart)));
+    }
+
+    /**
+     * 结束计时
+     */
+    public static void endTiming(String exStr) {
+        long timingEnd = System.currentTimeMillis();
+        Log.i("调试信息", String.format("%s 停止计时:  %s 耗时: %d秒", exStr, DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL, timingEnd), timingEnd - timingStart));
+    }
 
 }
