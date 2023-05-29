@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import cn.mvp.mlibs.R;
+
 public class DataTestUtils {
 
     private static Random random = new Random();
@@ -378,6 +380,13 @@ public class DataTestUtils {
         return list;
     }
 
+    public static int getImgIcon() {
+        return R.drawable.icon_img;
+    }
+    public static String getImgIconUrl() {
+        return "https://img-blog.csdnimg.cn/6d0464a9d745452594988ea871ce1399.png";
+    }
+
     public static class DataTestUser {
         String name;
         String sex;
@@ -399,6 +408,78 @@ public class DataTestUtils {
             this.idCard = idCard;
             this.ip = ip;
             this.address = address;
+            this.nextBoolean = nextBoolean;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getSex() {
+            return sex;
+        }
+
+        public void setSex(String sex) {
+            this.sex = sex;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getDepName() {
+            return depName;
+        }
+
+        public void setDepName(String depName) {
+            this.depName = depName;
+        }
+
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
+
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
+
+        public String getIdCard() {
+            return idCard;
+        }
+
+        public void setIdCard(String idCard) {
+            this.idCard = idCard;
+        }
+
+        public String getIp() {
+            return ip;
+        }
+
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public boolean isNextBoolean() {
+            return nextBoolean;
+        }
+
+        public void setNextBoolean(boolean nextBoolean) {
             this.nextBoolean = nextBoolean;
         }
     }
