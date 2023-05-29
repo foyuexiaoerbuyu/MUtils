@@ -11,8 +11,10 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import cn.mvp.mlibs.log.Log;
+import cn.mvp.mlibs.log.XLogUtil;
 
 public class DateUtil {
+    private static final String TAG = "DateUtil";
     /** yyyy-MM-dd */
     public static final String REGEX_DATE = "yyyy-MM-dd";
 
@@ -242,10 +244,10 @@ public class DateUtil {
             Date date = sdf.parse(dateTimeStr);
             if (date != null) {
                 long timestamp = date.getTime();
-                System.out.println("Timestamp: " + timestamp);
-            } else {
-                System.out.println("Error parsing date");
+                XLogUtil.i(TAG, "解析日期时间戳" + timestamp);
+                return timestamp;
             }
+            XLogUtil.i(TAG, "解析日期错误");
         } catch (ParseException e) {
             e.printStackTrace();
         }

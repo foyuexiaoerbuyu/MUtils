@@ -1,11 +1,12 @@
 package cn.mvp.mlibs.other;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-public class DataUtils {
+public class DataTestUtils {
 
     private static Random random = new Random();
 
@@ -314,7 +315,7 @@ public class DataUtils {
      * @return
      */
     public static String getRandomDate() {
-        return getRandomDate("2010-09-20", "2020-09-22");
+        return getRandomDate("2012-09-20", "2023-09-22");
     }
 
     /**
@@ -357,6 +358,49 @@ public class DataUtils {
         String[] home = {"研发部 ", "生产部 ", "销售部 ", "市场部 ", "人力资源部 ", "公共关系部 ", "财务部 ", "产品部 ", "管理部 ", "采购部 ", "总经办 ", "战略研究部 ", "国际部 ", "广告部 ", "企划部 ", "秘书室 ", "总务部 ", "质量管理部 ", "工程部 ", "客户服务部"};
         Random random = new Random();
         return home[random.nextInt(home.length)];
+    }
+
+    public static ArrayList<DataTestUser> getDataUsers(int size) {
+        ArrayList<DataTestUser> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            list.add(new DataTestUser(
+                    getRandomName(),
+                    getRandomSex(),
+                    getRandomDate(),
+                    getRandomPhoneNumber(),
+                    getRandomDepartment(),
+                    getRandomIdCard(),
+                    getRandomIp(),
+                    getRandomAddress(),
+                    nextBoolean()));
+
+        }
+        return list;
+    }
+
+    public static class DataTestUser {
+        String name;
+        String sex;
+        String date;
+        String depName;
+        String phoneNumber;
+        String idCard;
+        String ip;
+        String address;
+        boolean nextBoolean;
+
+        public DataTestUser(String name, String sex, String date, String depName, String phoneNumber,
+                            String idCard, String ip, String address, boolean nextBoolean) {
+            this.name = name;
+            this.sex = sex;
+            this.date = date;
+            this.depName = depName;
+            this.phoneNumber = phoneNumber;
+            this.idCard = idCard;
+            this.ip = ip;
+            this.address = address;
+            this.nextBoolean = nextBoolean;
+        }
     }
 
 }

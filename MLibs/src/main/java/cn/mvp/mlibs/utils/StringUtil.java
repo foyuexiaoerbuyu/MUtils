@@ -102,6 +102,13 @@ public class StringUtil {
         return isBlank(str) ? defVal : str;
     }
 
+    public static String[] split(String str, String regx) {
+        if (str == null || !str.contains(regx)) {
+            return new String[0];
+        }
+        return str.split(regx);
+    }
+
     /**
      * 作用:       去除开头结尾的逗号
      *
@@ -175,12 +182,12 @@ public class StringUtil {
      * StringUtils.equals("abc", "ABC") = false
      * </pre>
      *
-     * @param cs1  the first CharSequence, may be {@code null}
-     * @param cs2  the second CharSequence, may be {@code null}
+     * @param cs1 the first CharSequence, may be {@code null}
+     * @param cs2 the second CharSequence, may be {@code null}
      * @return {@code true} if the CharSequences are equal (case-sensitive), or both {@code null}
-     * @since 3.0 Changed signature from equals(String, String) to equals(CharSequence, CharSequence)
      * @see Object#equals(Object)
      * @see #equalsIgnoreCase(CharSequence, CharSequence)
+     * @since 3.0 Changed signature from equals(String, String) to equals(CharSequence, CharSequence)
      */
     public static boolean equals(final CharSequence cs1, final CharSequence cs2) {
         if (cs1 == cs2) {
@@ -263,7 +270,7 @@ public class StringUtil {
      * @return 去除字符串所有中文
      */
     public static String replaceAllChinese(String str) {
-        if (str==null||str.trim().length()==0) {
+        if (str == null || str.trim().length() == 0) {
             return "";
         }
         //// 中文正则
