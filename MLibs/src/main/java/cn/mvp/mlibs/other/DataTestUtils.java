@@ -362,6 +362,23 @@ public class DataTestUtils {
         return home[random.nextInt(home.length)];
     }
 
+
+    public String getBooleStr(String val1, String val2) {
+        return nextBoolean() ? val1 : val2;
+    }
+
+    public String getRandmeStr(String val1, String val2, String val3) {
+        int randomNum = getRandomNum(0, 9);
+        if (randomNum < 3) {
+            return val1;
+        } else if (randomNum < 6) {
+            return val2;
+        } else if (randomNum < 9) {
+            return val3;
+        }
+        return val1;
+    }
+
     public static ArrayList<DataTestUser> getDataUsers(int size) {
         ArrayList<DataTestUser> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -374,7 +391,7 @@ public class DataTestUtils {
                     getRandomIdCard(),
                     getRandomIp(),
                     getRandomAddress(),
-                    nextBoolean()));
+                    nextBoolean(), i));
 
         }
         return list;
@@ -383,6 +400,7 @@ public class DataTestUtils {
     public static int getImgIcon() {
         return R.drawable.icon_img;
     }
+
     public static String getImgIconUrl() {
         return "https://img-blog.csdnimg.cn/6d0464a9d745452594988ea871ce1399.png";
     }
@@ -397,9 +415,10 @@ public class DataTestUtils {
         String ip;
         String address;
         boolean nextBoolean;
+        int index;
 
         public DataTestUser(String name, String sex, String date, String depName, String phoneNumber,
-                            String idCard, String ip, String address, boolean nextBoolean) {
+                            String idCard, String ip, String address, boolean nextBoolean, int index) {
             this.name = name;
             this.sex = sex;
             this.date = date;
@@ -409,6 +428,23 @@ public class DataTestUtils {
             this.ip = ip;
             this.address = address;
             this.nextBoolean = nextBoolean;
+            this.index = index;
+        }
+
+        public String getBooleStr(String val1, String val2) {
+            return nextBoolean ? val1 : val2;
+        }
+
+        public String getRandmeStr(String val1, String val2, String val3) {
+            int randomNum = getRandomNum(0, 9);
+            if (randomNum < 3) {
+                return val1;
+            } else if (randomNum < 6) {
+                return val2;
+            } else if (randomNum < 9) {
+                return val3;
+            }
+            return val1;
         }
 
         public String getName() {
@@ -481,6 +517,14 @@ public class DataTestUtils {
 
         public void setNextBoolean(boolean nextBoolean) {
             this.nextBoolean = nextBoolean;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
         }
     }
 

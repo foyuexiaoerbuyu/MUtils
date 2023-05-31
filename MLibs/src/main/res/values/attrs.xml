@@ -48,4 +48,8 @@
 
     </declare-styleable>
 
+    <declare-styleable name="MiSelImg">
+        <attr name="sel_src" format="reference" />
+        <attr name="un_sel_src" format="reference" />
+    </declare-styleable>
 </resources>
