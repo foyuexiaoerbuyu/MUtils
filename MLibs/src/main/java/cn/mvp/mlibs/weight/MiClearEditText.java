@@ -54,7 +54,7 @@ import android.view.animation.TranslateAnimation;
  * }
  * });
  */
-public class ClearEditText extends AppCompatEditText implements OnFocusChangeListener, TextWatcher {
+public class MiClearEditText extends AppCompatEditText implements OnFocusChangeListener, TextWatcher {
     private final Context mContext;
     /**
      * 删除按钮的引用
@@ -65,16 +65,16 @@ public class ClearEditText extends AppCompatEditText implements OnFocusChangeLis
      */
     private boolean hasFoucs;
 
-    public ClearEditText(Context context) {
+    public MiClearEditText(Context context) {
         this(context, null);
     }
 
-    public ClearEditText(Context context, AttributeSet attrs) {
+    public MiClearEditText(Context context, AttributeSet attrs) {
         //这里构造方法也很重要，不加这个很多属性不能再XML里面定义
         this(context, attrs, android.R.attr.editTextStyle);
     }
 
-    public ClearEditText(Context context, AttributeSet attrs, int defStyle) {
+    public MiClearEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mContext = context;
         init();

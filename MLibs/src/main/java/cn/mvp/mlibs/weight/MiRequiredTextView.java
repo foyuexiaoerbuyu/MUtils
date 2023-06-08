@@ -17,21 +17,21 @@ import cn.mvp.mlibs.R;
  * https://blog.csdn.net/u013982652/article/details/94404711
  * Android自定义TextView实现必填项前面的*号
  */
-public class RequiredTextView extends android.support.v7.widget.AppCompatTextView {
+public class MiRequiredTextView extends android.support.v7.widget.AppCompatTextView {
 
     private String prefix = "*";
     private int prefixColor = Color.RED;
 
-    public RequiredTextView(Context context) {
+    public MiRequiredTextView(Context context) {
         super(context);
     }
 
-    public RequiredTextView(Context context, @Nullable AttributeSet attrs) {
+    public MiRequiredTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public RequiredTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MiRequiredTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }

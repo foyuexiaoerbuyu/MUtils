@@ -4,10 +4,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Process;
 
+import cn.mvp.mlibs.utils.BuildConfigUtil;
+
 public class MLibs {
     private static Context mContext;
     private static Handler mHandler;
     private static int mainThreadId;
+    /** 主程序是否为Debug */
     private static boolean isDebug = true;
 
 
@@ -16,10 +19,10 @@ public class MLibs {
         mHandler = new Handler();
 //        mainThread = Thread.currentThread();
         mainThreadId = Process.myTid();
+        isDebug = BuildConfigUtil.isDebug();
     }
 
     /**
-     *
      * @param debug 主模块的BuildConfig.DEBUG
      */
     public static void init(Context context, boolean debug) {

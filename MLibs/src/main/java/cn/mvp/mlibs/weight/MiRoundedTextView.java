@@ -23,20 +23,21 @@ import cn.mvp.mlibs.R;
  * android:textSize="@dimen/sp_14"
  * app:rtvRadius="6dp"
  * app:rtvBgColor="@color/colorSearchArea"/>
+ * <p>
  * 支持圆角的TextView
  * Created by stephen on 2017/12/18.
  */
-public class RoundTextView extends android.support.v7.widget.AppCompatTextView {
+public class MiRoundedTextView extends android.support.v7.widget.AppCompatTextView {
 
-    public RoundTextView(Context context) {
+    public MiRoundedTextView(Context context) {
         this(context, null);
     }
 
-    public RoundTextView(Context context, @Nullable AttributeSet attrs) {
+    public MiRoundedTextView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RoundTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MiRoundedTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.RoundTextView, defStyleAttr, 0);

@@ -22,6 +22,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.UUID;
 
+import cn.mvp.mlibs.BuildConfig;
+import cn.mvp.mlibs.MLibs;
+import cn.mvp.mlibs.log.XLogUtil;
+
 /**
  * 系统版本信息类
  * 如：版本>=2.2、获取系统Android版本、获得设备的固件版本号、判断是否是三星、中兴的手机
@@ -30,6 +34,8 @@ import java.util.UUID;
  * https://source.android.com/docs/setup/about/build-numbers
  */
 public class DeviceUtils {
+
+    private static final String TAG = "DeviceUtils";
 
 //    /** Android版本>=2.2 SDK:8 @return 是否Android版本>=2.2 */
 //    public static boolean is2_2() { return Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO; }
@@ -105,18 +111,22 @@ public class DeviceUtils {
     public static boolean is10_0_Q() {
         return Build.VERSION.SDK_INT >= 29;
     }
+
     /** Android版本>=10	  SDK:30 @return 是否Android版本>=11 Android11 */
     public static boolean is11_0_R() {
         return Build.VERSION.SDK_INT >= 30;
     }
+
     /** Android版本>=10	  SDK:31 @return 是否Android版本>=12 Android12 */
     public static boolean is12_0_S() {
         return Build.VERSION.SDK_INT >= 31;
     }
+
     /** Android版本>=10	  SDK:32 @return 是否Android版本>=12L Android12L */
     public static boolean is12L_0_S() {
         return Build.VERSION.SDK_INT >= 32;
     }
+
     /** Android版本>=10	  SDK:33 @return 是否Android版本>=13 Android13 */
     public static boolean is13_0_T() {
         return Build.VERSION.SDK_INT >= 33;
@@ -367,7 +377,7 @@ public class DeviceUtils {
         try {
             serial = Build.class.getField("SERIAL").get(null).toString(); // 反射获取硬件序列号
             if (serial.equals("unknown")) {
-                throw new UnknownError("硬件序列号获取失败");
+                XLogUtil.debug(TAG, "硬件序列号获取失败");
             }
             return new UUID(m_szDevIDShort.replaceAll(" ", "").hashCode(), serial.hashCode()).toString();
         } catch (Exception exception) {
@@ -430,14 +440,15 @@ public class DeviceUtils {
      *
      * @return 手机信息
      */
-    public static String getPhoneInfo(Context context) {
+    public static String getDeviceInfo() {
+        Context context = MLibs.getContext();
         StringBuilder phnInfo = new StringBuilder();
         phnInfo.append("手机相关信息[");
         //应用的版本名称和版本号
         PackageManager pm = context.getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
-            phnInfo.append("    App Version: ");
+            phnInfo.append("\nApp Version: ");
             phnInfo.append(pi.versionName);
             phnInfo.append('_');
             phnInfo.append(pi.versionCode);
@@ -447,33 +458,37 @@ public class DeviceUtils {
         }
 
         //android版本号
-        phnInfo.append("    OS Version: ");
+        phnInfo.append("\nOS Version: ");
         phnInfo.append(Build.VERSION.RELEASE);
         phnInfo.append("_");
         phnInfo.append(Build.VERSION.SDK_INT);
 
-        //手机制造商
-        phnInfo.append("    Vendor: ");
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+
+        phnInfo.append("\n屏幕宽: ").append(metrics.widthPixels);
+        phnInfo.append("\n屏幕高: ").append(metrics.heightPixels);
+        phnInfo.append("\n屏幕密度: ").append(metrics.density);
+        phnInfo.append("\n屏幕密度dpi: ").append(metrics.densityDpi);
+
+        phnInfo.append("\n手机制造商: ");
         phnInfo.append(Build.MANUFACTURER);
 
-        //产品型号，产品全称
-        phnInfo.append("    PRODUCT: ");
+        phnInfo.append("\n产品型号，产品全称: ");
         phnInfo.append(Build.PRODUCT);
 
-        //手机型号
-        phnInfo.append("    Model: ");
+        phnInfo.append("\n手机型号: ");
         phnInfo.append(Build.MODEL);
 
-        /*设备名*/
-        phnInfo.append("    DEVICE: ");
+        phnInfo.append("\n设备名: ");
         phnInfo.append(Build.DEVICE);
 
-        //cpu架构
-        phnInfo.append("    CPU ABI: ");
+        phnInfo.append("\ncpu架构: ");
         phnInfo.append(Build.CPU_ABI);
 
         //参考唯一Id(可能会变,仅供参考)//需要 READ_PHONE_STATE 权限。 (Android 6.0 以上需要用户手动赋予该权限)。
-        phnInfo.append("    参考唯一Id(可能会变,仅供参考): ");
+        phnInfo.append("\n参考唯一Id(可能会变,仅供参考): ");
         try {
             phnInfo.append(DeviceUtils.id(context));
         } catch (Exception e) {
@@ -484,11 +499,11 @@ public class DeviceUtils {
         try {
             PackageManager packageManager = context.getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-            phnInfo.append("    安装时间: ").append(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME, packageInfo.firstInstallTime));
-            phnInfo.append("    更新时间: ").append(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME, packageInfo.lastUpdateTime));
+            phnInfo.append("\n安装时间: ").append(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME, packageInfo.firstInstallTime));
+            phnInfo.append("\n更新时间: ").append(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME, packageInfo.lastUpdateTime));
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            phnInfo.append("    更新时间获取失败 ").append(Log.getStackTraceString(e));
+            phnInfo.append("\n更新时间获取失败 ").append(Log.getStackTraceString(e));
 
         }
         phnInfo.append("]");

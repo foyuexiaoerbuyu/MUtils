@@ -22,33 +22,31 @@ import cn.mvp.mlibs.R;
  * https://download.csdn.net/download/JczmDeveloper/13206695
  * 两端分散对齐TextView
  * Created by wjs on 2018/9/3.
- */
-
-@SuppressLint("AppCompatCustomView")
-public class AlignTextView extends TextView {
+ */@SuppressLint("AppCompatCustomView")
+public class MiAlignTextView extends TextView {
 
     private Align mAlign = Align.HORTAL;
     private int canvasLength;
     private double lineSpacing;
 
-    public AlignTextView(Context context) {
+    public MiAlignTextView(Context context) {
         super(context);
     }
 
-    public AlignTextView(Context context, AttributeSet attrs) {
+    public MiAlignTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (!this.isInEditMode())
             initTypedArray(context, attrs, -1, R.style.AlignTextView_Default);
     }
 
-    public AlignTextView(Context context, AttributeSet attrs, int defStyle) {
+    public MiAlignTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         if (!this.isInEditMode())
             initTypedArray(context, attrs, defStyle, R.style.AlignTextView_Default);
     }
 
     @SuppressLint("NewApi")
-    public AlignTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public MiAlignTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         if (!this.isInEditMode())
             initTypedArray(context, attrs, defStyleAttr, defStyleRes);
