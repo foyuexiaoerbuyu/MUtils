@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -17,20 +18,26 @@ import com.king.zxing.Intents;
 import com.king.zxing.util.CodeUtils;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
 
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
 import cn.mvp.global.Constant;
 import cn.mvp.mlibs.utils.ClipboardUtils;
+import cn.mvp.mlibs.utils.DeviceUtils;
+import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
+import cn.mvp.other.BluetoothUtil;
 import cn.mvp.utils.PermissionsUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private boolean isRefuse;
     private TextView mTv;
+    private DatagramSocket mClientSocket;
+    private byte[] mReceiveData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +49,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTv = findViewById(R.id.main_tv);
         findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(this);
         findViewById(R.id.main_btn_chat).setOnClickListener(this);
+        findViewById(R.id.main_btn_base_info).setOnClickListener(this);
 //        Chat2Activity.open(this);
 
         findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
         findViewById(R.id.btn2).setOnClickListener(v -> {
+//            TestActivity.open(MainActivity.this);
+//            ClipboardActivity.open(this);
+//            UdpClient.getInstance().sendBroadcast("21212");
+            BluetoothUtil bluetoothUtil = new BluetoothUtil();
+            bluetoothUtil.init(this);
         });
-        findViewById(R.id.main_btn_base_info).setOnClickListener(v -> {
-        });
+
+        // 处理接收到的Intent
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent); // 处理纯文本的分享内容
+            }
+        }
+    }
+
+    private void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            mTv.setText(sharedText);
+        }
     }
 
     // 带回授权结果
@@ -70,7 +99,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 VerifyUtils.checkTrue(StringUtil.isBlank(data), "二维码数据为空");
                 String result = data.getStringExtra(Intents.Scan.RESULT);
                 ClipboardUtils.copyToClipboard(MainActivity.this, result);
-                VerifyUtils.checkTrue(result != null, "已复制二维码信息到剪切板: " + result);
+                ToastUtils.show("已复制二维码信息到剪切板: " + result);
+                String trim = result.trim();
+                Log.i("调试信息", "onActivityRtrimesult:  " + trim);
+                Log.i("调试信息", "onActivityResult:  " + trim.startsWith("http://") + " = " + trim.startsWith("https://") + " = " + trim.startsWith("www."));
+                if (trim.startsWith("http://") || trim.startsWith("https://") || trim.startsWith("www.")) {
+                    Log.i("调试信息", "onActivityResult:  " + trim);
+                    IntentUtil.goBrowser(this, trim);
+                }
             } catch (IOException e) {
                 ToastUtils.show(e.getLocalizedMessage());
             }
@@ -99,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mTv.setText(content);
         } else if (v.getId() == R.id.main_btn_chat) {//WebSocketClient实现
             Chat1Activity.open(MainActivity.this);
+        } else if (v.getId() == R.id.main_btn_base_info) {//获取手机基本信息
+            String deviceInfo = DeviceUtils.getDeviceInfo();
+            mTv.setText(deviceInfo);
         }
 
     }
@@ -124,4 +163,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        }
 //        return super.dispatchTouchEvent(ev);
 //    }
+
+    public void print(String msg) {
+        mTv.setText(msg);
+    }
 }

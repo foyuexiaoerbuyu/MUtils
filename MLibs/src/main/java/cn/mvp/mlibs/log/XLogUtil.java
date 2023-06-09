@@ -49,6 +49,7 @@ import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.other.ICallBack;
 import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.FileUtils;
+import cn.mvp.mlibs.utils.GsonUtils;
 import cn.mvp.mlibs.utils.IOUtils;
 import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.VibratorUtil;
@@ -67,6 +68,7 @@ public class XLogUtil {
     /*==================新加常用================*/
 
     private static int stepNumber = 0;
+    private static int logsegmentSize = 3072;//最长为4*1024设置为
 
     public static void init(boolean isShowLog, String TAG) {
         XLogUtil.isShowLog = isShowLog;
@@ -799,6 +801,37 @@ public class XLogUtil {
     public static void endTiming(String exStr) {
         long timingEnd = System.currentTimeMillis();
         Log.i("调试信息", String.format("%s 停止计时:  %s 耗时: %d秒", exStr, DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL, timingEnd), timingEnd - timingStart));
+    }
+
+
+    public static void JsonObj(String tag, Object obj) {
+        if (!isShowLog) {
+            return;
+        }
+        String msg = GsonUtils.toJson(obj);
+        msg = msg.replace("(", "（").replace(")", "）");
+        if (msg.length() > logsegmentSize) {
+            while (msg.length() > logsegmentSize) {
+                Log.i(TAG, getScope() + tag + msg);
+                msg = msg.substring(logsegmentSize);
+            }
+        }
+        Log.i(TAG, getScope() + tag + msg);
+    }
+
+    public static void JsonObj(Object obj) {
+        if (!isShowLog) {
+            return;
+        }
+        String msg = GsonUtils.toJson(obj);
+        msg = msg.replace("(", "（").replace(")", "）");
+        if (msg.length() > logsegmentSize) {
+            while (msg.length() > logsegmentSize) {
+                Log.i(TAG, getScope() + TAG + msg);
+                msg = msg.substring(logsegmentSize);
+            }
+        }
+        Log.i(TAG, getScope() + TAG + msg);
     }
 
 }

@@ -104,6 +104,13 @@ dependencies {
 
 //    implementation 'com.blankj:utilcode:1.30.7'
     implementation 'com.king.zxing:zxing-lite:1.1.9'
+    //谷歌流布局
+    implementation 'com.google.android:flexbox:1.0.0'
+
+    //可刷新布局
+//    implementation 'com.github.youlookwhat:ByRecyclerView:1.3.6'
+    implementation "com.github.youlookwhat:ByRecyclerView:1.0.9-support" // support版本引入
+
 
 
 }

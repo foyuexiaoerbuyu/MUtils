@@ -1,5 +1,6 @@
 package cn.mvp.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
@@ -35,7 +36,7 @@ public class PermissionsUtils {
     }
 
     public static void requestDefPermissions(Activity activity) {
-        XXPermissions.with(activity).request(new OnPermission() {
+        XXPermissions.with(activity).permission(Manifest.permission.WRITE_SETTINGS).request(new OnPermission() {
             @Override
             public void hasPermission(List<String> granted, boolean all) {
             }

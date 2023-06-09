@@ -19,7 +19,7 @@ public class SpinnerHelper1<T> {
     private OnItemSelectedListener<T> onItemSelectedListener;
 
     public interface OnItemSelectedListener<T> {
-        void onItemSelected(int position, T item);
+        void onItemSelected(View view, int position, T item);
     }
 
     public interface DisplayTextProvider<T> {
@@ -50,7 +50,7 @@ public class SpinnerHelper1<T> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (onItemSelectedListener != null) {
-                    onItemSelectedListener.onItemSelected(position, adapter.getItem(position));
+                    onItemSelectedListener.onItemSelected(view,position, adapter.getItem(position));
                 }
             }
 
@@ -76,6 +76,10 @@ public class SpinnerHelper1<T> {
     }
 
     public T getSelectedItem() {
-        return adapter.getItem(getSelectedPosition());
+        int selectedPosition = getSelectedPosition();
+        if (adapter.getCount()>0&&selectedPosition==-1) {
+            selectedPosition = 0;
+        }
+        return adapter.getItem(selectedPosition);
     }
 }

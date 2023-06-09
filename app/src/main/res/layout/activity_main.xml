@@ -20,44 +20,45 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/main_btn_qr_code"
-            android:layout_width="wrap_content"
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="扫描二维码" />
+            app:flexWrap="wrap">
 
-        <Button
-            android:id="@+id/main_btn_creat_qr_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="剪切板生成二维码" />
+            <Button
+                android:id="@+id/main_btn_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="扫描二维码" />
 
-        <Button
-            android:id="@+id/main_btn_chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="局域网聊天" />
+            <Button
+                android:id="@+id/main_btn_creat_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="剪切板生成二维码" />
+
+            <Button
+                android:id="@+id/main_btn_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="局域网聊天" />
+
+            <Button
+                android:id="@+id/main_btn_ip_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ip生成二维码" />
+
+            <Button
+                android:id="@+id/main_btn_base_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="获取手机基本信息" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/main_btn_ip_qr_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ip生成二维码" />
-
-        <Button
-            android:id="@+id/main_btn_base_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="获取手机基本信息" />
-
-
-    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"

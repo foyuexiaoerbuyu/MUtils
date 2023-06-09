@@ -262,4 +262,8 @@ public class DateUtil {
 //        }
         return 0;
     }
+
+    public static String zeroFill(int num) {
+        return String.format("%02d", num);
+    }
 }

@@ -20,33 +20,6 @@ import cn.mvp.mlibs.other.CheckException;
 public class StringUtil {
 
     /**
-     * 作用:                  去除来都结尾的逗号
-     *
-     * @param stringBuilder 要操作的字符串
-     * @return 截取开头结尾之后的字符串
-     */
-    public static StringBuilder subStrBuildComma(StringBuilder stringBuilder) {
-        if (stringBuilder != null && !"".equals(stringBuilder.toString())) {
-            StringBuilder stringBuilder1 = stringBuilder;
-            if (!"".equals(stringBuilder.toString())) {
-                if (stringBuilder.indexOf(",") == 0) {
-                    String substring = stringBuilder.substring(1);
-                    stringBuilder1 = new StringBuilder(substring);
-                    return subStrBuildComma(stringBuilder1);
-                } else if (stringBuilder.lastIndexOf(",") == stringBuilder.length() - 1) {
-                    if (stringBuilder.length() >= 1) {
-                        String substring = stringBuilder.substring(0, stringBuilder.length() - 1);
-                        stringBuilder1 = new StringBuilder(substring);
-                        return subStrBuildComma(stringBuilder1);
-                    }
-                }
-            }
-            return stringBuilder1;
-        }
-        return stringBuilder;
-    }
-
-    /**
      * 如果参数为null或者"null"字符串返回""空字符串
      * 注:org.apache.commons.lang.StringUtils#clean效果类似不同点在于"null"字符串不会返回""空字符串
      *
@@ -110,25 +83,6 @@ public class StringUtil {
     }
 
     /**
-     * 作用:       去除开头结尾的逗号
-     *
-     * @param str 要操作的字符串
-     * @return 截取后的字符串
-     */
-    private String subStrComma(String str) {
-        if (!"".equals(str) && str != null) {
-            if (str.indexOf(",") == 0) {
-                String substring = str.substring(1);
-                return subStrComma(substring);
-            } else if (str.lastIndexOf(",") == str.length() - 1) {
-                String substring = str.substring(0, str.length() - 1);
-                return subStrComma(substring);
-            }
-        }
-        return str;
-    }
-
-    /**
      * 作用:       移除开头结尾,指定的字符串
      *
      * @param str    要操作的字符串
@@ -167,6 +121,7 @@ public class StringUtil {
 
     // Equals
     //-----------------------------------------------------------------------
+
     /**
      * <p>Compares two CharSequences, returning {@code true} if they represent
      * equal sequences of characters.</p>
@@ -333,5 +288,45 @@ public class StringUtil {
         }
         return str.replace(" ", "");
     }
+
+
+    /**
+     * 对月份进行补零操作
+     * @param month 月份
+     * @return 补零后的月份字符串
+     */
+    public static String padMonth(int month) {
+        return padZero(month, 2);
+    }
+
+    /**
+     * 对日期进行补零操作
+     * @param day 日期
+     * @return 补零后的日期字符串
+     */
+    public static String padDay(int day) {
+        return padZero(day, 2);
+    }
+
+    /**
+     * 对数字进行补零操作
+     * @param number 数字
+     * @param length 期望的字符串长度
+     * @return 补零后的字符串
+     */
+    private static String padZero(int number, int length) {
+        String numberStr = String.valueOf(number);
+        if (numberStr.length() < length) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < length - numberStr.length(); i++) {
+                sb.append("0");
+            }
+            sb.append(numberStr);
+            return sb.toString();
+        } else {
+            return numberStr;
+        }
+    }
+
 
 }

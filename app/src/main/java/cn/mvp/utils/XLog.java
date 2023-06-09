@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import cn.mvp.BuildConfig;
 import cn.mvp.mlibs.utils.DateUtil;
+import cn.mvp.mlibs.utils.GsonUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.UIUtils;
 
@@ -380,6 +381,35 @@ public class XLog {
         } else {
             Log.d(tag, "╚═══════════════════════════════════════════════════════════════════════════════════════");
         }
+    }
+
+    public static void JsonObj(String tag, Object obj) {
+        if (!isConsoleLog) {
+            return;
+        }
+        String msg = GsonUtils.toJson(obj);
+        msg = msg.replace("(", "（").replace(")", "）");
+        if (msg.length() > logsegmentSize) {
+            while (msg.length() > logsegmentSize) {
+                Log.i(TAG, getStackTraceStr() + tag + msg);
+                msg = msg.substring(logsegmentSize);
+            }
+        }
+        Log.i(TAG, getStackTraceStr() + tag + msg);
+    }
+    public static void JsonObj(Object obj) {
+        if (!isConsoleLog) {
+            return;
+        }
+        String msg = GsonUtils.toJson(obj);
+        msg = msg.replace("(", "（").replace(")", "）");
+        if (msg.length() > logsegmentSize) {
+            while (msg.length() > logsegmentSize) {
+                Log.i(TAG, getStackTraceStr() + TAG + msg);
+                msg = msg.substring(logsegmentSize);
+            }
+        }
+        Log.i(TAG, getStackTraceStr() + TAG + msg);
     }
 
 }
