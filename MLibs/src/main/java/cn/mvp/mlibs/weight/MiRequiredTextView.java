@@ -3,7 +3,7 @@ package cn.mvp.mlibs.weight;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -17,7 +17,7 @@ import cn.mvp.mlibs.R;
  * https://blog.csdn.net/u013982652/article/details/94404711
  * Android自定义TextView实现必填项前面的*号
  */
-public class MiRequiredTextView extends android.support.v7.widget.AppCompatTextView {
+public class MiRequiredTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     private String prefix = "*";
     private int prefixColor = Color.RED;

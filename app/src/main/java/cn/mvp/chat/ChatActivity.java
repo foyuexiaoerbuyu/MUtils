@@ -3,21 +3,18 @@ package cn.mvp.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hjq.toast.ToastUtils;
-import com.king.zxing.CaptureActivity;
 import com.king.zxing.Intents;
 
-import java.io.Console;
 import java.io.IOException;
 
-import cn.mvp.MainActivity;
 import cn.mvp.R;
 import cn.mvp.global.Constant;
 

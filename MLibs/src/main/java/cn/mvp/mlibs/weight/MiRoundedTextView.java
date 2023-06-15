@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 
 import cn.mvp.mlibs.R;
@@ -27,7 +27,7 @@ import cn.mvp.mlibs.R;
  * 支持圆角的TextView
  * Created by stephen on 2017/12/18.
  */
-public class MiRoundedTextView extends android.support.v7.widget.AppCompatTextView {
+public class MiRoundedTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public MiRoundedTextView(Context context) {
         this(context, null);

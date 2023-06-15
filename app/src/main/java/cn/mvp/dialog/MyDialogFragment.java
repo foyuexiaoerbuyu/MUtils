@@ -1,8 +1,8 @@
 package cn.mvp.dialog;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 
 import com.hjq.toast.ToastUtils;

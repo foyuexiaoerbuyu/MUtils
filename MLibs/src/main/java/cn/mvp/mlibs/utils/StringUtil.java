@@ -1,7 +1,7 @@
 package cn.mvp.mlibs.utils;
 
 import android.os.Build;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Html;
 import android.text.TextUtils;
 

@@ -1,22 +1,7 @@
 package cn.mvp.clipboard;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.IBinder;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-
-import cn.mvp.R;
-import cn.mvp.mlibs.utils.ClipboardUtils;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 //
 //public class ClipboardListenerService1 extends Service {
 //
