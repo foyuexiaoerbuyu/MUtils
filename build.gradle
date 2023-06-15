@@ -26,7 +26,8 @@ buildscript {
     ext {
         getFormattedTime = { ->
             def date = new Date()
-            def formattedDate = date.format('yyyyMMddHHmmss')
+            //def formattedDate = date.format('yyyyMMddHHmmss')
+            def formattedDate = date.format('MMddHHmmss')
             return formattedDate
         }
     }

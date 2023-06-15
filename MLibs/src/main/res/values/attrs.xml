@@ -52,4 +52,22 @@
         <attr name="sel_src" format="reference" />
         <attr name="un_sel_src" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="CustomLinearLayout">
+        <attr name="borderWidth" format="dimension" />
+        <attr name="borderColor" format="color" />
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="topLeftRadius" format="dimension" />
+        <attr name="topRightRadius" format="dimension" />
+        <attr name="bottomLeftRadius" format="dimension" />
+        <attr name="bottomRightRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="BadgeTextView">
+        <attr name="badgeBackgroundColor" format="color" />
+        <attr name="badgeTextColor" format="color" />
+        <attr name="badgeText" format="string" />
+        <attr name="badgeTextSize" format="dimension" />
+        <attr name="badgePadding" format="dimension" />
+    </declare-styleable>
 </resources>

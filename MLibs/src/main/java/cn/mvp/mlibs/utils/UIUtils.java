@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -64,10 +65,12 @@ public class UIUtils {
             return getContext().getResources().getColor(id);
         }
     }
-
-    //颜色
-    public static int getColor(Context context, int id) {
-        return ContextCompat.getColor(getContext(), id);
+    //颜色 #2A82FF
+    public static int getColor(String colorString) {
+        if (!colorString.startsWith("#")) {
+            colorString = "#" + colorString;
+        }
+        return Color.parseColor(colorString);
     }
 
     //根据id获取颜色的状态选择器
