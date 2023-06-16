@@ -32,7 +32,7 @@ import cn.mvp.mlibs.R;
  * <p>
  * 这个自定义线性布局并设置边框厚度、边框颜色、圆角角度以及每个角的单独角度：
  */
-public class CustomLinearLayout extends LinearLayout {
+public class RadiusLinearLayout extends LinearLayout {
     private int borderWidth;
     private int borderColor;
     private float cornerRadius;
@@ -45,31 +45,31 @@ public class CustomLinearLayout extends LinearLayout {
     private RectF borderRect;
     private Path borderPath;
 
-    public CustomLinearLayout(Context context) {
+    public RadiusLinearLayout(Context context) {
         super(context);
         init(null);
     }
 
-    public CustomLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public RadiusLinearLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public CustomLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public RadiusLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }
 
     private void init(@Nullable AttributeSet attrs) {
         if (attrs != null) {
-            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomLinearLayout);
-            borderWidth = typedArray.getDimensionPixelSize(R.styleable.CustomLinearLayout_borderWidth, 0);
-            borderColor = typedArray.getColor(R.styleable.CustomLinearLayout_borderColor, Color.BLACK);
-            cornerRadius = typedArray.getDimension(R.styleable.CustomLinearLayout_cornerRadius, 0);
-            topLeftRadius = typedArray.getDimension(R.styleable.CustomLinearLayout_topLeftRadius, cornerRadius);
-            topRightRadius = typedArray.getDimension(R.styleable.CustomLinearLayout_topRightRadius, cornerRadius);
-            bottomLeftRadius = typedArray.getDimension(R.styleable.CustomLinearLayout_bottomLeftRadius, cornerRadius);
-            bottomRightRadius = typedArray.getDimension(R.styleable.CustomLinearLayout_bottomRightRadius, cornerRadius);
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RadiusLinearLayout);
+            borderWidth = typedArray.getDimensionPixelSize(R.styleable.RadiusLinearLayout_borderWidth, 0);
+            borderColor = typedArray.getColor(R.styleable.RadiusLinearLayout_borderColor, Color.BLACK);
+            cornerRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_cornerRadius, 0);
+            topLeftRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_topLeftRadius, cornerRadius);
+            topRightRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_topRightRadius, cornerRadius);
+            bottomLeftRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_bottomLeftRadius, cornerRadius);
+            bottomRightRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_bottomRightRadius, cornerRadius);
             typedArray.recycle();
         } else {
             borderWidth = 0;

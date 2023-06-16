@@ -53,7 +53,17 @@
         <attr name="un_sel_src" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="CustomLinearLayout">
+    <declare-styleable name="RadiusLinearLayout">
+        <attr name="borderWidth" format="dimension" />
+        <attr name="borderColor" format="color" />
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="topLeftRadius" format="dimension" />
+        <attr name="topRightRadius" format="dimension" />
+        <attr name="bottomLeftRadius" format="dimension" />
+        <attr name="bottomRightRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="RadiusConstraintLayout">
         <attr name="borderWidth" format="dimension" />
         <attr name="borderColor" format="color" />
         <attr name="cornerRadius" format="dimension" />
