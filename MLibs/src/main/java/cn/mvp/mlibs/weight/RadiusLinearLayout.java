@@ -63,13 +63,13 @@ public class RadiusLinearLayout extends LinearLayout {
     private void init(@Nullable AttributeSet attrs) {
         if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RadiusLinearLayout);
-            borderWidth = typedArray.getDimensionPixelSize(R.styleable.RadiusLinearLayout_borderWidth, 0);
-            borderColor = typedArray.getColor(R.styleable.RadiusLinearLayout_borderColor, Color.BLACK);
-            cornerRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_cornerRadius, 0);
-            topLeftRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_topLeftRadius, cornerRadius);
-            topRightRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_topRightRadius, cornerRadius);
-            bottomLeftRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_bottomLeftRadius, cornerRadius);
-            bottomRightRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_bottomRightRadius, cornerRadius);
+            borderWidth = typedArray.getDimensionPixelSize(R.styleable.RadiusLinearLayout_rllBorderWidth, 0);
+            borderColor = typedArray.getColor(R.styleable.RadiusLinearLayout_rllBorderColor, Color.BLACK);
+            cornerRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_rllCornerRadius, 0);
+            topLeftRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_rllTopLeftRadius, cornerRadius);
+            topRightRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_rllTopRightRadius, cornerRadius);
+            bottomLeftRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_rllBottomLeftRadius, cornerRadius);
+            bottomRightRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_rllBottomRightRadius, cornerRadius);
             typedArray.recycle();
         } else {
             borderWidth = 0;

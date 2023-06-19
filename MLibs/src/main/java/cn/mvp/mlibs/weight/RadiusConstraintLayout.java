@@ -13,6 +13,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import cn.mvp.mlibs.R;
 
+/**
+ * 圆角约束布局
+ */
 public class RadiusConstraintLayout extends ConstraintLayout {
     private float mBorderWidth;
     private int mBorderColor;
@@ -41,13 +44,13 @@ public class RadiusConstraintLayout extends ConstraintLayout {
 
     private void init(AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RadiusConstraintLayout);
-        mBorderWidth = typedArray.getDimension(R.styleable.RadiusConstraintLayout_borderWidth, 0);
-        mBorderColor = typedArray.getColor(R.styleable.RadiusConstraintLayout_borderColor, 0);
-        mCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_cornerRadius, 0);
-        mTopLeftCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_topLeftRadius, mCornerRadius);
-        mTopRightCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_topRightRadius, mCornerRadius);
-        mBottomLeftCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_bottomLeftRadius, mCornerRadius);
-        mBottomRightCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_bottomRightRadius, mCornerRadius);
+        mBorderWidth = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclBorderWidth, 0);
+        mBorderColor = typedArray.getColor(R.styleable.RadiusConstraintLayout_rclBorderColor, 0);
+        mCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclCornerRadius, 0);
+        mTopLeftCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclTopLeftRadius, mCornerRadius);
+        mTopRightCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclTopRightRadius, mCornerRadius);
+        mBottomLeftCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclBottomLeftRadius, mCornerRadius);
+        mBottomRightCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclBottomRightRadius, mCornerRadius);
         typedArray.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

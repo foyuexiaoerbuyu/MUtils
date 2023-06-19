@@ -54,23 +54,23 @@
     </declare-styleable>
 
     <declare-styleable name="RadiusLinearLayout">
-        <attr name="borderWidth" format="dimension" />
-        <attr name="borderColor" format="color" />
-        <attr name="cornerRadius" format="dimension" />
-        <attr name="topLeftRadius" format="dimension" />
-        <attr name="topRightRadius" format="dimension" />
-        <attr name="bottomLeftRadius" format="dimension" />
-        <attr name="bottomRightRadius" format="dimension" />
+        <attr name="rllBorderWidth" format="dimension" />
+        <attr name="rllBorderColor" format="color" />
+        <attr name="rllCornerRadius" format="dimension" />
+        <attr name="rllTopLeftRadius" format="dimension" />
+        <attr name="rllTopRightRadius" format="dimension" />
+        <attr name="rllBottomLeftRadius" format="dimension" />
+        <attr name="rllBottomRightRadius" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="RadiusConstraintLayout">
-        <attr name="borderWidth" format="dimension" />
-        <attr name="borderColor" format="color" />
-        <attr name="cornerRadius" format="dimension" />
-        <attr name="topLeftRadius" format="dimension" />
-        <attr name="topRightRadius" format="dimension" />
-        <attr name="bottomLeftRadius" format="dimension" />
-        <attr name="bottomRightRadius" format="dimension" />
+        <attr name="rclBorderWidth" format="dimension" />
+        <attr name="rclBorderColor" format="color" />
+        <attr name="rclCornerRadius" format="dimension" />
+        <attr name="rclTopLeftRadius" format="dimension" />
+        <attr name="rclTopRightRadius" format="dimension" />
+        <attr name="rclBottomLeftRadius" format="dimension" />
+        <attr name="rclBottomRightRadius" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="BadgeTextView">
