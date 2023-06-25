@@ -23,9 +23,11 @@ public class DateUtil {
 
     /** yyyy-MM-dd HH:mm:ss */
     public static final String REGEX_DATE_TIME = "yyyy-MM-dd kk:mm:ss";
+    public static final String REGEX_DATE_TIME_1 = "yyyy/MM/dd HH:mm:ss";
 
     /** yyyy-MM-dd HH:mm:ss:SSS */
     public static final String REGEX_DATE_TIME_MILL = "yyyy-MM-dd kk:mm:ss:SSS";
+    public static final String REGEX_DATE_ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     /** yyyy年MM月dd日 */
     public static final String REGEX_DATE_CHINESE = "yyyy年MM月dd日";
@@ -45,7 +47,7 @@ public class DateUtil {
      *
      * @param regex "yyyy-MM-dd HH:mm:ss"
      */
-    public static long getRegexTime(String regex, String date) {
+    public static long getTimeByRegex(String date, String regex) {
         try {
             return getFormatter(regex).parse(date).getTime();
         } catch (ParseException e) {
@@ -192,12 +194,7 @@ public class DateUtil {
 
     /** 格式化当前日期 */
     public static String formatCurrentDate(String regex) {
-        return getFormatter(regex).format(new Date(System.currentTimeMillis()));
-    }
-
-    /** 格式化当前日期 */
-    public static String formatCurrentDate(String regex, long timeMillis) {
-        return getFormatter(regex).format(new Date(timeMillis));
+        return formatDate(regex, System.currentTimeMillis());
     }
 
     /**
@@ -263,7 +260,22 @@ public class DateUtil {
         return 0;
     }
 
-    public static String zeroFill(int num) {
-        return String.format("%02d", num);
+    /**
+     * @param dateTimeString 源字符串
+     * @param inputFormat    源字符串格式
+     * @param outputFormat   目标字符串格式
+     * @return 转换格式后的时间字符串
+     */
+    public static String convertDateTimeFormat(String dateTimeString, String inputFormat, String outputFormat) {
+        if (dateTimeString == null) return null;
+        SimpleDateFormat inputFormatter = getFormatter(inputFormat);
+        SimpleDateFormat outputFormatter = getFormatter(outputFormat);
+
+        try {
+            return outputFormatter.format(inputFormatter.parse(dateTimeString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return dateTimeString; // 解析失败
+        }
     }
 }

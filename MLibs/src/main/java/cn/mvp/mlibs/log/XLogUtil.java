@@ -792,7 +792,7 @@ public class XLogUtil {
      */
     public static void startTiming(String exStr) {
         timingStart = System.currentTimeMillis();
-        Log.i("调试信息", String.format("%s 开始计时:  %s", exStr, DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL, timingStart)));
+        Log.i("调试信息", String.format("%s 开始计时:  %s", exStr, DateUtil.formatDate(DateUtil.REGEX_DATE_TIME_MILL, timingStart)));
     }
 
     /**
@@ -800,7 +800,7 @@ public class XLogUtil {
      */
     public static void endTiming(String exStr) {
         long timingEnd = System.currentTimeMillis();
-        Log.i("调试信息", String.format("%s 停止计时:  %s 耗时: %d秒", exStr, DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL, timingEnd), timingEnd - timingStart));
+        Log.i("调试信息", String.format("%s 停止计时:  %s 耗时: %d秒", exStr, DateUtil.formatDate(DateUtil.REGEX_DATE_TIME_MILL, timingEnd), timingEnd - timingStart));
     }
 
 

@@ -1,9 +1,10 @@
 package cn.mvp.mlibs.utils;
 
 import android.os.Build;
-import androidx.annotation.Nullable;
 import android.text.Html;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -292,6 +293,7 @@ public class StringUtil {
 
     /**
      * 对月份进行补零操作
+     *
      * @param month 月份
      * @return 补零后的月份字符串
      */
@@ -301,6 +303,7 @@ public class StringUtil {
 
     /**
      * 对日期进行补零操作
+     *
      * @param day 日期
      * @return 补零后的日期字符串
      */
@@ -310,6 +313,7 @@ public class StringUtil {
 
     /**
      * 对数字进行补零操作
+     *
      * @param number 数字
      * @param length 期望的字符串长度
      * @return 补零后的字符串
@@ -326,6 +330,16 @@ public class StringUtil {
         } else {
             return numberStr;
         }
+    }
+
+    /**
+     * 补零方法
+     *
+     * @param num 补零个数
+     * @return 补零后的字符串
+     */
+    public static String zeroFill(int num) {
+        return String.format("%02d", num);
     }
 
 
