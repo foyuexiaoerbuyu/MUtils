@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.mvp.R;
+import cn.mvp.mlibs.utils.DateUtil;
+import cn.mvp.mlibs.utils.UIUtils;
 
 public class TestActivity extends AppCompatActivity {
-    
+
     public static void open(Context context) {
         Intent starter = new Intent(context, TestActivity.class);
 //        starter.putExtra();
@@ -34,8 +39,9 @@ public class TestActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private MyAdapter adapter;
+    private MyAdapter1 adapter;
     private List<String> dataList;
+
     private void initData() {
         dataList = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
@@ -48,47 +54,72 @@ public class TestActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyAdapter(dataList);
-        recyclerView.setAdapter(adapter);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        adapter = new MyAdapter1(dataList);
+//        recyclerView.setAdapter(adapter);
+        MyAdapter2<String> adapter1 = new MyAdapter2<>(R.layout.list_item, dataList, new MyAdapter2.BindViewByData<String>() {
             @Override
-            public void onRefresh() {
-                // 下拉刷新
-                new Handler().postDelayed(new Runnable() {
+            public void bindView(View itemView, String data) {
+                ((TextView) itemView.findViewById(android.R.id.text1)).setText(data);
+            }
+        });
+        recyclerView.setAdapter(adapter1);
+        adapter1.setOnLoadMoreListener(new MyAdapter2.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                UIUtils.getHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        // 更新数据
-                        initData();
-                        adapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
+                        Log.i("调试信息", "run:  -------");
+                        for (int i = 0; i < 4; i++) {
+                            dataList.add(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME) + " " + i);
+                        }
+                        adapter1.addDatas(dataList);
+//                        adapter1.setLoading(false);
+//                        adapter1.setMoreDataAvailable(false);
+//                        adapter1.notifyItemRangeInserted(startPosition, newDataList.size());
                     }
-                }, 2000);
+                }, 1000);
             }
         });
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-                int itemCount = layoutManager.getItemCount();
-                if (lastVisibleItemPosition >= itemCount - 1 && dy > 0) {
-                    // 上拉加载
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // 添加数据
-                            int start = dataList.size();
-                            for (int i = start; i < start + 10; i++) {
-                                dataList.add("Item " + i);
-                            }
-                            adapter.notifyDataSetChanged();
-                        }
-                    }, 2000);
-                }
-            }
-        });
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                // 下拉刷新
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // 更新数据
+//                        initData();
+//                        adapter1.notifyDataSetChanged();
+//                        swipeRefreshLayout.setRefreshing(false);
+//                    }
+//                }, 2000);
+//            }
+//        });
+
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//                int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+//                int itemCount = layoutManager.getItemCount();
+//                if (lastVisibleItemPosition >= itemCount - 1 && dy > 0) {
+//                    // 上拉加载
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            // 添加数据
+//                            int start = dataList.size();
+//                            for (int i = start; i < start + 10; i++) {
+//                                dataList.add("Item " + i);
+//                            }
+//                            adapter.notifyDataSetChanged();
+//                        }
+//                    }, 2000);
+//                }
+//            }
+//        });
     }
 }

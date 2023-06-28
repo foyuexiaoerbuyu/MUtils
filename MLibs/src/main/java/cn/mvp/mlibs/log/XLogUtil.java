@@ -27,9 +27,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +54,13 @@ import cn.mvp.mlibs.utils.GsonUtils;
 import cn.mvp.mlibs.utils.IOUtils;
 import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.VibratorUtil;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * 日志相关类:默认是测试环境<br>
@@ -832,6 +840,111 @@ public class XLogUtil {
             }
         }
         Log.i(TAG, getScope() + TAG + msg);
+    }
+
+    public static String formateDate() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", Locale.getDefault()).format(new Date());
+    }
+
+    public static void writeToFile(String data, String filePath) {
+        try {
+            // 创建文件对象
+            File file = new File(filePath);
+            file.getParentFile().mkdirs();
+            // 如果文件不存在，则创建新文件
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            // 创建输出流对象
+            FileOutputStream fos = new FileOutputStream(file, true);
+
+            // 将字符串转换为字节数组
+            byte[] bytes = data.getBytes();
+
+            // 写入数据
+            fos.write(bytes);
+
+            // 关闭输出流
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param access_token 67efb4e356cb5c10aa41c7fcfc58102df8432b187cb7441f2e1a7f04ce62a503
+     * @param tag          log
+     * @param content      内容
+     * @param iddClick     回调
+     */
+    private static void pushDdMsg(String access_token, String tag, String content, IDDClick iddClick) {
+        String url = "https://oapi.dingtalk.com/robot/send?access_token=" + access_token;
+
+        String json = "{\"text\":{\"content\":\"" + tag + ": " + content + "\"},\"msgtype\":\"text\"}";
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, json);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (iddClick != null) {
+                    iddClick.onClick(e.getMessage());
+                }
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (iddClick != null) {
+                    if (response.isSuccessful()) {
+                        iddClick.onClick("成功: " + response.body().string());
+                    } else {
+                        iddClick.onClick("失败: " + response.message());
+                    }
+                }
+            }
+        });
+    }
+
+
+    public interface IDDClick {
+        void onClick(String str);
+    }
+
+    private static void postJsonAsync(String url, String json) {
+        OkHttpClient client = new OkHttpClient();
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, json);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Log.i("调试信息", "onResponse: 成功: " + response.body().string());
+                } else {
+                    Log.i("调试信息", "onResponse: 失败: " + response.message());
+                }
+            }
+        });
     }
 
 }

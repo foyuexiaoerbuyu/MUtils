@@ -31,6 +31,7 @@ android {
         }
     }
 }
+
 /*//将源码打包  为了保证引入的aar  包可以查看源码
 task androidSourcesJar(type: Jar) {
     classifier = 'sources'

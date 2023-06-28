@@ -8,7 +8,6 @@ buildscript {
 //        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
 //        maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         google()
-        jcenter()
         mavenCentral() // add repository
         maven { url 'https://jitpack.io' }
 
@@ -43,12 +42,16 @@ allprojects {
 //        maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         maven { url 'https://jitpack.io' }
         google()
-        jcenter()
         mavenCentral() // add repository
 
     }
 }
-
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+ext {
+    // 默认版本号为 1.0.0
+    aarVersionCode = 1
+    // 默认版本名为 1.0.0
+    aarVersionName = "1.0.0"
 }

@@ -8,10 +8,12 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -334,6 +336,14 @@ public class CommonTopBar extends FrameLayout {
     public void setMidText(@StringRes int textRes) {
         if (mMidTv != null)
             mMidTv.setText(textRes);
+    }
+
+    public TextView getRightTv() {
+        return mRightTv;
+    }
+
+    public TextView getLeftTv() {
+        return mLeftTv;
     }
 
     /**

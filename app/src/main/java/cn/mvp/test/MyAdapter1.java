@@ -10,11 +10,11 @@ import java.util.List;
 
 import cn.mvp.R;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.ViewHolder> {
 
     private List<String> mData;
 
-    public MyAdapter(List<String> data) {
+    public MyAdapter1(List<String> data) {
         this.mData = data;
     }
 

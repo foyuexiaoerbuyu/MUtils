@@ -30,6 +30,7 @@ import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
 import cn.mvp.other.BluetoothUtil;
+import cn.mvp.test.TestActivity;
 import cn.mvp.utils.PermissionsUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 handleSendText(intent); // 处理纯文本的分享内容
             }
         }
+        TestActivity.open(this);
     }
 
     private void handleSendText(Intent intent) {
