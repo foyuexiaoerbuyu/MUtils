@@ -44,25 +44,39 @@ public class TestActivity extends AppCompatActivity {
 
     private void initData() {
         dataList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 3; i++) {
             dataList.add("Item " + i);
         }
     }
 
     private void initView() {
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+//        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         recyclerView = findViewById(R.id.recycler_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        adapter = new MyAdapter1(dataList);
 //        recyclerView.setAdapter(adapter);
         MyAdapter2<String> adapter1 = new MyAdapter2<>(R.layout.list_item, dataList, new MyAdapter2.BindViewByData<String>() {
+
+
             @Override
-            public void bindView(View itemView, String data) {
-                ((TextView) itemView.findViewById(android.R.id.text1)).setText(data);
+            public void bindView(MyAdapter2.BaseHolder baseHolder, View itemView, String data) {
+                baseHolder.setText(android.R.id.text1, data);
+//                ((TextView) itemView.findViewById(android.R.id.text1)).setText(data);
             }
         });
         recyclerView.setAdapter(adapter1);
+        adapter1.addSwipeRefreshToRecyclerView( recyclerView, new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                UIUtils.getHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter1.setRefreshingComplete();
+                    }
+                }, 1000);
+            }
+        });
         adapter1.setOnLoadMoreListener(new MyAdapter2.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -70,12 +84,18 @@ public class TestActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Log.i("调试信息", "run:  -------");
-                        for (int i = 0; i < 4; i++) {
-                            dataList.add(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME) + " " + i);
+                        if (dataList.size() < 30) {
+                            List<String> dataList = new ArrayList<>();
+                            for (int i = 0; i < 4; i++) {
+                                dataList.add(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME) + " " + i);
+                            }
+                            adapter1.addDatas(dataList);
+//                            adapter1.notifyDataSetChanged();
+                        } else {
+                            adapter1.loadingComplete();
                         }
-                        adapter1.addDatas(dataList);
 //                        adapter1.setLoading(false);
-//                        adapter1.setMoreDataAvailable(false);
+//                        adapter1.setLoading(false);
 //                        adapter1.notifyItemRangeInserted(startPosition, newDataList.size());
                     }
                 }, 1000);
