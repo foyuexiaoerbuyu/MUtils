@@ -160,7 +160,7 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    static class BaseHolder extends RecyclerView.ViewHolder {
+    public static class BaseHolder extends RecyclerView.ViewHolder {
         private View mItemView;
 
         public BaseHolder(@NonNull View itemView) {

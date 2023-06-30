@@ -3,10 +3,8 @@ package cn.mvp.test;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +17,7 @@ import java.util.List;
 import cn.mvp.R;
 import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.UIUtils;
+import cn.mvp.mlibs.weight.LoadMoreAdapter;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -56,11 +55,11 @@ public class TestActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        adapter = new MyAdapter1(dataList);
 //        recyclerView.setAdapter(adapter);
-        MyAdapter2<String> adapter1 = new MyAdapter2<>(R.layout.list_item, dataList, new MyAdapter2.BindViewByData<String>() {
+        LoadMoreAdapter<String> adapter1 = new LoadMoreAdapter<>(R.layout.list_item, dataList, new LoadMoreAdapter.BindViewByData<String>() {
 
 
             @Override
-            public void bindView(MyAdapter2.BaseHolder baseHolder, View itemView, String data) {
+            public void bindView(LoadMoreAdapter.BaseHolder baseHolder, View itemView, String data) {
                 baseHolder.setText(android.R.id.text1, data);
 //                ((TextView) itemView.findViewById(android.R.id.text1)).setText(data);
             }
@@ -77,7 +76,7 @@ public class TestActivity extends AppCompatActivity {
                 }, 1000);
             }
         });
-        adapter1.setOnLoadMoreListener(new MyAdapter2.OnLoadMoreListener() {
+        adapter1.setOnLoadMoreListener(new LoadMoreAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
                 UIUtils.getHandler().postDelayed(new Runnable() {
