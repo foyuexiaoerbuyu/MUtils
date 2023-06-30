@@ -1,4 +1,4 @@
-package cn.mvp.test;
+package cn.mvp.mlibs.weight;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +15,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
 
-import cn.mvp.R;
+import cn.mvp.mlibs.R;
 import cn.mvp.mlibs.utils.UIUtils;
 
-public class MyAdapter2<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private int mItemView;
     private List<T> mDataList;
@@ -31,7 +31,7 @@ public class MyAdapter2<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int VIEW_TYPE_LOADING = 1;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    public MyAdapter2(int itemView, List<T> dataList, BindViewByData<T> bindViewByData) {
+    public LoadMoreAdapter(int itemView, List<T> dataList, BindViewByData<T> bindViewByData) {
         mItemView = itemView;
         mDataList = dataList;
         mBindViewByData = bindViewByData;
