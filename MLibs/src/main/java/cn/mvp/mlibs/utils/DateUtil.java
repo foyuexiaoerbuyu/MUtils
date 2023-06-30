@@ -221,14 +221,14 @@ public class DateUtil {
     /**
      * 转换时间格式为毫秒值
      *
-     * @param pattern     格式:"yyyy-MM-dd'T'HH:mm:ss.SSS"
+     * @param regex     格式:"yyyy-MM-dd'T'HH:mm:ss.SSS"
      * @param dateTimeStr 日期字符串:"2023-04-27T10:31:22.000+08:00"
      * @return 转换后的毫秒值
      */
-    public static long convertToTimestamp(String pattern, String dateTimeStr) {
+    public static long convertToTimestamp(String regex, String dateTimeStr) {
 //        String dateTimeStr = "2023-04-25T10:30:00.000+08:00";
 
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat(regex, Locale.getDefault());
         try {
 // Extract timezone offset
             String timeZoneString = dateTimeStr.substring(dateTimeStr.length() - 6);
@@ -278,4 +278,43 @@ public class DateUtil {
             return dateTimeString; // 解析失败
         }
     }
+
+
+    /**
+     * 获取指定日期之前n天的日期
+     * @param date 指定的日期
+     * @param n 天数
+     * @return 指定日期之前n天的日期
+     */
+    public static Date getDateBefore(Date date, int n) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - n);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取指定日期之后n天的日期
+     * @param date 指定的日期
+     * @param n 天数
+     * @return 指定日期之后n天的日期
+     */
+    public static Date getDateAfter(Date date, int n) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + n);
+        return calendar.getTime();
+    }
+
+    /**
+     * 计算两个日期之间的天数差
+     * @param date1 第一个日期
+     * @param date2 第二个日期
+     * @return 两个日期之间的天数差
+     */
+    public static int getDaysDifference(Date date1, Date date2) {
+        long diff = Math.abs(date1.getTime() - date2.getTime());
+        return (int) (diff / (24 * 60 * 60 * 1000));
+    }
+
 }

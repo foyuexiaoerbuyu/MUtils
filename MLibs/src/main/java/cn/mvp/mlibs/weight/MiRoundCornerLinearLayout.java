@@ -32,7 +32,7 @@ import cn.mvp.mlibs.R;
  * <p>
  * 这个自定义线性布局并设置边框厚度、边框颜色、圆角角度以及每个角的单独角度：
  */
-public class RadiusLinearLayout extends LinearLayout {
+public class MiRoundCornerLinearLayout extends LinearLayout {
     private int borderWidth;
     private int borderColor;
     private float cornerRadius;
@@ -45,17 +45,17 @@ public class RadiusLinearLayout extends LinearLayout {
     private RectF borderRect;
     private Path borderPath;
 
-    public RadiusLinearLayout(Context context) {
+    public MiRoundCornerLinearLayout(Context context) {
         super(context);
         init(null);
     }
 
-    public RadiusLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public MiRoundCornerLinearLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
     }
 
-    public RadiusLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MiRoundCornerLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }

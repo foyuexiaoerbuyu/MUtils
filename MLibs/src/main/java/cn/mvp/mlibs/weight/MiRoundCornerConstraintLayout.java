@@ -16,7 +16,7 @@ import cn.mvp.mlibs.R;
 /**
  * 圆角约束布局
  */
-public class RadiusConstraintLayout extends ConstraintLayout {
+public class MiRoundCornerConstraintLayout extends ConstraintLayout {
     private float mBorderWidth;
     private int mBorderColor;
     private float mCornerRadius;
@@ -29,15 +29,15 @@ public class RadiusConstraintLayout extends ConstraintLayout {
     private RectF mRectF;
     private Path mPath;
 
-    public RadiusConstraintLayout(Context context) {
+    public MiRoundCornerConstraintLayout(Context context) {
         this(context, null);
     }
 
-    public RadiusConstraintLayout(Context context, @Nullable AttributeSet attrs) {
+    public MiRoundCornerConstraintLayout(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RadiusConstraintLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MiRoundCornerConstraintLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
     }

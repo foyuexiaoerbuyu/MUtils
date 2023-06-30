@@ -10,17 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
  * 禁止滑动的RecyclerView
  * android:scrollbars="none"
  */
-public class NonScrollingRecyclerView extends RecyclerView {
+public class NoScrollingRecyclerView extends RecyclerView {
 
-    public NonScrollingRecyclerView(Context context) {
+    public NoScrollingRecyclerView(Context context) {
         super(context);
     }
 
-    public NonScrollingRecyclerView(Context context, AttributeSet attrs) {
+    public NoScrollingRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public NonScrollingRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public NoScrollingRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

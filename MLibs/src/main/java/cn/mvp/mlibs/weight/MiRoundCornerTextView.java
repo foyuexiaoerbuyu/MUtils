@@ -27,17 +27,17 @@ import cn.mvp.mlibs.R;
  * 支持圆角的TextView
  * Created by stephen on 2017/12/18.
  */
-public class MiRoundedTextView extends androidx.appcompat.widget.AppCompatTextView {
+public class MiRoundCornerTextView extends androidx.appcompat.widget.AppCompatTextView {
 
-    public MiRoundedTextView(Context context) {
+    public MiRoundCornerTextView(Context context) {
         this(context, null);
     }
 
-    public MiRoundedTextView(Context context, @Nullable AttributeSet attrs) {
+    public MiRoundCornerTextView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public MiRoundedTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MiRoundCornerTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.RoundTextView, defStyleAttr, 0);

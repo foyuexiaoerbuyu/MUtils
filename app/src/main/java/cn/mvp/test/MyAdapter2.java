@@ -87,6 +87,19 @@ public class MyAdapter2<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         mIsMoreDataAvailable = moreDataAvailable;
     }
 
+    /**
+     * @param datas             新增数据
+     * @param moreDataAvailable 加载的数量是否小于分页数量
+     */
+    public void addDatas(List<T> datas, boolean moreDataAvailable) {
+        setMoreDataAvailable(moreDataAvailable);
+        loadingComplete();
+        if (datas == null) return;
+        int startPosition = (mIsMoreDataAvailable ? mDataList.size() - 1 : mDataList.size());
+        mDataList.addAll(datas);
+        notifyItemRangeInserted(startPosition, datas.size());
+    }
+
     public void addDatas(List<T> datas) {
         if (datas == null) return;
         int startPosition = (mIsMoreDataAvailable ? mDataList.size() - 1 : mDataList.size());
@@ -103,6 +116,11 @@ public class MyAdapter2<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void loadingComplete() {
         setMoreDataAvailable(false);
+        notifyDataSetChanged();
+    }
+
+    public void loadingComplete(boolean moreDataAvailable) {
+        setMoreDataAvailable(moreDataAvailable);
         notifyDataSetChanged();
     }
 
