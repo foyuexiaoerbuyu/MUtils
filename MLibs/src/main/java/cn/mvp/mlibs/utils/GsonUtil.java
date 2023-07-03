@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class GsonUtils {
+public class GsonUtil {
 
     public synchronized static <T> T fromJson(String json, Class<T> clazz) {
         return new Gson().fromJson(json, clazz);

@@ -50,7 +50,7 @@ import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.other.ICallBack;
 import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.FileUtils;
-import cn.mvp.mlibs.utils.GsonUtils;
+import cn.mvp.mlibs.utils.GsonUtil;
 import cn.mvp.mlibs.utils.IOUtils;
 import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.VibratorUtil;
@@ -519,10 +519,12 @@ public class XLogUtil {
     private static void getTagAndDetailMessage(String tag, String level, String message) {
         String output[] = new String[2];
         StackTraceElement ste = Thread.currentThread().getStackTrace()[4];
-        output[0] = ste.getFileName();
-        output[1] = "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")" + "#" + ste.getMethodName();
         if (tag == null) {
+            output[0] = ste.getFileName();
             tag = output[0];
+            output[1] = "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")" + "#" + ste.getMethodName();
+        } else {
+            output[1] = "";
         }
 
         int logMaxSize = 3 * 1024;
@@ -816,7 +818,7 @@ public class XLogUtil {
         if (!isShowLog) {
             return;
         }
-        String msg = GsonUtils.toJson(obj);
+        String msg = GsonUtil.toJson(obj);
         msg = msg.replace("(", "（").replace(")", "）");
         if (msg.length() > logsegmentSize) {
             while (msg.length() > logsegmentSize) {
@@ -831,7 +833,7 @@ public class XLogUtil {
         if (!isShowLog) {
             return;
         }
-        String msg = GsonUtils.toJson(obj);
+        String msg = GsonUtil.toJson(obj);
         msg = msg.replace("(", "（").replace(")", "）");
         if (msg.length() > logsegmentSize) {
             while (msg.length() > logsegmentSize) {

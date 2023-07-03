@@ -21,8 +21,9 @@ import cn.mvp.mlibs.utils.UIUtils;
 public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private int mItemView;
+    private int mPageSize;
     private List<T> mDataList;
-    private BindViewByData mBindViewByData;
+    private BindViewByData<T> mBindViewByData;
     //    private boolean mIsLoading = false;
     private boolean mIsMoreDataAvailable = false;
     private OnLoadMoreListener mOnLoadMoreListener;
@@ -31,9 +32,22 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final int VIEW_TYPE_LOADING = 1;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+    public LoadMoreAdapter(int itemView, int pageSize, BindViewByData<T> bindViewByData) {
+        mItemView = itemView;
+        mPageSize = pageSize;
+        mBindViewByData = bindViewByData;
+    }
+
+    /**
+     * 逐步废弃
+     */
+    @Deprecated
     public LoadMoreAdapter(int itemView, List<T> dataList, BindViewByData<T> bindViewByData) {
         mItemView = itemView;
         mDataList = dataList;
+        if (dataList != null) {
+            mPageSize = dataList.size();
+        }
         mBindViewByData = bindViewByData;
     }
 
@@ -56,7 +70,7 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position < mDataList.size() && holder instanceof ItemViewHolder) {
             T data = mDataList.get(position);
             //绑定数据到项目视图
-            ((ItemViewHolder) holder).bindData(data);
+            ((ItemViewHolder) holder).bindData(data, position);
         } else if (holder instanceof LoadingViewHolder && mOnLoadMoreListener != null) {
             //显示加载进度条或旋转器
             //你可以在这里自定义加载布局
@@ -83,6 +97,9 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         mOnLoadMoreListener = onLoadMoreListener;
     }
 
+    /**
+     * @param moreDataAvailable 是否显示上拉加载
+     */
     public void setMoreDataAvailable(boolean moreDataAvailable) {
         mIsMoreDataAvailable = moreDataAvailable;
     }
@@ -102,6 +119,11 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void addDatas(List<T> datas) {
         if (datas == null) return;
+        if (mPageSize == 0) {
+            mPageSize = datas.size();
+        } else if (datas.size() < mPageSize) {
+            setMoreDataAvailable(false);//不显示加载
+        }
         int startPosition = (mIsMoreDataAvailable ? mDataList.size() - 1 : mDataList.size());
         mDataList.addAll(datas);
         notifyItemRangeInserted(startPosition, datas.size());
@@ -114,11 +136,17 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyItemRangeInserted(0, dataList.size());
     }
 
+    /**
+     * 可能会有加载数量太少导致 item不满一屏时显示上拉加载视图
+     */
     public void loadingComplete() {
         setMoreDataAvailable(false);
         notifyDataSetChanged();
     }
 
+    /**
+     * @param moreDataAvailable 传加载的数量是否小于加载一页的数量
+     */
     public void loadingComplete(boolean moreDataAvailable) {
         setMoreDataAvailable(moreDataAvailable);
         notifyDataSetChanged();
@@ -133,22 +161,22 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 //        void bindView(View itemView, T data);
 
-        void bindView(BaseHolder holder, View itemView, T data);
+        void bindView(BaseHolder holder, View itemView, T data, int postion);
     }
 
     public static class ItemViewHolder<T> extends BaseHolder {
         private View mItemView;
-        private BindViewByData mBindViewByData;
+        private BindViewByData<T> mBindViewByData;
 
-        public ItemViewHolder(@NonNull View itemView, BindViewByData bindViewByData) {
+        public ItemViewHolder(@NonNull View itemView, BindViewByData<T> bindViewByData) {
             super(itemView);
             mItemView = itemView;
             // 在这里初始化项视图
             mBindViewByData = bindViewByData;
         }
 
-        public void bindData(T data) {
-            mBindViewByData.bindView(this, mItemView, data);
+        public void bindData(T data, int position) {
+            mBindViewByData.bindView(this, mItemView, data, position);
             //将数据绑定到item视图
         }
     }
