@@ -21,7 +21,6 @@ import cn.mvp.mlibs.utils.UIUtils;
 public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private int mItemView;
-    private int mPageSize;
     private List<T> mDataList;
     private BindViewByData<T> mBindViewByData;
     //    private boolean mIsLoading = false;
@@ -32,9 +31,8 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final int VIEW_TYPE_LOADING = 1;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    public LoadMoreAdapter(int itemView, int pageSize, BindViewByData<T> bindViewByData) {
+    public LoadMoreAdapter(int itemView, BindViewByData<T> bindViewByData) {
         mItemView = itemView;
-        mPageSize = pageSize;
         mBindViewByData = bindViewByData;
     }
 
@@ -45,9 +43,6 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     public LoadMoreAdapter(int itemView, List<T> dataList, BindViewByData<T> bindViewByData) {
         mItemView = itemView;
         mDataList = dataList;
-        if (dataList != null) {
-            mPageSize = dataList.size();
-        }
         mBindViewByData = bindViewByData;
     }
 
@@ -110,47 +105,47 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
      */
     public void addDatas(List<T> datas, boolean moreDataAvailable) {
         setMoreDataAvailable(moreDataAvailable);
-        loadingComplete();
         if (datas == null) return;
         int startPosition = (mIsMoreDataAvailable ? mDataList.size() - 1 : mDataList.size());
         mDataList.addAll(datas);
         notifyItemRangeInserted(startPosition, datas.size());
     }
 
-    public void addDatas(List<T> datas) {
+    public void addDatas(List<T> datas, int pageSize) {
         if (datas == null) return;
-        if (mPageSize == 0) {
-            mPageSize = datas.size();
-        } else if (datas.size() < mPageSize) {
-            setMoreDataAvailable(false);//不显示加载
+        if (datas.size() < pageSize) {
+            setMoreDataAvailable(false);
         }
         int startPosition = (mIsMoreDataAvailable ? mDataList.size() - 1 : mDataList.size());
         mDataList.addAll(datas);
         notifyItemRangeInserted(startPosition, datas.size());
     }
 
-    public void setDatas(List<T> dataList) {
+    public void setDatas(List<T> dataList, int pageSize) {
         if (dataList == null) return;
         mDataList.clear();
         mDataList.addAll(dataList);
+        if (dataList.size() < pageSize) {
+            setMoreDataAvailable(false);
+        }
         notifyItemRangeInserted(0, dataList.size());
     }
 
-    /**
-     * 可能会有加载数量太少导致 item不满一屏时显示上拉加载视图
-     */
-    public void loadingComplete() {
-        setMoreDataAvailable(false);
-        notifyDataSetChanged();
-    }
+//    /**
+//     * 可能会有加载数量太少导致 item不满一屏时显示上拉加载视图
+//     */
+//    public void loadingComplete() {
+//        setMoreDataAvailable(false);
+//        notifyDataSetChanged();
+//    }
 
-    /**
-     * @param moreDataAvailable 传加载的数量是否小于加载一页的数量
-     */
-    public void loadingComplete(boolean moreDataAvailable) {
-        setMoreDataAvailable(moreDataAvailable);
-        notifyDataSetChanged();
-    }
+//    /**
+//     * @param moreDataAvailable 传加载的数量是否小于加载一页的数量
+//     */
+//    public void loadingComplete(boolean moreDataAvailable) {
+//        setMoreDataAvailable(moreDataAvailable);
+//        notifyDataSetChanged();
+//    }
 
     public interface OnLoadMoreListener {
         void onLoadMore();
