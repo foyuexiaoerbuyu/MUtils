@@ -158,51 +158,6 @@ public class OkLogs implements Interceptor {
     }
 
     /**
-     * 也能用 但是过长会打印不全 https://www.jianshu.com/p/a491d843fa19
-     */
-    private static void printLog(String tag, String message, int logType) {
-        // 获取调用位置
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        String callPosition = "";
-        if (stackTrace.length >= 4) {
-            StackTraceElement element = stackTrace[4];
-            callPosition = "(" + element.getFileName() + ":" + element.getLineNumber() + ") ";
-        }
-
-        // 分段打印日志
-        int logLength = message.length();
-        int start = 0;
-        int end = MAX_LOG_LENGTH;
-        while (start < logLength) {
-            if (end > logLength) {
-                end = logLength;
-            }
-            String logContent = callPosition + message.substring(start, end);
-            switch (logType) {
-                case Log.DEBUG:
-                    Log.d(tag, logContent);
-                    break;
-                case Log.ERROR:
-                    Log.e(tag, logContent);
-                    break;
-                case Log.INFO:
-                    Log.i(tag, logContent);
-                    break;
-                case Log.VERBOSE:
-                    Log.v(tag, logContent);
-                    break;
-                case Log.WARN:
-                    Log.w(tag, logContent);
-                    break;
-                default:
-                    break;
-            }
-            start = end;
-            end += MAX_LOG_LENGTH;
-        }
-    }
-
-    /**
      * 调用处子类方法所在位置
      *
      * @param tag 日志tag

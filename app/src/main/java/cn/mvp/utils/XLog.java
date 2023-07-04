@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import cn.mvp.BuildConfig;
 import cn.mvp.mlibs.utils.DateUtil;
-import cn.mvp.mlibs.utils.GsonUtils;
+import cn.mvp.mlibs.utils.GsonUtil;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.UIUtils;
 
@@ -387,7 +387,7 @@ public class XLog {
         if (!isConsoleLog) {
             return;
         }
-        String msg = GsonUtils.toJson(obj);
+        String msg = GsonUtil.toJson(obj);
         msg = msg.replace("(", "（").replace(")", "）");
         if (msg.length() > logsegmentSize) {
             while (msg.length() > logsegmentSize) {
@@ -401,7 +401,7 @@ public class XLog {
         if (!isConsoleLog) {
             return;
         }
-        String msg = GsonUtils.toJson(obj);
+        String msg = GsonUtil.toJson(obj);
         msg = msg.replace("(", "（").replace(")", "）");
         if (msg.length() > logsegmentSize) {
             while (msg.length() > logsegmentSize) {

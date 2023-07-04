@@ -131,6 +131,10 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyItemRangeInserted(0, dataList.size());
     }
 
+    public T getItem(int pos) {
+        return mDataList.get(pos);
+    }
+
 //    /**
 //     * 可能会有加载数量太少导致 item不满一屏时显示上拉加载视图
 //     */

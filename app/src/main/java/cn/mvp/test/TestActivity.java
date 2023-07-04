@@ -59,13 +59,13 @@ public class TestActivity extends AppCompatActivity {
 
 
             @Override
-            public void bindView(LoadMoreAdapter.BaseHolder baseHolder, View itemView, String data) {
-                baseHolder.setText(android.R.id.text1, data);
+            public void bindView(LoadMoreAdapter.BaseHolder holder, View itemView, String data, int postion) {
+                holder.setText(android.R.id.text1, data);
 //                ((TextView) itemView.findViewById(android.R.id.text1)).setText(data);
             }
         });
         recyclerView.setAdapter(adapter1);
-        adapter1.addSwipeRefreshToRecyclerView( recyclerView, new SwipeRefreshLayout.OnRefreshListener() {
+        adapter1.addSwipeRefreshToRecyclerView(recyclerView, new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 UIUtils.getHandler().postDelayed(new Runnable() {
@@ -88,10 +88,8 @@ public class TestActivity extends AppCompatActivity {
                             for (int i = 0; i < 4; i++) {
                                 dataList.add(DateUtil.formatDate(DateUtil.REGEX_DATE_TIME) + " " + i);
                             }
-                            adapter1.addDatas(dataList);
+                            adapter1.addDatas(dataList, 10);
 //                            adapter1.notifyDataSetChanged();
-                        } else {
-                            adapter1.loadingComplete();
                         }
 //                        adapter1.setLoading(false);
 //                        adapter1.setLoading(false);

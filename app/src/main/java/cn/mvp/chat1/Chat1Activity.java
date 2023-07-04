@@ -36,7 +36,7 @@ import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.DeviceUtils;
 import cn.mvp.mlibs.utils.FileUtils;
-import cn.mvp.mlibs.utils.GsonUtils;
+import cn.mvp.mlibs.utils.GsonUtil;
 import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 
@@ -163,7 +163,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onMessage(String message) {
-                Msg msg = GsonUtils.fromJson(message, Msg.class);
+                Msg msg = GsonUtil.fromJson(message, Msg.class);
                 if (msg.getMsgType() == 0) {
                     sb.append("\n服务端返回数据：").append(DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL)).append("\n");
                     sb.append(msg.getMsgContent());
@@ -222,7 +222,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             Log.i("调试信息", "connService:  " + localSocketAddress.getHostString());
             Log.i("调试信息", "connService:  " + localSocketAddress.getHostName());
             Log.i("调试信息", "connService:  " + localSocketAddress.getPort());
-            Log.i("调试信息", "connService:  " + GsonUtils.toJson(localSocketAddress));
+            Log.i("调试信息", "connService:  " + GsonUtil.toJson(localSocketAddress));
         }
         webSocketClient.connect();
 
