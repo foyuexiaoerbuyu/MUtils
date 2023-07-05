@@ -221,7 +221,7 @@ public class DateUtil {
     /**
      * 转换时间格式为毫秒值
      *
-     * @param regex     格式:"yyyy-MM-dd'T'HH:mm:ss.SSS"
+     * @param regex       格式:"yyyy-MM-dd'T'HH:mm:ss.SSS"
      * @param dateTimeStr 日期字符串:"2023-04-27T10:31:22.000+08:00"
      * @return 转换后的毫秒值
      */
@@ -282,8 +282,9 @@ public class DateUtil {
 
     /**
      * 获取指定日期之前n天的日期
+     *
      * @param date 指定的日期
-     * @param n 天数
+     * @param n    天数
      * @return 指定日期之前n天的日期
      */
     public static Date getDateBefore(Date date, int n) {
@@ -295,8 +296,9 @@ public class DateUtil {
 
     /**
      * 获取指定日期之后n天的日期
+     *
      * @param date 指定的日期
-     * @param n 天数
+     * @param n    天数
      * @return 指定日期之后n天的日期
      */
     public static Date getDateAfter(Date date, int n) {
@@ -308,6 +310,7 @@ public class DateUtil {
 
     /**
      * 计算两个日期之间的天数差
+     *
      * @param date1 第一个日期
      * @param date2 第二个日期
      * @return 两个日期之间的天数差
@@ -317,4 +320,31 @@ public class DateUtil {
         return (int) (diff / (24 * 60 * 60 * 1000));
     }
 
+    /**
+     * 将毫秒数转化为时分秒
+     *
+     * @param ms 毫秒数
+     * @return 转化后的时分秒
+     */
+    public static String ms2HMS(long ms) {
+        int ss = 1000;
+        int mi = ss * 60;
+        int hh = mi * 60;
+        int dd = hh * 24;
+
+        long day = ms / dd;
+        long hour = (ms - day * dd) / hh;
+        long minute = (ms - day * dd - hour * hh) / mi;
+        long second = (ms - day * dd - hour * hh - minute * mi) / ss;
+        long milliSecond = ms - day * dd - hour * hh - minute * mi - second * ss;
+
+        String strDay = day < 10 ? "0" + day : "" + day; //天
+        String strHour = hour < 10 ? "0" + hour : "" + hour;//小时
+        String strMinute = minute < 10 ? "0" + minute : "" + minute;//分钟
+        String strSecond = second < 10 ? "0" + second : "" + second;//秒
+        String strMilliSecond = milliSecond < 10 ? "0" + milliSecond : "" + milliSecond;//毫秒
+        strMilliSecond = milliSecond < 100 ? "0" + strMilliSecond : "" + strMilliSecond;
+        //如果你想要包括毫秒，只需在返回字符串中添加 strMilliSecond。
+        return strHour + ":" + strMinute + ":" + strSecond;
+    }
 }

@@ -5,7 +5,9 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 
+import cn.mvp.mlibs.utils.GsonUtil;
 import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -155,6 +157,10 @@ public class OkLogs implements Interceptor {
 
     public static void w(String tag, String message) {
         print(tag, message, Log.WARN);
+    }
+
+    public static void iObjects(String tag, Objects message) {
+        print(tag, GsonUtil.toJson(message), Log.INFO);
     }
 
     /**
