@@ -8,6 +8,10 @@ import androidx.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -342,5 +346,19 @@ public class StringUtil {
         return String.format("%02d", num);
     }
 
+    /**
+     * 按行读取字符串
+     */
+    public static void readStrByLins(String str, IReadLin iReadLin) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
+        String line;
+        while ((line = br.readLine()) != null) {
+            iReadLin.readLin(line.trim());
+        }
+    }
+
+    public interface IReadLin {
+        void readLin(String lin);
+    }
 
 }

@@ -8,8 +8,11 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
+
+import android.text.method.Touch;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +68,7 @@ public class UIUtils {
             return getContext().getResources().getColor(id);
         }
     }
+
     //颜色 #2A82FF
     public static int getColor(String colorString) {
         if (!colorString.startsWith("#")) {
@@ -134,9 +138,9 @@ public class UIUtils {
     public static Boolean isRunOnUIThread() {
         //获取当前线程id，如果当前线程和主线程id相同，那么当前就是主线程。此方法有可能会阻塞线程
 //        return android.os.Process.myTid() == getMainThreadId();
-        return Looper.getMainLooper() == Looper.myLooper()||
-                Looper.getMainLooper().getThread() == Thread.currentThread()||
-                Looper.getMainLooper().getThread().getId() == Thread.currentThread().getId()||
+        return Looper.getMainLooper() == Looper.myLooper() ||
+                Looper.getMainLooper().getThread() == Thread.currentThread() ||
+                Looper.getMainLooper().getThread().getId() == Thread.currentThread().getId() ||
                 android.os.Process.myTid() == getMainThreadId();
     }
 
@@ -149,6 +153,23 @@ public class UIUtils {
             //如果是 子线程，借助handler让其运行在主线程
             getHandler().post(r);
         }
+    }
+
+    /**
+     * @param view 目标view
+     * @param x    触摸位置x坐标
+     * @param y    触摸位置y坐标
+     * @return 触摸坐标是否在目标view内
+     */
+    public static boolean isTouchPointInView(View view, int x, int y) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int left = location[0];
+        int top = location[1];
+        int right = left + view.getWidth();
+        int bottom = top + view.getHeight();
+        // 判断触摸点是否在该View内
+        return y >= top && y <= bottom && x >= left && x <= right;
     }
 
     /*----------------提示消息start-----------------------*/

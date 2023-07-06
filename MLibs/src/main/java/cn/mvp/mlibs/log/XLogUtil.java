@@ -881,6 +881,10 @@ public class XLogUtil {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", Locale.getDefault()).format(new Date());
     }
 
+    public static void printArgs(String tag, String... args) {
+        Log.i(tag, Arrays.asList(args).toString());
+    }
+
     public static void writeToFile(String data, String filePath) {
         try {
             // 创建文件对象

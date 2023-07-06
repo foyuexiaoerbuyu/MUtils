@@ -163,6 +163,10 @@ public class OkLogs implements Interceptor {
         print(tag, GsonUtil.toJson(message), Log.INFO);
     }
 
+    public static void printArgs(String tag, String... args) {
+        Log.i(tag, Arrays.asList(args).toString());
+    }
+
     /**
      * 调用处子类方法所在位置
      *
