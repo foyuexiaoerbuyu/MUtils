@@ -173,7 +173,7 @@ public class OkLogs implements Interceptor {
      * @param tag 日志tag
      * @param msg msg
      */
-    public void getChildLog(String tag, String msg) {
+    public static void getChildLog(String tag, String msg) {
         StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[4];
         String stackTraceMsgArr = stackTraceElement.toString();
         Log.i(tag, stackTraceMsgArr.substring(stackTraceMsgArr.indexOf("(")) + "#" + stackTraceElement.getMethodName() + " msg:" + msg);

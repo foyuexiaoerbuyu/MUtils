@@ -34,6 +34,7 @@ import androidx.annotation.RequiresApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -77,7 +78,6 @@ public class XLogUtil {
     /*==================新加常用================*/
 
     private static int stepNumber = 0;
-    private static int logsegmentSize = 3072;//最长为4*1024设置为
 
     public static void init(boolean isShowLog, String TAG) {
         XLogUtil.isShowLog = isShowLog;
@@ -257,126 +257,7 @@ public class XLogUtil {
         }
     }
 
-    /* ========================下面的是需要上传的数据========================== */
-    private LogUploader logUploader;
-
-    /**
-     * 日志上传线程
-     */
-    private class LogUploader extends Thread {
-        /**
-         * 当前线程是否正在运行
-         */
-        private boolean isRunning = true;
-        /**
-         * 上传所需要的url
-         */
-        private String mStrUrl;
-        /**
-         * 上传所需要的其他参数
-         */
-        private HashMap<String, String> mAllParams;
-        /**
-         * 上传所需要pid
-         */
-        private int mPid;
-
-        /**
-         * 构造方法
-         *
-         * @param strUrl    上传所需要的url
-         * @param allParams 需要上传的额外的参数【除了日志以外】
-         * @param pid       日志所在的pid
-         */
-        public LogUploader(String strUrl, HashMap<String, String> allParams, int pid) {
-            this.mStrUrl = strUrl;
-            this.mAllParams = allParams;
-            this.mPid = pid;
-        }
-
-        @Override
-        public void run() {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.CHINA);//日期格式化对象
-            Process process = null;//进程
-            BufferedReader reader = null;
-            try {
-                //执行命令行,得到输入流
-                String cmd = "logcat *:e *:w | grep";
-                process = Runtime.getRuntime().exec(cmd);
-                reader = new BufferedReader(new InputStreamReader(process.getInputStream()), 1024);
-                String line = null;
-                while (isRunning) {
-                    line = reader.readLine();
-                    if (line != null && line.length() > 0) {
-                        String log = "PID:" + this.mPid + "\t"
-                                + sdf.format(new Date(System.currentTimeMillis())) + "\t" + line;
-                        mAllParams.put("log", log);
-                    } else {
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (process != null) {
-                    process.destroy();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                process = null;
-                reader = null;
-            }
-        }
-
-        public void end() {
-            isRunning = false;
-        }
-    }
-
-    /**
-     * 整个应用调用一次即可：上传日志数据
-     *
-     * @param strUrl      上传所需要的url
-     * @param allParams   需要上传的额外的参数【除了日志以外】
-     * @param isUploadLog 是否需要上传
-     */
-    public void startUploadLog(String strUrl, HashMap<String, String> allParams, boolean isUploadLog) {
-
-        if (isUploadLog) {
-            if (logUploader == null) {
-                logUploader = new LogUploader(strUrl, allParams, android.os.Process.myPid());
-            }
-            logUploader.start();
-        }
-    }
-
-    /**
-     * 整个应用调用一次即可：结束上传日志数据
-     */
-    public void endUploadLog() {
-        if (logUploader != null) {
-            logUploader.end();
-        }
-    }
-
     /* ========================下面的是直接使用的========================== */
-    public static void json(String message) {
-        if (isShowLog) {
-            android.util.Log.e(TAG + ":", getScope() + "  " + message);
-        }
-    }
-
-    public static void json(String tag, String message) {
-        if (isShowLog) {
-            android.util.Log.e(tag + ":", getScope() + "  " + message);
-        }
-    }
-
 
     /**
      * verbose详细日志
@@ -1019,5 +900,41 @@ public class XLogUtil {
             subBytes = Arrays.copyOf(subBytes, i);
         }
         return new String(subBytes);
+    }
+
+    //设定Json格式化时候的缩进量
+    private static final int JSON_INDENT = 4;
+
+    public static void json(String json) {
+        if (json == null) {
+            Log.d(TAG, "Null or Empty JSON was returned.");
+            return;
+        }
+        String message;
+        try {
+            if (json.startsWith("{")) {
+                JSONObject jsonObject = new JSONObject(json);
+                message = jsonObject.toString(JSON_INDENT);
+            } else if (json.startsWith("[")) {
+                JSONArray jsonArray = new JSONArray(json);
+                message = jsonArray.toString(JSON_INDENT);
+            } else {
+                message = json;
+            }
+        } catch (JSONException e) {
+            message = json;
+        }
+        printLog(message);
+    }
+
+    private static void printLog(String message) {
+        int maxLogSize = 1000;
+        for (int i = 0; i <= message.length() / maxLogSize; i++) {
+            int start = i * maxLogSize;
+            int end = (i + 1) * maxLogSize;
+            end = end > message.length() ? message.length() : end;
+            Log.d(TAG, message.substring(start, end));
+//            printLongLog(TAG, message);
+        }
     }
 }
