@@ -134,19 +134,21 @@ public class CommonTopBar extends FrameLayout {
         if (!"".equals(mid_text)) {
             mMidTv.setText(mid_text);
             mMidTv.setVisibility(View.VISIBLE);
-            if (mid_text_size != 0) mMidTv.setTextSize(mid_text_size);
+            if (mid_text_size != 0) mMidTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mid_text_size);
             if (mid_text_color != 0) mMidTv.setTextColor(mid_text_color);
         }
         if (!"".equals(left_text)) {
             mLeftTv.setText(left_text);
             mLeftTv.setVisibility(View.VISIBLE);
-            if (left_text_size != 0) mLeftTv.setTextSize(left_text_size);
+            if (left_text_size != 0)
+                mLeftTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, left_text_size);
             if (left_text_color != 0) mLeftTv.setTextColor(left_text_color);
         }
         if (!"".equals(right_text)) {
             mRightTv.setText(right_text);
             mRightTv.setVisibility(View.VISIBLE);
-            if (right_text_size != 0) mRightTv.setTextSize(right_text_size);
+            if (right_text_size != 0)
+                mRightTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, right_text_size);
             if (right_text_color != 0) mRightTv.setTextColor(right_text_color);
         }
 
@@ -353,7 +355,7 @@ public class CommonTopBar extends FrameLayout {
      */
     public void setMidTextSize(float size) {
         if (mMidTv != null)
-            mMidTv.setTextSize(size);
+            mMidTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
     }
 
     /**
@@ -428,7 +430,7 @@ public class CommonTopBar extends FrameLayout {
      */
     public void setLeftTextSize(float size) {
         if (mLeftTv != null)
-            mLeftTv.setTextSize(size);
+            mLeftTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
     }
 
     /**
@@ -510,7 +512,7 @@ public class CommonTopBar extends FrameLayout {
      */
     public void setRightTextSize(float size) {
         if (mRightTv != null)
-            mRightTv.setTextSize(size);
+            mRightTv.setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
     }
 
     /**

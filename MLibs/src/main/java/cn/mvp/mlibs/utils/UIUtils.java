@@ -14,11 +14,15 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.text.method.Touch;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.hjq.toast.ToastUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 import cn.mvp.mlibs.MLibs;
 
@@ -161,7 +165,7 @@ public class UIUtils {
      * @param y    触摸位置y坐标
      * @return 触摸坐标是否在目标view内
      */
-    public static boolean isTouchPointInView(View view, int x, int y) {
+    public static boolean isTouchPointInView(View view, float x, float y) {
         int[] location = new int[2];
         view.getLocationOnScreen(location);
         int left = location[0];
@@ -170,6 +174,35 @@ public class UIUtils {
         int bottom = top + view.getHeight();
         // 判断触摸点是否在该View内
         return y >= top && y <= bottom && x >= left && x <= right;
+    }
+
+    /**
+     * @param view 目标view
+     * @return 目标view四个角屏幕坐标
+     */
+    public static List<Integer> getViewPos(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int left = location[0];
+        int top = location[1];
+        int right = left + view.getWidth();
+        int bottom = top + view.getHeight();
+        return Arrays.asList(left, top, right, bottom);
+    }
+
+    /**
+     * @param view view
+     * @return view四个角屏幕坐标是否都在原点 (是否还未进行绘制测量)
+     */
+    public static boolean isOrigin(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int left = location[0];
+        int top = location[1];
+        int right = left + view.getWidth();
+        int bottom = top + view.getHeight();
+        Log.i("调试信息", "getViewPos:  " + left + " " + top + " " + right + " " + bottom + " ");
+        return (left == 0 && top == 0 && right == 0 && bottom == 0);
     }
 
     /*----------------提示消息start-----------------------*/

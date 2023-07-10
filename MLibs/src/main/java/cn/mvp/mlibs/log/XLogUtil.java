@@ -367,13 +367,13 @@ public class XLogUtil {
     /* ========================下面的是直接使用的========================== */
     public static void json(String message) {
         if (isShowLog) {
-            getTagAndDetailMessage(null, "json", message);
+            android.util.Log.e(TAG + ":", getScope() + "  " + message);
         }
     }
 
     public static void json(String tag, String message) {
         if (isShowLog) {
-            getTagAndDetailMessage(tag, "json", message);
+            android.util.Log.e(tag + ":", getScope() + "  " + message);
         }
     }
 
@@ -386,7 +386,7 @@ public class XLogUtil {
      */
     public static void v(String tag, String message) {
         if (isShowLog) {
-            getTagAndDetailMessage(tag, "v", message);
+            android.util.Log.v(tag + ":", getScope() + "  " + message);
         }
     }
 
@@ -397,7 +397,7 @@ public class XLogUtil {
      */
     public static void v(String message) {
         if (isShowLog) {
-            getTagAndDetailMessage(null, "v", message);
+            android.util.Log.v(TAG + ":", getScope() + "  " + message);
         }
     }
 
@@ -409,7 +409,7 @@ public class XLogUtil {
      */
     public static void e(String tag, String message) {
         if (isShowLog) {
-            getTagAndDetailMessage(tag, "e", message);
+            android.util.Log.e(tag + ":", getScope() + "  " + message);
         }
     }
 
@@ -421,7 +421,7 @@ public class XLogUtil {
      */
     public static void e(String tag, String message, Throwable e) {
         if (isShowLog) {
-            getTagAndDetailMessage(tag, "e", message + "   " + e.getMessage());
+            android.util.Log.e(tag + ":", getScope() + "  " + message, e);
         }
     }
 
@@ -432,7 +432,7 @@ public class XLogUtil {
      */
     public static void e(String message) {
         if (isShowLog) {
-            getTagAndDetailMessage(null, "e", message);
+            android.util.Log.e(TAG + ":", getScope() + "  " + message);
         }
     }
 
@@ -445,7 +445,7 @@ public class XLogUtil {
     public static void i(String tag, String message) {
 
         if (isShowLog) {
-            getTagAndDetailMessage(tag, "i", message);
+            android.util.Log.i(tag + ":", getScope() + "  " + message);
         }
     }
 
@@ -457,7 +457,7 @@ public class XLogUtil {
     public static void i(String message) {
 
         if (isShowLog) {
-            getTagAndDetailMessage(null, "i", message);
+            android.util.Log.e(TAG + ":", getScope() + "  " + message);
         }
     }
 
@@ -470,7 +470,7 @@ public class XLogUtil {
     public static void d(String tag, String message) {
 
         if (isShowLog) {
-            getTagAndDetailMessage(tag, "d", message);
+            android.util.Log.d(tag + ":", getScope() + "  " + message);
         }
     }
 
@@ -482,7 +482,7 @@ public class XLogUtil {
     public static void d(String message) {
 
         if (isShowLog) {
-            getTagAndDetailMessage(null, "d", message);
+            android.util.Log.d(TAG + ":", getScope() + "  " + message);
         }
     }
 
@@ -495,7 +495,7 @@ public class XLogUtil {
     public static void w(String tag, String message) {
 
         if (isShowLog) {
-            getTagAndDetailMessage(tag, "w", message);
+            android.util.Log.w(tag + ":", getScope() + "  " + message);
         }
     }
 
@@ -507,7 +507,7 @@ public class XLogUtil {
     public static void w(String message) {
 
         if (isShowLog) {
-            getTagAndDetailMessage(null, "w", message);
+            android.util.Log.w(TAG + ":", getScope() + "  " + message);
         }
     }
 
@@ -517,44 +517,43 @@ public class XLogUtil {
      * @param message 要显示的信息
      * @return 默认tag【类名】以及信息详情,默认信息详情【类名+方法名+行号+message】
      */
-    private static void getTagAndDetailMessage(String tag, String level, String message) {
-        String output[] = new String[2];
-        StackTraceElement ste = Thread.currentThread().getStackTrace()[4];
-        if (tag == null) {
-            output[0] = ste.getFileName();
-            tag = output[0];
-            output[1] = "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")" + "#" + ste.getMethodName();
-        } else {
-            output[1] = "";
-        }
-
-        int logMaxSize = 3 * 1024;
-        if (message == null) {
-            showLogInfo(tag, "e", output[1], "调用处为null");
-            return;
-        } else if (message.equals("null")) {
-            showLogInfo(tag, "e", output[1], "调用处为null字符串: \"null\"");
-            return;
-        } else if (message.equals("")) {
-            showLogInfo(tag, "e", output[1], "调用处为空字符串: \"\"");
-            return;
-        }
-        if (message.length() <= logMaxSize) {
-            showLogInfo(tag, level, output[1], message);
-        } else {
-            if (!"json".equals(level)) {
-                while (message.length() > logMaxSize) {
-                    showLogInfo(tag, level, output[1], message);
-                    message = message.replace(message.substring(0, logMaxSize), "");
-                    output[1] = "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")" + "#" + ste.getMethodName();
-                }
-                showLogInfo(tag, level, output[1], message);
-            } else {
-                showLogInfo(tag, level, output[1], message);
-            }
-        }
-    }
-
+//    private static void getTagAndDetailMessage(String tag, String level, String message) {
+//        String output[] = new String[2];
+//        StackTraceElement ste = Thread.currentThread().getStackTrace()[4];
+//        if (tag == null) {
+//            output[0] = ste.getFileName();
+//            tag = output[0];
+//            output[1] = "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")" + "#" + ste.getMethodName();
+//        } else {
+//            output[1] = "";
+//        }
+//
+//        int logMaxSize = 3 * 1024;
+//        if (message == null) {
+//            showLogInfo(tag, "e", output[1], "调用处为null");
+//            return;
+//        } else if (message.equals("null")) {
+//            showLogInfo(tag, "e", output[1], "调用处为null字符串: \"null\"");
+//            return;
+//        } else if (message.equals("")) {
+//            showLogInfo(tag, "e", output[1], "调用处为空字符串: \"\"");
+//            return;
+//        }
+//        if (message.length() <= logMaxSize) {
+//            showLogInfo(tag, level, output[1], message);
+//        } else {
+//            if (!"json".equals(level)) {
+//                while (message.length() > logMaxSize) {
+//                    showLogInfo(tag, level, output[1], message);
+//                    message = message.replace(message.substring(0, logMaxSize), "");
+//                    output[1] = "(" + ste.getFileName() + ":" + ste.getLineNumber() + ")" + "#" + ste.getMethodName();
+//                }
+//                showLogInfo(tag, level, output[1], message);
+//            } else {
+//                showLogInfo(tag, level, output[1], message);
+//            }
+//        }
+//    }
     private static void showLogInfo(String tag, String level, String output, String message) {
         switch (level) {
             case "i":
@@ -644,7 +643,7 @@ public class XLogUtil {
      * 打印步骤
      */
     public static void showStepLogInfo() {
-        getTagAndDetailMessage(null, "i", "步骤   " + stepNumber++);
+        android.util.Log.e(TAG + ":", getScope() + "  " + "步骤   " + stepNumber++);
     }
 
     /**
@@ -668,7 +667,7 @@ public class XLogUtil {
                 inputArgs.append(",");
             }
         }
-        getTagAndDetailMessage(null, "i", inputArgs.toString());
+        android.util.Log.e(TAG + ":", getScope() + "  " + inputArgs.toString());
     }
 
     /**
@@ -815,11 +814,14 @@ public class XLogUtil {
     }
 
 
-    public static void JsonObj(String tag, Object obj) {
+    public static void jsonObj(String tag, Object obj) {
+        printLongLog(tag, GsonUtil.toJson(obj));
+    }
+
+    public static void printLongLog(String tag, String msg) {
         if (!isShowLog) {
             return;
         }
-        String msg = GsonUtil.toJson(obj);
         msg = msg.replace("(", "（").replace(")", "）");
         // 获取调用位置
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
@@ -1005,9 +1007,17 @@ public class XLogUtil {
         }
 
         // 复制出定长字节数组，转为字符串
-        String subStr = new String(Arrays.copyOf(bytes, subLength));
+        byte[] subBytes = Arrays.copyOf(bytes, subLength);
 
-        // 避免末尾字符是被拆分的，这里减1使字符串保持完整
-        return subStr.substring(0, subStr.length() - 1);
+        // 检查最后一个字节是否为多字节字符的一部分
+        int i = subBytes.length - 1;
+        while (i > 0 && (subBytes[i] & 0xC0) == 0x80) {
+            i--;
+        }
+        // 如果最后一个字节是多字节字符的一部分，向前移动到完整的字符
+        if (i < subBytes.length - 1) {
+            subBytes = Arrays.copyOf(subBytes, i);
+        }
+        return new String(subBytes);
     }
 }
