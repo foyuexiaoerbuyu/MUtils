@@ -19,10 +19,10 @@ public class ClickTimesUtil {
      * 规定时间内连续点多次(类似开发者模式)
      *
      * @param view        要设置点击效果的View
+     * @param timeBetween 规定时间内(点击完成规定次数的时间范围)
      * @param times       点击的次数
-     * @param timeBetween 点击完成规定次数的时间范围
      */
-    public static void setClickForTimes(View view, final int times, final long timeBetween, final IClick click) {
+    public static void setClickForTimes(View view, final long timeBetween, final int times, final IClick click) {
         final long[] mHits = new long[times];//存储多次点击的时间戳
         view.setOnClickListener(new View.OnClickListener() {
             @Override
