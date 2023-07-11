@@ -146,7 +146,6 @@ public class StringUtil {
      * @param cs2 the second CharSequence, may be {@code null}
      * @return {@code true} if the CharSequences are equal (case-sensitive), or both {@code null}
      * @see Object#equals(Object)
-     * @see #equalsIgnoreCase(CharSequence, CharSequence)
      * @since 3.0 Changed signature from equals(String, String) to equals(CharSequence, CharSequence)
      */
     public static boolean equals(final CharSequence cs1, final CharSequence cs2) {
@@ -294,26 +293,6 @@ public class StringUtil {
         return str.replace(" ", "");
     }
 
-
-    /**
-     * 对月份进行补零操作
-     *
-     * @param month 月份
-     * @return 补零后的月份字符串
-     */
-    public static String padMonth(int month) {
-        return padZero(month, 2);
-    }
-
-    /**
-     * 对日期进行补零操作
-     *
-     * @param day 日期
-     * @return 补零后的日期字符串
-     */
-    public static String padDay(int day) {
-        return padZero(day, 2);
-    }
 
     /**
      * 对数字进行补零操作
