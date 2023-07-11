@@ -17,9 +17,10 @@ import cn.mvp.mlibs.R;
  * 功能:
  * 1. 加载动画
  * 2. 加载错误点击重新加载
+ * 用于显示异常/加载中/加载完毕等画面
  */
 
-public class RefreshLayout extends FrameLayout {
+public class StateViewBaseLayout extends FrameLayout {
 
     protected static final int STATUS_LOADING = 0;
     protected static final int STATUS_FINISH = 1;
@@ -40,15 +41,15 @@ public class RefreshLayout extends FrameLayout {
     private OnReloadingListener mListener;
     private int mStatus = 0;
 
-    public RefreshLayout(Context context) {
+    public StateViewBaseLayout(Context context) {
         this(context, null);
     }
 
-    public RefreshLayout(Context context, AttributeSet attrs) {
+    public StateViewBaseLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RefreshLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public StateViewBaseLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         initAttrs(attrs);
