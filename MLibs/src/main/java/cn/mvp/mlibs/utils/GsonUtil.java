@@ -63,4 +63,19 @@ public class GsonUtil {
         }
         return "";
     }
+
+    public static void putJoStrToFile(String filePath, String joStr) {
+        FileUtils.writeFile(filePath, joStr);
+    }
+
+    public static <T> T getJoStrForFile(String filePath, Class<T> clazz) {
+        String content = null;
+        try {
+            content = FileUtils.readFile(filePath, "utf-8");
+            return fromJson(content, clazz);
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
 }
