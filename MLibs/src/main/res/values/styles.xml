@@ -27,7 +27,7 @@
         <item name="android:windowExitAnimation">@anim/bottom_dialog_exit</item>
     </style>
 
-    <declare-styleable name="CustomTextView">
+    <declare-styleable name="MiRequiredTextViewPro">
         <attr name="prefixText" format="string" />
         <attr name="prefixTextColor" format="color" />
         <attr name="prefixVisibility">

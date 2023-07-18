@@ -50,10 +50,10 @@ public class MiRequiredTextViewPro extends androidx.appcompat.widget.AppCompatTe
 
     private void init(AttributeSet attrs) {
         if (attrs != null) {
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CustomTextView);
-            prefixText = a.getString(R.styleable.CustomTextView_prefixText);
-            prefixTextColor = a.getColor(R.styleable.CustomTextView_prefixTextColor, Color.RED);
-            prefixVisibility = a.getInt(R.styleable.CustomTextView_prefixVisibility, View.VISIBLE);
+            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.MiRequiredTextViewPro);
+            prefixText = a.getString(R.styleable.MiRequiredTextViewPro_prefixText);
+            prefixTextColor = a.getColor(R.styleable.MiRequiredTextViewPro_prefixTextColor, Color.RED);
+            prefixVisibility = a.getInt(R.styleable.MiRequiredTextViewPro_prefixVisibility, View.VISIBLE);
             a.recycle();
         }
         updatePrefixVisibility();
