@@ -1,8 +1,7 @@
 package cn.mvp.mlibs.utils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 public class ListUtils {
     public static <T> void removeItems(List<T> list, Condition<T> condition) {

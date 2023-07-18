@@ -26,4 +26,14 @@
         <item name="android:windowEnterAnimation">@anim/bottom_dialog_enter</item>
         <item name="android:windowExitAnimation">@anim/bottom_dialog_exit</item>
     </style>
+
+    <declare-styleable name="CustomTextView">
+        <attr name="prefixText" format="string" />
+        <attr name="prefixTextColor" format="color" />
+        <attr name="prefixVisibility">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+            <enum name="gone" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>

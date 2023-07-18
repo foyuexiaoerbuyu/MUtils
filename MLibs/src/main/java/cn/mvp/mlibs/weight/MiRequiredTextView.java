@@ -3,12 +3,13 @@ package cn.mvp.mlibs.weight;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import androidx.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+
+import androidx.annotation.Nullable;
 
 import cn.mvp.mlibs.R;
 
@@ -16,6 +17,8 @@ import cn.mvp.mlibs.R;
 /**
  * https://blog.csdn.net/u013982652/article/details/94404711
  * Android自定义TextView实现必填项前面的*号
+ *
+ * @deprecated 废弃使用
  */
 public class MiRequiredTextView extends androidx.appcompat.widget.AppCompatTextView {
 
