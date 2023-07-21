@@ -18,7 +18,7 @@ import cn.mvp.mlibs.R;
 /**
  * 底部弹出对话框
  */
-public class BottomDialogUtils {
+public class BottomDialog {
     private Dialog dialog;
     private Context context;
     private int mLayoutResId;
@@ -27,7 +27,7 @@ public class BottomDialogUtils {
     private int shadowColor;
     private View contentView;
 
-    public BottomDialogUtils(Context context, int layoutResId) {
+    public BottomDialog(Context context, int layoutResId) {
         this.context = context;
         mLayoutResId = layoutResId;
     }
@@ -49,7 +49,6 @@ public class BottomDialogUtils {
         // 设置背景透明
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // 设置是否显示全屏阴影遮罩及颜色
-        Log.i("调试信息", "showDialog:  " + isShowShadow);
         if (isShowShadow) {
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             dialog.getWindow().setDimAmount(shadowTransparency); // 遮罩透明度，默认是0.5

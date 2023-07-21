@@ -139,7 +139,11 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mDataList.get(pos);
     }
 
-//    /**
+    public List<T> getDataList() {
+        return mDataList;
+    }
+
+    //    /**
 //     * 可能会有加载数量太少导致 item不满一屏时显示上拉加载视图
 //     */
 //    public void loadingComplete() {
