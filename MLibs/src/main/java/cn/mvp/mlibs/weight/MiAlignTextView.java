@@ -54,8 +54,8 @@ public class MiAlignTextView extends TextView {
 
     private void initTypedArray(Context context, AttributeSet attrs,
                                 int defStyleAttr, int defStyleRes) {
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AlignTextView, defStyleAttr, defStyleRes);
-        int alignStyle = a.getInt(R.styleable.AlignTextView_align, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MiAlignTextView, defStyleAttr, defStyleRes);
+        int alignStyle = a.getInt(R.styleable.MiAlignTextView_align, 0);
         a.recycle();
         switch (alignStyle) {
             case 1:

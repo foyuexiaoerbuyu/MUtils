@@ -102,6 +102,7 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     /**
      * @param datas             新增数据
      * @param moreDataAvailable 加载的数量是否小于分页数量
+     * @deprecated
      */
     public void addDatas(List<T> datas, boolean moreDataAvailable) {
         setMoreDataAvailable(moreDataAvailable);
@@ -111,6 +112,9 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         notifyItemRangeInserted(startPosition, datas.size());
     }
 
+    /**
+     * @param pageSize 分页数量:用于判断是否还能进行加载,当加载的数量小于分页数量,隐藏底部上拉加载布局
+     */
     public void addDatas(List<T> datas, int pageSize) {
         if (datas == null) return;
         if (datas.size() < pageSize) {

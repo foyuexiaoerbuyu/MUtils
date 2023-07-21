@@ -4,10 +4,16 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PixelFormat;
 import android.graphics.RectF;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -70,7 +76,32 @@ public class MiRoundCornerLinearLayout extends LinearLayout {
             topRightRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_rllTopRightRadius, cornerRadius);
             bottomLeftRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_rllBottomLeftRadius, cornerRadius);
             bottomRightRadius = typedArray.getDimension(R.styleable.RadiusLinearLayout_rllBottomRightRadius, cornerRadius);
+            int cornerBackgroundColor = typedArray.getColor(R.styleable.RadiusLinearLayout_rllCornerBackgroundColor, Color.WHITE);
             typedArray.recycle();
+            // 设置圆角区域的背景颜色
+            Drawable backgroundDrawable = new Drawable() {
+                @Override
+                public void draw(@NonNull Canvas canvas) {
+                    // 绘制圆角区域的背景颜色
+                    canvas.drawPath(borderPath, new Paint(Paint.ANTI_ALIAS_FLAG) {{
+                        setColor(cornerBackgroundColor);
+                        setStyle(Paint.Style.FILL);
+                    }});
+                }
+
+                @Override
+                public void setAlpha(int alpha) {}
+
+                @Override
+                public void setColorFilter(@Nullable ColorFilter colorFilter) {}
+
+                @Override
+                public int getOpacity() {
+                    return PixelFormat.OPAQUE;
+                }
+            };
+
+            setBackground(backgroundDrawable);
         } else {
             borderWidth = 0;
             borderColor = Color.BLACK;

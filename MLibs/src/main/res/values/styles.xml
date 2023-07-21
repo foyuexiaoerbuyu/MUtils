@@ -36,4 +36,10 @@
             <enum name="gone" value="2" />
         </attr>
     </declare-styleable>
+
+    <style name="BottomDialogAnim">
+        <item name="android:windowEnterAnimation">@anim/bottom_dialog_anim_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/bottom_dialog_anim_slide_down</item>
+    </style>
+
 </resources>

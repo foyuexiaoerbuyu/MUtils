@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="AlignTextView">
+    <declare-styleable name="MiAlignTextView">
         <attr name="align">
             <enum name="hortal" value="1" />
             <enum name="vercal" value="2" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="AlignTextView">
+        <attr name="alignOnlyOneLine" format="boolean"/>
     </declare-styleable>
 
     <!--支持圆角的TextView-->
@@ -61,6 +65,8 @@
         <attr name="rllTopRightRadius" format="dimension" />
         <attr name="rllBottomLeftRadius" format="dimension" />
         <attr name="rllBottomRightRadius" format="dimension" />
+        <attr name="rllCornerBackgroundColor" format="color" />
+
     </declare-styleable>
 
     <declare-styleable name="RadiusConstraintLayout">

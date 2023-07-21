@@ -8,7 +8,10 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GsonUtil {
 
@@ -45,6 +48,25 @@ public class GsonUtil {
         return "";
     }
 
+
+    public static <T> Map<String, Object> toMap(Class<T> clazz, String key) {
+        Type type = new TypeToken<Map<String, Object>>() {
+        }.getType();
+        Gson gson = new Gson();
+        return gson.fromJson(gson.toJson(clazz), type);
+    }
+
+
+    /**
+     * 获取JsonObject
+     *
+     * @param json
+     * @return
+     */
+    public static JsonObject parseJson(String json) {
+        JsonParser parser = new JsonParser();
+        return parser.parse(json).getAsJsonObject();
+    }
 
     public static JsonArray getJsonArray(JsonObject asJsonObject, String key) {
         if (!asJsonObject.get(key).isJsonNull()) {
