@@ -3,6 +3,7 @@ package cn.mvp.mlibs.weight;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
@@ -28,6 +29,7 @@ public class MiRoundCornerConstraintLayout extends ConstraintLayout {
     private Paint mPaint;
     private RectF mRectF;
     private Path mPath;
+    private int mBackgroundColor;
 
     public MiRoundCornerConstraintLayout(Context context) {
         this(context, null);
@@ -51,6 +53,7 @@ public class MiRoundCornerConstraintLayout extends ConstraintLayout {
         mTopRightCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclTopRightRadius, mCornerRadius);
         mBottomLeftCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclBottomLeftRadius, mCornerRadius);
         mBottomRightCornerRadius = typedArray.getDimension(R.styleable.RadiusConstraintLayout_rclBottomRightRadius, mCornerRadius);
+        mBackgroundColor = typedArray.getColor(R.styleable.RadiusConstraintLayout_rclBackgroundColor, Color.TRANSPARENT);
         typedArray.recycle();
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -65,6 +68,7 @@ public class MiRoundCornerConstraintLayout extends ConstraintLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         mPath.reset();
+        canvas.drawColor(mBackgroundColor);
         mRectF.set(mBorderWidth / 2, mBorderWidth / 2, getWidth() - mBorderWidth / 2, getHeight() - mBorderWidth / 2);
 
         mPath.addRoundRect(mRectF,

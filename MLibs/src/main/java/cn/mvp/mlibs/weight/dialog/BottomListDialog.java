@@ -1,4 +1,4 @@
-package cn.mvp.mlibs.weight;
+package cn.mvp.mlibs.weight.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

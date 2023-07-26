@@ -1,10 +1,9 @@
-package cn.mvp.mlibs.weight;
+package cn.mvp.mlibs.weight.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,13 @@ import android.view.WindowManager;
 import androidx.annotation.ColorRes;
 
 import cn.mvp.mlibs.R;
+import cn.mvp.mlibs.utils.UIUtils;
 
 /**
  * 底部弹出对话框
  */
 public class BottomDialog {
+    private final View mRootView;
     private Dialog dialog;
     private Context context;
     private int mLayoutResId;
@@ -30,6 +31,7 @@ public class BottomDialog {
     public BottomDialog(Context context, int layoutResId) {
         this.context = context;
         mLayoutResId = layoutResId;
+        mRootView = UIUtils.inflate(mLayoutResId);
     }
 
     public void showDialog(IClickCallBack iClickCallBack, int... clickIds) {
@@ -37,7 +39,7 @@ public class BottomDialog {
 
         dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(mLayoutResId);
+        dialog.setContentView(mRootView);
         // 设置弹框位置为底部
         Window window = dialog.getWindow();
         if (window != null) {
@@ -63,7 +65,7 @@ public class BottomDialog {
                 dialog.findViewById(clickId).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        iClickCallBack.click(clickId, v);
+                        iClickCallBack.click(clickId, v, mRootView);
                     }
                 });
             }
@@ -108,7 +110,10 @@ public class BottomDialog {
     }
 
     public interface IClickCallBack {
-        void click(int clickId, View clickView);
+        void click(int clickId, View clickView, View rootView);
     }
 
+    public View getRootView() {
+        return mRootView;
+    }
 }

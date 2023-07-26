@@ -55,4 +55,11 @@ public class MLibs {
             throw new NullPointerException("依赖库未进行初始化!!!");
         }
     }
+
+    /**
+     * @return 打包日期日期格式 MMddHHmmss
+     */
+    public static String getAarVersion() {
+        return " 版本名: " + BuildConfig.versionName + " 版本号: " + BuildConfig.versionCode + " 打包时间: " + BuildConfig.buideTime;
+    }
 }

@@ -1,7 +1,9 @@
 package cn.mvp.mlibs.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -203,6 +205,14 @@ public class UIUtils {
         int bottom = top + view.getHeight();
         Log.i("调试信息", "getViewPos:  " + left + " " + top + " " + right + " " + bottom + " ");
         return (left == 0 && top == 0 && right == 0 && bottom == 0);
+    }
+
+    /**
+     * @param activity 打开的Activity
+     * @return 是否横屏
+     */
+    public static boolean isLandscape(Activity activity) {
+        return activity.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
     }
 
     /*----------------提示消息start-----------------------*/

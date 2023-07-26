@@ -1,5 +1,6 @@
 package cn.mvp.mlibs.weight;
 
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -197,69 +198,85 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public static class BaseHolder extends RecyclerView.ViewHolder {
         private View mItemView;
+        private SparseArray<View> mViews;
 
         public BaseHolder(@NonNull View itemView) {
             super(itemView);
             mItemView = itemView;
+            mViews = new SparseArray<>();
+        }
+
+
+        private View getItemRootView() {
+            return mItemView;
+        }
+
+        private <T extends View> T getView(int viewId) {
+            View view = mViews.get(viewId);
+            if (view == null) {
+                view = mItemView.findViewById(viewId);
+                mViews.put(viewId, view);
+            }
+            return (T) view;
         }
 
         public BaseHolder setText(int id, String text) {
-            ((TextView) mItemView.findViewById(id)).setText(text);
+            ((TextView) getView(id)).setText(text);
             return this;
         }
 
         public BaseHolder setText(int id, int textId) {
-            ((TextView) mItemView.findViewById(id)).setText(UIUtils.getString(textId));
+            ((TextView) getView(id)).setText(UIUtils.getString(textId));
             return this;
         }
 
         public BaseHolder setTextColor(int id, int textColorId) {
-            ((TextView) mItemView.findViewById(id)).setTextColor(UIUtils.getColor(textColorId));
+            ((TextView) getView(id)).setTextColor(UIUtils.getColor(textColorId));
             return this;
         }
 
         public BaseHolder setTextSize(int id, int textSize) {
-            ((TextView) mItemView.findViewById(id)).setTextSize(textSize);
+            ((TextView) getView(id)).setTextSize(textSize);
             return this;
         }
 
         public BaseHolder setImageResource(int id, @DrawableRes int drawable) {
-            ((ImageView) mItemView.findViewById(id)).setImageResource(drawable);
+            ((ImageView) getView(id)).setImageResource(drawable);
             return this;
         }
 
         public BaseHolder setBackground(int id, @DrawableRes int drawableId) {
-            mItemView.findViewById(id).setBackground(UIUtils.getDrawable(drawableId));
+            getView(id).setBackground(UIUtils.getDrawable(drawableId));
             return this;
         }
 
         public BaseHolder setBackgroundColor(int id, @DrawableRes int color) {
-            mItemView.findViewById(id).setBackgroundColor(color);
+            getView(id).setBackgroundColor(color);
             return this;
         }
 
         public BaseHolder setBackgroundResource(int id, @DrawableRes int bgRes) {
-            mItemView.findViewById(id).setBackgroundResource(bgRes);
+            getView(id).setBackgroundResource(bgRes);
             return this;
         }
 
         public BaseHolder setVisibility(int id, boolean isVisibility) {
-            mItemView.findViewById(id).setVisibility(isVisibility ? View.VISIBLE : View.GONE);
+            getView(id).setVisibility(isVisibility ? View.VISIBLE : View.GONE);
             return this;
         }
 
         public BaseHolder setChecked(int id, boolean isVisibility) {
-            ((CheckBox) mItemView.findViewById(id)).setChecked(isVisibility);
+            ((CheckBox) getView(id)).setChecked(isVisibility);
             return this;
         }
 
         public BaseHolder setProgressMax(int id, int maxVal) {
-            ((ProgressBar) mItemView.findViewById(id)).setMax(maxVal);
+            ((ProgressBar) getView(id)).setMax(maxVal);
             return this;
         }
 
         public BaseHolder setProgress(int id, int maxVal) {
-            ((ProgressBar) mItemView.findViewById(id)).setProgress(maxVal);
+            ((ProgressBar) getView(id)).setProgress(maxVal);
             return this;
         }
 
@@ -269,13 +286,8 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public BaseHolder setOnClickListener(int id, View.OnClickListener onClickListener) {
-            mItemView.findViewById(id).setOnClickListener(onClickListener);
+            getView(id).setOnClickListener(onClickListener);
             return this;
-        }
-
-        public View getView(int id) {
-
-            return mItemView.findViewById(id);
         }
 
     }
