@@ -4,13 +4,20 @@ android {
     compileSdkVersion 33
     buildToolsVersion "29.0.3"
 
+    // 读取版本属性文件
+    def versionPropsFile = file('version.properties')
+    def versionProps = new Properties()
+    versionProps.load(new FileInputStream(versionPropsFile))
+
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "buideTime", "\"" + String.valueOf(versionProps.getProperty('buildTime')) + "\"")
+        buildConfigField("String", "versionName", "\"" + String.valueOf(versionProps.getProperty('versionName')) + "\"")
+        buildConfigField("String", "versionCode", "\"" + String.valueOf(versionProps.getProperty('versionCode')) + "\"")
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -26,10 +33,45 @@ android {
     }
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
-            def formattedTime = getFormattedTime()
-            outputFileName = "${project.name}-${variant.name}_${formattedTime}.aar"
+            outputFileName = "${project.name}-${variant.name}_${aarBuildTime}.aar"
         }
     }
+
+    tasks.whenTaskAdded { task ->
+        if (task.name == 'bundleReleaseAar') {
+            task.dependsOn updateVersionProperties
+        }
+    }
+    task updateVersionProperties {
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        // 获取当前的versionCode和versionName
+        def currentVersionCode = versionProps.getProperty('versionCode')
+        def currentVersionName = versionProps.getProperty('versionName')
+
+        // 将versionCode转换为整数并加1
+        def newVersionCode = Integer.parseInt(currentVersionCode) + 1
+
+        // 截取versionName前四位并追加到versionCode
+        def newVersionCodeWithSuffix = currentVersionName.substring(0, 4) + newVersionCode
+
+        ext.aarVersionCode = newVersionCode
+        ext.aarVersionName = newVersionCodeWithSuffix
+        ext.aarBuildTime = String.valueOf(new Date().format('MMddHHmmss'))
+
+
+        // 修改versionCode和versionName
+        versionProps.setProperty('versionName', newVersionCodeWithSuffix)
+        versionProps.setProperty('versionCode', String.valueOf(newVersionCode))
+        versionProps.setProperty('buildTime', String.valueOf(aarBuildTime))
+
+        // 保存修改后的version.properties文件
+        versionProps.store(versionPropsFile.newWriter(), null)
+        // 输出修改后的日志信息
+        println "Updated versionCode from $currentVersionCode to $newVersionCodeWithSuffix"
+        println "VersionName remains the same: $currentVersionName"
+    }
+
 }
 
 /*//将源码打包  为了保证引入的aar  包可以查看源码
