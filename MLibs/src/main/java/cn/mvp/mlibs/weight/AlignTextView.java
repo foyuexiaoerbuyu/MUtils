@@ -34,7 +34,7 @@ public class AlignTextView extends AppCompatTextView {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MiAlignTextView);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AlignTextView);
         alignOnlyOneLine = typedArray.getBoolean(R.styleable.AlignTextView_alignOnlyOneLine, false);
         typedArray.recycle();
         setTextColor(getCurrentTextColor());
