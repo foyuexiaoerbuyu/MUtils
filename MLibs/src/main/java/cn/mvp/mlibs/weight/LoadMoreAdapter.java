@@ -1,5 +1,6 @@
 package cn.mvp.mlibs.weight;
 
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.mvp.mlibs.R;
@@ -35,6 +37,7 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     public LoadMoreAdapter(int itemView, BindViewByData<T> bindViewByData) {
         mItemView = itemView;
         mBindViewByData = bindViewByData;
+        mDataList = new ArrayList<>();
     }
 
     /**
@@ -63,19 +66,26 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (position < mDataList.size() && holder instanceof ItemViewHolder) {
+        if (getItemViewType(position) == VIEW_TYPE_ITEM) {
             T data = mDataList.get(position);
             //绑定数据到项目视图
             ((ItemViewHolder) holder).bindData(data, position);
-        } else if (holder instanceof LoadingViewHolder && mOnLoadMoreListener != null) {
-            //显示加载进度条或旋转器
-            //你可以在这里自定义加载布局
-            if (!holder.itemView.canScrollVertically(1)) {
-                mIsMoreDataAvailable = false;
-            } else {
-                mOnLoadMoreListener.onLoadMore();
-            }
+        } else {
+            mOnLoadMoreListener.onLoadMore();
         }
+//        if (position < mDataList.size() && holder instanceof ItemViewHolder) {
+//            T data = mDataList.get(position);
+//            //绑定数据到项目视图
+//            ((ItemViewHolder) holder).bindData(data, position);
+//        } else if (holder instanceof LoadingViewHolder && mOnLoadMoreListener != null) {
+//            //显示加载进度条或旋转器
+//            //你可以在这里自定义加载布局
+//            if (!holder.itemView.canScrollVertically(1)) {
+//                mIsMoreDataAvailable = false;
+//            } else {
+//                mOnLoadMoreListener.onLoadMore();
+//            }
+//        }
     }
 
     @Override
@@ -106,11 +116,10 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
      * @deprecated
      */
     public void addDatas(List<T> datas, boolean moreDataAvailable) {
-        setMoreDataAvailable(moreDataAvailable);
         if (datas == null) return;
-        int startPosition = (mIsMoreDataAvailable ? mDataList.size() - 1 : mDataList.size());
+        setMoreDataAvailable(moreDataAvailable);
         mDataList.addAll(datas);
-        notifyItemRangeInserted(startPosition, datas.size());
+        notifyItemRangeInserted(mDataList.size(), datas.size());
     }
 
     /**
@@ -121,18 +130,15 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (datas.size() < pageSize) {
             setMoreDataAvailable(false);
         }
-        int startPosition = (mIsMoreDataAvailable ? mDataList.size() - 1 : mDataList.size());
         mDataList.addAll(datas);
-        notifyItemRangeInserted(startPosition, datas.size());
+        notifyItemRangeInserted(mDataList.size(), datas.size());
     }
 
     public void setDatas(List<T> dataList, int pageSize) {
         if (dataList == null) return;
         mDataList.clear();
         mDataList.addAll(dataList);
-        if (dataList.size() < pageSize) {
-            setMoreDataAvailable(false);
-        }
+        setMoreDataAvailable(dataList.size() < pageSize);
         notifyItemRangeInserted(0, dataList.size());
     }
 
