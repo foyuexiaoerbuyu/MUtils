@@ -1,6 +1,5 @@
 package cn.mvp.mlibs.weight;
 
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -70,7 +70,7 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
             T data = mDataList.get(position);
             //绑定数据到项目视图
             ((ItemViewHolder) holder).bindData(data, position);
-        } else {
+        } else if (mDataList.size() > 0) {
             mOnLoadMoreListener.onLoadMore();
         }
 //        if (position < mDataList.size() && holder instanceof ItemViewHolder) {
@@ -99,7 +99,7 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-        mIsMoreDataAvailable = true;
+        mIsMoreDataAvailable = false;
         mOnLoadMoreListener = onLoadMoreListener;
     }
 
@@ -135,12 +135,25 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void setDatas(List<T> dataList, int pageSize) {
+        setRefreshingComplete();
         if (dataList == null) return;
         mDataList.clear();
         mDataList.addAll(dataList);
         setMoreDataAvailable(dataList.size() < pageSize);
-        notifyItemRangeInserted(0, dataList.size());
+        notifyDataSetChanged();
+//        notifyItemRangeInserted(0, dataList.size());
     }
+
+//    /** 暂时不用
+//     * @return 数据是否已经占满全屏
+//     */
+//    public boolean isFullScreen() {
+//        // Your code here
+//        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+////        int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+//        int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+//        return lastVisiblePosition >= getItemCount() - 1;
+//    }
 
     public T getItem(int pos) {
         return mDataList.get(pos);
@@ -317,9 +330,11 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public void setRefreshingComplete() {
-        mSwipeRefreshLayout.setRefreshing(false);
-        setMoreDataAvailable(true);
-        notifyDataSetChanged();
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+//        setMoreDataAvailable(true);
+//        notifyDataSetChanged();
     }
 
     public void setRefreshing(boolean isRefreshing) {
