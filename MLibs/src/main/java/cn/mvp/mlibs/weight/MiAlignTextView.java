@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import cn.mvp.mlibs.R;
@@ -22,7 +23,8 @@ import cn.mvp.mlibs.R;
  * https://download.csdn.net/download/JczmDeveloper/13206695
  * 两端分散对齐TextView
  * Created by wjs on 2018/9/3.
- */@SuppressLint("AppCompatCustomView")
+ */
+@SuppressLint("AppCompatCustomView")
 public class MiAlignTextView extends TextView {
 
     private Align mAlign = Align.HORTAL;
@@ -141,4 +143,14 @@ public class MiAlignTextView extends TextView {
 
     }
 
+    /**
+     * 根据指定汉字数量修改宽度
+     *
+     * @param words 汉字宽度数量
+     */
+    public void modifyWidthByWords(int words) {
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        layoutParams.width = (int) (getPaint().measureText("汉") * words + getPaddingLeft() + getPaddingRight());
+        setLayoutParams(layoutParams);
+    }
 }

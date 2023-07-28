@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -19,6 +20,7 @@ import cn.mvp.mlibs.R;
 public class AlignTextView extends AppCompatTextView {
 
     private boolean alignOnlyOneLine;
+    private int mAnInt;
 
     public AlignTextView(Context context) {
         this(context, null);
@@ -36,6 +38,7 @@ public class AlignTextView extends AppCompatTextView {
     private void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AlignTextView);
         alignOnlyOneLine = typedArray.getBoolean(R.styleable.AlignTextView_alignOnlyOneLine, false);
+        mAnInt = typedArray.getInt(R.styleable.AlignTextView_wordsNumber, 0);
         typedArray.recycle();
         setTextColor(getCurrentTextColor());
     }
@@ -72,6 +75,9 @@ public class AlignTextView extends AppCompatTextView {
                 this.drawScaledText(canvas, line, lineBaseline, width);
             }
         }
+        if (mAnInt > 0) {
+            modifyWidthByWords(mAnInt);
+        }
 
     }
 
@@ -95,5 +101,16 @@ public class AlignTextView extends AppCompatTextView {
             canvas.drawText(c, x, baseLineY, this.getPaint());
             x += cw + d;
         }
+    }
+
+    /**
+     * 根据指定汉字数量修改宽度
+     *
+     * @param words 汉字宽度数量
+     */
+    public void modifyWidthByWords(int words) {
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        layoutParams.width = (int) (getPaint().measureText("汉") * words + getPaddingLeft() + getPaddingRight());
+        setLayoutParams(layoutParams);
     }
 }

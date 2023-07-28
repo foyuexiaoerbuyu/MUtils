@@ -10,6 +10,7 @@
 
     <declare-styleable name="AlignTextView">
         <attr name="alignOnlyOneLine" format="boolean"/>
+        <attr name="wordsNumber" format="integer"/>
     </declare-styleable>
 
     <!--支持圆角的TextView-->
