@@ -406,7 +406,7 @@ public class DataTestUtils {
     }
 
     public static class DataTestUser {
-        String name;
+        String userName;
         String sex;
         String date;
         String depName;
@@ -419,7 +419,7 @@ public class DataTestUtils {
 
         public DataTestUser(String name, String sex, String date, String depName, String phoneNumber,
                             String idCard, String ip, String address, boolean nextBoolean, int index) {
-            this.name = name;
+            this.userName = name;
             this.sex = sex;
             this.date = date;
             this.depName = depName;
@@ -447,12 +447,12 @@ public class DataTestUtils {
             return val1;
         }
 
-        public String getName() {
-            return name;
+        public String getUserName() {
+            return userName;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setUserName(String userName) {
+            this.userName = userName;
         }
 
         public String getSex() {

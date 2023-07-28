@@ -2,8 +2,15 @@ package cn.mvp.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+
 import androidx.core.content.ContextCompat;
+
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.hjq.permissions.OnPermission;
@@ -12,6 +19,7 @@ import com.hjq.permissions.XXPermissions;
 
 import java.util.List;
 
+import cn.mvp.MainActivity;
 import cn.mvp.mlibs.utils.UIUtils;
 
 public class PermissionsUtils {
@@ -60,4 +68,17 @@ public class PermissionsUtils {
                 ContextCompat.checkSelfPermission(activity, Permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED;
     }
 
+    /**
+     * 修改系统设置
+     * @return 是否有修改系统设置权限
+     */
+    public static boolean requestWriteSettingsPermissions(Context context, boolean requestPermission) {
+        if (requestPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(context)) {
+            // 如果没有WRITE_SETTINGS权限，则发起权限请求
+            Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            context.startActivity(intent);
+        }
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.System.canWrite(context);
+    }
 }

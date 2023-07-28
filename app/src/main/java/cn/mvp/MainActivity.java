@@ -1,13 +1,18 @@
 package cn.mvp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -19,6 +24,7 @@ import com.king.zxing.util.CodeUtils;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
 
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
@@ -29,9 +35,10 @@ import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
-import cn.mvp.other.BluetoothUtil;
+import cn.mvp.mlibs.weight.adapter.base.ViewHolder;
+import cn.mvp.mlibs.weight.adapter.wrapper.LoadMoreWrapper;
+import cn.mvp.test.Mrv;
 import cn.mvp.test.TestActivity;
-import cn.mvp.utils.PermissionsUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,22 +51,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PermissionsUtils.requestDefPermissions(this);
+//        PermissionsUtils.requestDefPermissions(this);
         findViewById(R.id.main_btn_qr_code).setOnClickListener(this);
         findViewById(R.id.main_btn_creat_qr_code).setOnClickListener(this);
         mTv = findViewById(R.id.main_tv);
         findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(this);
         findViewById(R.id.main_btn_chat).setOnClickListener(this);
         findViewById(R.id.main_btn_base_info).setOnClickListener(this);
+        findViewById(R.id.main_btn_base_info).setOnClickListener(this);
 //        Chat2Activity.open(this);
 
         findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
         findViewById(R.id.btn2).setOnClickListener(v -> {
-//            TestActivity.open(MainActivity.this);
+            TestActivity.open(MainActivity.this);
 //            ClipboardActivity.open(this);
 //            UdpClient.getInstance().sendBroadcast("21212");
-            BluetoothUtil bluetoothUtil = new BluetoothUtil();
-            bluetoothUtil.init(this);
+//            BluetoothUtil bluetoothUtil = new BluetoothUtil();
+//            bluetoothUtil.init(this);
         });
 
         // 处理接收到的Intent
