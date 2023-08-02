@@ -260,6 +260,18 @@ public class StringUtil {
     }
 
     /**
+     * @return 字符串或空字符串(返回第一个不为空的字符串)
+     */
+    public static String str(String... strs) {
+        for (String str : strs) {
+            if (str != null) {
+                return str;
+            }
+        }
+        return "";
+    }
+
+    /**
      * @return 字符串或空字符串
      */
     public static String strNull(String value) {

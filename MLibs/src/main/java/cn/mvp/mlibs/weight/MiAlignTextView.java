@@ -24,6 +24,7 @@ import cn.mvp.mlibs.R;
  * 两端分散对齐TextView
  * Created by wjs on 2018/9/3.
  */
+@Deprecated
 @SuppressLint("AppCompatCustomView")
 public class MiAlignTextView extends TextView {
 

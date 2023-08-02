@@ -70,7 +70,8 @@ public class MiCheckBox extends AppCompatCheckBox {
         }
     }
 
-    //现在，当MiCheckBox的文字为空时，ButtonDrawable应该会居中显示。请注意，这个实现假设MiCheckBox的宽度和高度足够容纳ButtonDrawable。如果不是这样，可能需要调整MiCheckBox的大小或ButtonDrawable的大小以适应居中显示。
+    //现在，当MiCheckBox的文字为空时，ButtonDrawable应该会居中显示。请注意，这个实现假设MiCheckBox的宽度和高度足够容纳ButtonDrawable。
+    // 如果不是这样，可能需要调整MiCheckBox的大小或ButtonDrawable的大小以适应居中显示。
     private void updateButtonDrawable() {
         setBackground(null);
         if (isChecked()) {

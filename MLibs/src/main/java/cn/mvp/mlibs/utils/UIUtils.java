@@ -179,6 +179,29 @@ public class UIUtils {
     }
 
     /**
+     * 设置透明度（0~255之间的值，0为完全透明，255为不透明）
+     *
+     * @param view 目标view
+     */
+    public static void setAlpha(View view, float alpha) {
+        view.setAlpha(alpha);  // 0.5f: 设置透明度为50%
+    }
+
+    /**
+     * 修改View的背景颜色和透明度
+     *
+     * @param view  要修改的View
+     * @param color 背景颜色
+     * @param alpha 透明度，取值范围0-255，0表示完全透明，255表示完全不透明
+     */
+    public static void changeViewBgColorAlpha(View view, int color, int alpha) {
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        view.setBackgroundColor(Color.argb(alpha, red, green, blue));
+    }
+
+    /**
      * @param view 目标view
      * @return 目标view四个角屏幕坐标
      */

@@ -19,6 +19,8 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.DrawableRes;
+
 
 /**
  * 使用方法：在Activity里，通过某个点击事件，触发
@@ -235,5 +237,13 @@ public class ImageUtils {
                 dialog.cancel();
             }
         });
+    }
+
+    public static void checkImgSrc(ImageView imageView, @DrawableRes int selImg, @DrawableRes int unSelImg, boolean isSel) {
+        imageView.setImageResource(isSel ? selImg : unSelImg);
+    }
+
+    public static void checkImgBg(ImageView imageView, @DrawableRes int selImg, @DrawableRes int unSelImg, boolean isSel) {
+        imageView.setBackground(isSel ? UIUtils.getDrawable(selImg) : UIUtils.getDrawable(unSelImg));
     }
 }

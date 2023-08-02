@@ -16,6 +16,12 @@ import cn.mvp.mlibs.R;
 /**
  * https://www.jianshu.com/p/7241ed34346a
  * app:alignOnlyOneLine="true"
+ * app:wordsNumber="7"
+ * <p>
+ * https://blog.csdn.net/qq_35698774/article/details/82344830
+ * https://freewechat.com/a/MzAxMTI4MTkwNQ==/2650826772/1
+ * http://www.demodashi.com/demo/16909.html
+ * https://download.csdn.net/download/JczmDeveloper/13206695
  */
 public class AlignTextView extends AppCompatTextView {
 
