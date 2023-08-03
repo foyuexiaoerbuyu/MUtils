@@ -36,6 +36,7 @@ public class GsonUtil {
      * @return 返回key对应的值
      */
     public static String parseJson(String jsonStr, String key) {
+        //JsonParser.parseString(String.valueOf(obj)).
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = parser.parse(jsonStr).getAsJsonObject();
         // 判断字段是否存在

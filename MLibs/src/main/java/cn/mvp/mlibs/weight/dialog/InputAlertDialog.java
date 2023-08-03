@@ -3,6 +3,7 @@ package cn.mvp.mlibs.weight.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class InputAlertDialog extends AlertDialog implements View.OnClickListene
     private String mTitle;
     private String mText;
     private String mHintText;
+    private int mInputType = InputType.TYPE_CLASS_TEXT;
 
     public InputAlertDialog(Context context) {
         super(context);
@@ -43,21 +45,25 @@ public class InputAlertDialog extends AlertDialog implements View.OnClickListene
         if (this.getWindow() != null) {
             this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         }
-        this.setCancelable(false);
         mBtnCancel.setOnClickListener(this);
         mBtnOk.setOnClickListener(this);
         mTvTitle.setText(mTitle);
         mEditText.setText(mText);
         mEditText.setHint(mHintText);
+        mEditText.setInputType(mInputType);
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.view_input_dialog_btn_cancel) {
-            mOnCancelClickListener.click();
+            if (mOnCancelClickListener != null) {
+                mOnCancelClickListener.click();
+            }
         } else if (id == R.id.view_input_dialog_btn_ok) {
-            mOnOkClickListener.click(mEditText.getText().toString());
+            if (mOnOkClickListener != null) {
+                mOnOkClickListener.click(mEditText.getText().toString());
+            }
         }
         this.dismiss();
     }
@@ -79,6 +85,29 @@ public class InputAlertDialog extends AlertDialog implements View.OnClickListene
 
     public void setHint(String hintText) {
         mHintText = hintText;
+    }
+
+    /**
+     * InputType.TYPE_CLASS_TEXT`：普通文本输入。可以输入任意字符。
+     * InputType.TYPE_CLASS_NUMBER`：数字输入。只能输入数字字符。
+     * InputType.TYPE_CLASS_PHONE`：电话号码输入。可以输入数字、加号、减号、括号和空格等字符。
+     * InputType.TYPE_CLASS_DATETIME`：日期和时间输入。可以输入日期和时间格式的字符。
+     * InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS`：电子邮件地址输入。可以输入电子邮件地址格式的字符。
+     * InputType.TYPE_TEXT_VARIATION_PASSWORD`：密码输入。输入的字符会被隐藏。
+     * InputType.TYPE_NUMBER_VARIATION_PASSWORD`：数字密码输入。输入的数字会被隐藏。
+     * InputType.TYPE_TEXT_FLAG_CAP_WORDS`：自动将单词的首字母大写。
+     * InputType.TYPE_TEXT_FLAG_CAP_SENTENCES`：自动将句子的首字母大写。
+     * InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS`：自动将所有字符大写。
+     * InputType.TYPE_TEXT_FLAG_AUTO_CORRECT`：启用自动纠错功能。
+     * InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE`：启用自动完成功能。
+     * InputType.TYPE_TEXT_FLAG_MULTI_LINE`：多行文本输入。
+     * InputType.TYPE_NUMBER_FLAG_DECIMAL`：允许输入小数。
+     * InputType.TYPE_NUMBER_FLAG_SIGNED`：允许输入带正负号的数字。
+     *
+     * @param inputType
+     */
+    public void setInputType(int inputType) {
+        mInputType = inputType;
     }
 
     public void setEditText(String text) {
