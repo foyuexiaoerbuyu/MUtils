@@ -26,6 +26,7 @@ public class ShortcutSettingActy extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_shortcut_setting_acty);
 
     }

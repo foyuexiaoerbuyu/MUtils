@@ -67,12 +67,7 @@ public class TestActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        dataUsers.addAll(DataTestUtils.getDataUsers(12));
-//                        mAdapter.setMoreDataAvailable(false);
                         mAdapter.addDatas(DataTestUtils.getDataUsers(3), 2);
-//                        mAdapter.notifyDataSetChanged();
-//                        mAdapter.setMoreDataAvailable(false);
-//                        mAdapter.notifyDataSetChanged();
                     }
                 }, 300);
             }

@@ -1,9 +1,7 @@
 package cn.mvp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +10,6 @@ import android.os.Environment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,7 +21,6 @@ import com.king.zxing.util.CodeUtils;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
-import java.util.ArrayList;
 
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
@@ -35,9 +31,7 @@ import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
-import cn.mvp.mlibs.weight.adapter.base.ViewHolder;
-import cn.mvp.mlibs.weight.adapter.wrapper.LoadMoreWrapper;
-import cn.mvp.test.Mrv;
+import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
 import cn.mvp.test.TestActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -58,12 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(this);
         findViewById(R.id.main_btn_chat).setOnClickListener(this);
         findViewById(R.id.main_btn_base_info).setOnClickListener(this);
-        findViewById(R.id.main_btn_base_info).setOnClickListener(this);
-//        Chat2Activity.open(this);
+        findViewById(R.id.main_btn_base_tv_test).setOnClickListener(this);
 
         findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
         findViewById(R.id.btn2).setOnClickListener(v -> {
-            TestActivity.open(MainActivity.this);
 //            ClipboardActivity.open(this);
 //            UdpClient.getInstance().sendBroadcast("21212");
 //            BluetoothUtil bluetoothUtil = new BluetoothUtil();
@@ -80,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 handleSendText(intent); // 处理纯文本的分享内容
             }
         }
+
         TestActivity.open(this);
     }
 
@@ -123,6 +116,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    public void print(String msg) {
+        mTv.setText(msg);
+    }
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.main_btn_qr_code) {
@@ -148,33 +146,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == R.id.main_btn_base_info) {//获取手机基本信息
             String deviceInfo = DeviceUtils.getDeviceInfo();
             mTv.setText(deviceInfo);
+        } else if (v.getId() == R.id.main_btn_base_tv_test) {//测试按钮
+            TestActivity.open(this);
         }
-
-    }
-
-//    List<String> lis = new ArrayList<>();
-//    @Override
-//    public boolean dispatchTouchEvent(MotionEvent ev) {
-//        switch (ev.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                Log.i("调试信息", "dispatchTouchEvent:按下  " + ev.getX() + " " + ev.getY());
-//                lis.add("按下: " + ev.getX() + " " + ev.getY());
-//                //有按下动作时取消定时
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                Log.i("调试信息", "dispatchTouchEvent:滑动  " + ev.getX() + " " + ev.getY());
-//                lis.add("滑动: " + ev.getX() + " " + ev.getY());
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                Log.i("调试信息", "dispatchTouchEvent:抬起  " + ev.getX() + " " + ev.getY());
-//                lis.add("抬起: " + ev.getX() + " " + ev.getY());
-//                //抬起时启动定时
-//                break;
-//        }
-//        return super.dispatchTouchEvent(ev);
-//    }
-
-    public void print(String msg) {
-        mTv.setText(msg);
     }
 }

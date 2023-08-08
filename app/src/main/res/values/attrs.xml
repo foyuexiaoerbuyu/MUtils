@@ -13,4 +13,9 @@
         <attr name="barWidth" format="dimension" />
         <attr name="linearProgress" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="CheckableImageView">
+        <attr name="checked" format="boolean" />
+        <attr name="checkedImage" format="reference" />
+        <attr name="uncheckedImage" format="reference" />
+    </declare-styleable>
 </resources>

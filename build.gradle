@@ -10,6 +10,7 @@ buildscript {
         google()
         mavenCentral() // add repository
         maven { url 'https://jitpack.io' }
+        maven { url "https://gitee.com/AbnerAndroid/almighty/raw/master" }
 
     }
     dependencies {
@@ -29,6 +30,15 @@ buildscript {
             def formattedDate = date.format('MMddHHmmss')
             return formattedDate
         }
+
+        // 默认版本号为 1.0.0
+        aarVersionCode = 1
+        // 默认版本名为 1.0.0
+        aarVersionName = "1.0.0"
+        //打包时间
+        aarBuildTime = getFormattedTime
+
+
     }
 }
 
@@ -44,14 +54,10 @@ allprojects {
         google()
         mavenCentral() // add repository
 
+        maven { url "https://gitee.com/AbnerAndroid/almighty/raw/master" }
+
     }
 }
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-ext {
-    // 默认版本号为 1.0.0
-    aarVersionCode = 1
-    // 默认版本名为 1.0.0
-    aarVersionName = "1.0.0"
 }

@@ -54,6 +54,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="获取手机基本信息" />
+
+            <Button
+                android:id="@+id/main_btn_base_tv_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试按钮" />
         </com.google.android.flexbox.FlexboxLayout>
 
 
@@ -104,29 +110,6 @@
                 android:src="@drawable/ic_launcher"
                 android:text="二维码数据" />
 
-            <cn.mvp.mlibs.weight.AlignTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1212二维码数据"
-                app:alignOnlyOneLine="true" />
-
-            <cn.mvp.mlibs.weight.AlignTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1212二维码数据1"
-                app:alignOnlyOneLine="true" />
-
-            <cn.mvp.mlibs.weight.AlignTextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="1212二维码数据"
-                app:alignOnlyOneLine="true" />
-
-            <TextView
-                android:id="@+id/main_tv_test"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="你好吗" />
         </LinearLayout>
     </ScrollView>
 
