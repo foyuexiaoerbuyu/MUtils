@@ -344,8 +344,16 @@ public class CommonTopBar extends FrameLayout {
         return mRightTv;
     }
 
+    public ImageView getRightImg() {
+        return mRightImg;
+    }
+
     public TextView getLeftTv() {
         return mLeftTv;
+    }
+
+    public ImageView getLeftImg() {
+        return mLeftImg;
     }
 
     /**

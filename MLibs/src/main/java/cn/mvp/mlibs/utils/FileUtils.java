@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -71,7 +72,8 @@ public class FileUtils {
             }
             return fileContent.toString();
         } catch (IOException e) {
-//            throw new RuntimeException("IOException", e);
+            e.printStackTrace();
+            Log.i("调试信息", "读取文件异常", e);
             return null;
         } finally {
             IOUtils.close(reader);
@@ -98,10 +100,11 @@ public class FileUtils {
             IOUtils.close(fileWriter);
             return true;
         } catch (IOException e) {
-            throw new RuntimeException("IOException occurred. ", e);
+            e.printStackTrace();
         } finally {
             IOUtils.close(fileWriter);
         }
+        return false;
     }
 
     /**
@@ -172,14 +175,14 @@ public class FileUtils {
             }
             o.flush();
             return true;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("FileNotFoundException", e);
-        } catch (IOException e) {
-            throw new RuntimeException("IOException", e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("调试信息", "写入文件异常:  ", e);
         } finally {
             IOUtils.close(o);
             IOUtils.close(is);
         }
+        return false;
     }
 
 

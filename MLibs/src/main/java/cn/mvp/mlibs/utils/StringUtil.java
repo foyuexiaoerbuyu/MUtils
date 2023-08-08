@@ -277,6 +277,7 @@ public class StringUtil {
     public static boolean equalsIgnoreCase(final String s1, final String s2) {
         return s1 == null ? s2 == null : s1.equalsIgnoreCase(s2);
     }
+
     /**
      * @return 字符串或空字符串
      */
@@ -356,6 +357,20 @@ public class StringUtil {
 
     public interface IReadLin {
         void readLin(String lin);
+    }
+
+    public static String subStr(String str, int index) {
+        if (str == null || str.length() < index) {
+            return str;
+        }
+        return str.substring(0, index);
+    }
+
+    public static String subStr(String str, int startIndex, int endIndex) {
+        if (str == null || str.length() < endIndex || startIndex > endIndex) {
+            return str;
+        }
+        return str.substring(startIndex, endIndex);
     }
 
 }
