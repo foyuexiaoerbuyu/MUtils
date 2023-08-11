@@ -12,6 +12,36 @@
     <!--        android:layout_width="match_parent"-->
     <!--        android:layout_height="match_parent"-->
     <!--        android:scrollbars="vertical" />-->
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/test_btn_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="all" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/test_btn_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="single" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/test_btn_single1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="单选" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/test_btn_all1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="多选" />
+    </com.google.android.flexbox.FlexboxLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/refresh"

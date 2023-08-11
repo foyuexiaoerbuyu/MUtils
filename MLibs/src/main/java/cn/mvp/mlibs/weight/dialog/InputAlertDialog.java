@@ -16,7 +16,7 @@ import cn.mvp.mlibs.utils.UIUtils;
 /**
  * Created by AaronPasi on 2017/9/16.
  */
-public class InputAlertDialog extends AlertDialog implements View.OnClickListener {
+public class InputAlertDialog extends AlertDialog {
     private EditText mEditText;
     private Button mBtnCancel, mBtnOk;
     private Context mContext;
@@ -45,27 +45,19 @@ public class InputAlertDialog extends AlertDialog implements View.OnClickListene
         if (this.getWindow() != null) {
             this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         }
-        mBtnCancel.setOnClickListener(this);
-        mBtnOk.setOnClickListener(this);
-        mTvTitle.setText(mTitle);
-        mEditText.setText(mText);
-        mEditText.setHint(mHintText);
-        mEditText.setInputType(mInputType);
-    }
-
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.view_input_dialog_btn_cancel) {
-            if (mOnCancelClickListener != null) {
-                mOnCancelClickListener.click();
-            }
-        } else if (id == R.id.view_input_dialog_btn_ok) {
-            if (mOnOkClickListener != null) {
+        mBtnCancel.setOnClickListener(v -> {
+            if (mOnCancelClickListener != null) mOnCancelClickListener.click();
+            dismiss();
+        });
+        mBtnOk.setOnClickListener(v -> {
+            if (mOnOkClickListener != null)
                 mOnOkClickListener.click(mEditText.getText().toString());
-            }
-        }
-        this.dismiss();
+            dismiss();
+        });
+        if (mTitle != null) mTvTitle.setText(mTitle);
+        if (mText != null) mEditText.setText(mText);
+        if (mHintText != null) mEditText.setHint(mHintText);
+        mEditText.setInputType(mInputType);
     }
 
     @Override

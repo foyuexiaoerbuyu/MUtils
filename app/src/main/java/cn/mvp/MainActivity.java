@@ -21,6 +21,8 @@ import com.king.zxing.util.CodeUtils;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
@@ -31,7 +33,9 @@ import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
+import cn.mvp.mlibs.weight.dialog.BottomListDialog;
 import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
+import cn.mvp.mlibs.weight.ent.Item;
 import cn.mvp.test.TestActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -72,8 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 handleSendText(intent); // 处理纯文本的分享内容
             }
         }
-
-        TestActivity.open(this);
     }
 
     private void handleSendText(Intent intent) {
@@ -147,7 +149,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String deviceInfo = DeviceUtils.getDeviceInfo();
             mTv.setText(deviceInfo);
         } else if (v.getId() == R.id.main_btn_base_tv_test) {//测试按钮
-            TestActivity.open(this);
+//            TestActivity.open(this);
+            InputAlertDialog dialog = new InputAlertDialog(this);
+            dialog.setOkClick(inputStr -> {
+
+            });
+            dialog.show();
         }
     }
 }

@@ -3,24 +3,25 @@ package cn.mvp.test;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.mvp.R;
-import cn.mvp.mlibs.other.DataTestUtils;
-import cn.mvp.mlibs.weight.LoadMoreAdapter;
+import cn.mvp.mlibs.weight.adapter.MultiItemTypeAdapter;
+import cn.mvp.mlibs.weight.adapter.SelectAdapter;
+import cn.mvp.mlibs.weight.adapter.base.ItemViewDelegate;
+import cn.mvp.mlibs.weight.adapter.base.ViewHolder;
 
 public class TestActivity extends AppCompatActivity {
 
-    private LoadMoreAdapter<DataTestUtils.DataTestUser> mAdapter;
 
     public static void open(Context context) {
         Intent starter = new Intent(context, TestActivity.class);
@@ -32,57 +33,93 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        initData();
-        initView();
+        RecyclerView recyclerView = findViewById(R.id.refresh);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-    }
+        List<ItemModel> itemList = new ArrayList<>();
+        itemList.add(new ItemModel("Item 1"));
+        itemList.add(new ItemModel("Item 2"));
+        itemList.add(new ItemModel("Item 3"));
+        itemList.add(new ItemModel("Item 4"));
 
-    private List<String> mDataList;
+        SelectAdapter<ItemModel> adapter = new SelectAdapter<>(this, itemList);
 
-    private void initData() {
-        mDataList = new ArrayList<>();
-        for (int i = 0; i < 13; i++) {
-            mDataList.add("Item " + i);
-        }
-    }
-
-    private void initView() {
-//        CommonAdapter<String> adapter = new CommonAdapter<String>(this, R.layout.list_item, mDataList) {
-//            @Override
-//            protected void convert(ViewHolder holder, String s, int position) {
-//                holder.setText(android.R.id.text1, s);
-//            }
-//        };
-
-        ArrayList<DataTestUtils.DataTestUser> dataUsers = DataTestUtils.getDataUsers(15);
-        mAdapter = new LoadMoreAdapter<>(R.layout.list_item, new LoadMoreAdapter.BindViewByData<DataTestUtils.DataTestUser>() {
+        adapter.addItemViewDelegate(new ItemViewDelegate<ItemModel>() {
             @Override
-            public void bindView(LoadMoreAdapter.BaseHolder holder, View itemView, DataTestUtils.DataTestUser data, int postion) {
-                holder.setText(android.R.id.text1, data.getUserName());
+            public int getItemViewLayoutId() {
+                return R.layout.item_layout;
             }
-        });
-        mAdapter.setOnLoadMoreListener(new LoadMoreAdapter.OnLoadMoreListener() {
+
             @Override
-            public void onLoadMore() {
-                new Handler().postDelayed(new Runnable() {
+            public boolean isForViewType(ItemModel item, int position) {
+                //什么情况下显示这个布局
+                return true;
+            }
+
+            @Override
+            public void convert(ViewHolder holder, ItemModel item, int position) {
+                holder.setText(R.id.tv_title, item.getTitle());
+                holder.setChecked(R.id.checkbox_item, item.isSelected());
+
+                holder.getConvertView().setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void run() {
-                        mAdapter.addDatas(DataTestUtils.getDataUsers(3), 2);
+                    public void onClick(View v) {
+                        adapter.toggleSelection(position);
                     }
-                }, 300);
+                });
             }
         });
-
-        RecyclerView refresh = findViewById(R.id.refresh);
-        refresh.setLayoutManager(new LinearLayoutManager(this));
-        refresh.setAdapter(mAdapter);
-        mAdapter.addSwipeRefreshToRecyclerView(refresh, new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mAdapter.setDatas(DataTestUtils.getDataUsers(13), 22);
-            }
+        recyclerView.setAdapter(adapter);
+        findViewById(R.id.test_btn_single1).setOnClickListener(v -> {
+            //禁用多选
+            adapter.disableMultiSelect();
+        });
+        findViewById(R.id.test_btn_all1).setOnClickListener(v -> {
+            // 启用多选
+            adapter.enableMultiSelect();
         });
 
-        mAdapter.setDatas(dataUsers, 40);
+        AppCompatButton test_btn_single = findViewById(R.id.test_btn_single);
+        AppCompatButton test_btn_all = findViewById(R.id.test_btn_all);
+
+        test_btn_all.setOnClickListener(v -> {
+            adapter.selectAll();
+        });
+
+        test_btn_single.setOnClickListener(v -> {
+            adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                    adapter.clearSelection();
+                    adapter.toggleSelection(position);
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder viewHolder, int i) {
+                    return false;
+                }
+            });
+        });
+
+        // 全选
+        /*
+        adapter.selectAll();
+        */
+
+        // 反选
+        /*
+        adapter.selectInverse();
+        */
+
+        // 获取选中的项的数量
+        /*
+        int selectedCount = adapter.getSelectedItemCount();
+        */
+
+        // 获取选中的项的位置
+        /*
+        List<Integer> selectedPositions = adapter.getSelectedPositions();
+        */
     }
+
 }
