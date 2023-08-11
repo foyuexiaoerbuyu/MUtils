@@ -467,8 +467,8 @@ public class DeviceUtils {
         DisplayMetrics metrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(metrics);
 
-        phnInfo.append("\n屏幕宽: ").append(metrics.widthPixels);
-        phnInfo.append("\n屏幕高: ").append(metrics.heightPixels);
+        phnInfo.append("\n屏幕宽(px): ").append(metrics.widthPixels);
+        phnInfo.append("\n屏幕高(px): ").append(metrics.heightPixels);
         phnInfo.append("\n屏幕密度: ").append(metrics.density);
         phnInfo.append("\n屏幕密度dpi: ").append(metrics.densityDpi);
 

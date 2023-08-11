@@ -9,8 +9,8 @@
     </declare-styleable>
 
     <declare-styleable name="AlignTextView">
-        <attr name="alignOnlyOneLine" format="boolean"/>
-        <attr name="wordsNumber" format="integer"/>
+        <attr name="alignOnlyOneLine" format="boolean" />
+        <attr name="wordsNumber" format="integer" />
     </declare-styleable>
 
     <!--支持圆角的TextView-->
@@ -97,5 +97,65 @@
         <attr name="topRightRadius" format="dimension" />
         <attr name="bottomLeftRadius" format="dimension" />
         <attr name="bottomRightRadius" format="dimension" />
+    </declare-styleable>
+
+
+    <declare-styleable name="OptionBarView">
+        <attr name="title" format="string" />
+        <attr name="title_size" format="dimension" />
+        <attr name="title_color" format="color" />
+        <attr name="left_src" format="reference|color" />
+        <attr name="left_text" format="string" />
+        <attr name="left_text_size" format="dimension" />
+        <attr name="left_src_width" format="dimension" />
+        <attr name="left_src_height" format="dimension" />
+        <attr name="left_image_margin_left" format="dimension" />
+        <attr name="left_text_margin_left" format="dimension" />
+        <attr name="left_image_margin_right" format="dimension" />
+        <attr name="left_text_color" format="color" />
+        <attr name="right_src" format="reference|color" />
+        <attr name="right_text" format="string" />
+        <attr name="right_text_size" format="dimension" />
+        <attr name="right_src_width" format="dimension" />
+        <attr name="right_src_height" format="dimension" />
+        <attr name="right_view_margin_left" format="dimension" />
+        <attr name="right_view_margin_right" format="dimension" />
+        <attr name="right_text_margin_right" format="dimension" />
+        <attr name="right_text_color" format="color" />
+        <attr name="split_mode" format="boolean" />
+        <attr name="show_divide_line" format="boolean" />
+        <attr name="divide_line_top_gravity" format="boolean" />
+        <attr name="divide_line_left_margin" format="dimension" />
+        <attr name="divide_line_right_margin" format="dimension" />
+        <attr name="divide_line_height" format="dimension" />
+        <attr name="divide_line_color" format="color" />
+        <attr name="rightViewType" format="enum">
+            <enum name="Image" value="0" />
+            <enum name="Switch" value="1" />
+            <enum name="Check" value="2" />
+        </attr>
+
+        <attr name="switch_background_width" format="reference|dimension" />
+        <attr name="switch_background_height" format="reference|dimension" />
+        <attr name="switch_checkedbutton_color" format="reference|color" />
+        <attr name="switch_uncheckbutton_color" format="reference|color" />
+        <attr name="switch_shadow_color" format="reference|color" />
+        <attr name="switch_uncheck_color" format="reference|color" />
+        <attr name="switch_checked_color" format="reference|color" />
+        <attr name="switch_border_width" format="reference|dimension" />
+        <attr name="switch_checkline_color" format="reference|color" />
+        <attr name="switch_checkline_width" format="reference|dimension" />
+        <attr name="switch_uncheckcircle_color" format="reference|color" />
+        <attr name="switch_uncheckcircle_width" format="reference|dimension" />
+        <attr name="switch_uncheckcircle_radius" format="reference|dimension" />
+        <attr name="switch_checked" format="reference|boolean" />
+        <attr name="switch_shadow_effect" format="reference|boolean" />
+        <attr name="switch_effect_duration" format="reference|integer" />
+        <attr name="switch_button_color" format="reference|color" />
+        <attr name="switch_show_indicator" format="reference|boolean" />
+        <attr name="switch_background" format="reference|color" />
+        <attr name="switch_enable_effect" format="reference|boolean" />
+        <attr name="switch_shadow_radius" format="reference|dimension" />
+        <attr name="switch_shadow_offset" format="reference|dimension" />
     </declare-styleable>
 </resources>

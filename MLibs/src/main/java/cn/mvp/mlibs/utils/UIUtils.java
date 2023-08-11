@@ -126,7 +126,7 @@ public class UIUtils {
     }
 
     /**
-     * 获取屏幕尺寸  [0]:宽度 [1]:高度
+     * 获取屏幕尺寸  [0]:宽度 [1]:高度 单位:px
      */
     public static int[] getScreenSize() {
         Resources resources = getContext().getResources();
@@ -134,6 +134,17 @@ public class UIUtils {
 //        float density1 = dm.density;//密度
         return new int[]{dm.widthPixels, dm.heightPixels};
     }
+
+    /**
+     * 获取屏幕尺寸  [0]:宽度 [1]:高度 单位:dp
+     */
+    public static int[] getScreenSizeInDp(Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        float density = dm.density;
+        return new int[]{(int) (dm.widthPixels / density), (int) (dm.heightPixels / density)};
+    }
+
 
     /*----------------加载布局-----------------------*/
     public static View inflate(int id) {
