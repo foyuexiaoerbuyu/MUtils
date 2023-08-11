@@ -16,6 +16,11 @@ public class LoadingDialog {
         sDialog.show();
     }
 
+    public void showProgress(Context context, boolean isCancelable) {
+        if (sDialog == null) init(context, isCancelable, "加载中...");
+        sDialog.show();
+    }
+
     public void showProgress(Context context) {
         if (sDialog == null) init(context, false, "加载中...");
         sDialog.show();

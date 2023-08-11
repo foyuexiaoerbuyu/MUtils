@@ -6,13 +6,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
@@ -21,8 +20,6 @@ import com.king.zxing.util.CodeUtils;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
-import java.util.ArrayList;
-import java.util.List;
 
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
@@ -33,9 +30,6 @@ import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
-import cn.mvp.mlibs.weight.dialog.BottomListDialog;
-import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
-import cn.mvp.mlibs.weight.ent.Item;
 import cn.mvp.test.TestActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -149,12 +143,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String deviceInfo = DeviceUtils.getDeviceInfo();
             mTv.setText(deviceInfo);
         } else if (v.getId() == R.id.main_btn_base_tv_test) {//测试按钮
-//            TestActivity.open(this);
-            InputAlertDialog dialog = new InputAlertDialog(this);
-            dialog.setOkClick(inputStr -> {
+            TestActivity.open(this);
 
-            });
-            dialog.show();
         }
     }
 }
