@@ -8,8 +8,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,6 +97,18 @@ public class GsonUtil {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    public static JsonElement fromJson(String json) {
+        return new Gson().fromJson(json, JsonElement.class);
+    }
+
+    public static JsonObject getJsonObject(String json, String key) {
+        return fromJson(json).getAsJsonObject().get(key).getAsJsonObject();
+    }
+
+    public static JsonArray getJsonArray(String json, String key) {
+        return fromJson(json).getAsJsonObject().get(key).getAsJsonArray();
     }
 
 }

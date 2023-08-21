@@ -14,7 +14,6 @@ import android.os.Looper;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 
-import android.text.method.Touch;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -134,6 +133,23 @@ public class UIUtils {
 //        float density1 = dm.density;//密度
         return new int[]{dm.widthPixels, dm.heightPixels};
     }
+
+
+    /**
+     * @param view 获取控件相对于屏幕的控件中心位置坐标
+     * @return view中心坐标(相对于屏幕)
+     */
+    public static int[] getCentralPosForScreen(View view) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int viewCenterX = location[0] + view.getWidth() / 2;
+        int viewCenterY = location[1] + view.getHeight() / 2;
+        //赋值
+        location[0] = viewCenterX;
+        location[1] = viewCenterY;
+        return location;
+    }
+
 
     /**
      * 获取屏幕尺寸  [0]:宽度 [1]:高度 单位:dp
