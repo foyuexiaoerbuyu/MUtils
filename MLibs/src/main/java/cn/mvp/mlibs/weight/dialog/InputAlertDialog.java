@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,13 +96,16 @@ public class InputAlertDialog extends AlertDialog {
      * InputType.TYPE_NUMBER_FLAG_SIGNED`：允许输入带正负号的数字。
      *
      * @param inputType
+     * @return
      */
-    public void setInputType(int inputType) {
+    public InputAlertDialog setInputType(int inputType) {
         mInputType = inputType;
+        return this;
     }
 
-    public void setEditText(String text) {
+    public InputAlertDialog setEditText(String text) {
         mText = text;
+        return this;
     }
 
     public Button getBtnCancel() {
@@ -118,12 +120,14 @@ public class InputAlertDialog extends AlertDialog {
         return mTvTitle;
     }
 
-    public void setOkClick(OnOkClickListener onClickListener) {
+    public InputAlertDialog setOkClick(OnOkClickListener onClickListener) {
         mOnOkClickListener = onClickListener;
+        return this;
     }
 
-    public void setCancelClick(OnCancelClickListener onClickListener) {
+    public InputAlertDialog setCancelClick(OnCancelClickListener onClickListener) {
         mOnCancelClickListener = onClickListener;
+        return this;
     }
 
     public interface OnOkClickListener {

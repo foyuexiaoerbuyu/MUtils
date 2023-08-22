@@ -8,7 +8,7 @@ import java.util.Random;
 
 import cn.mvp.mlibs.R;
 
-public class DataTestUtils {
+public class TestUtils {
 
     private static Random random = new Random();
 
@@ -363,8 +363,17 @@ public class DataTestUtils {
     }
 
 
-    public String getBooleStr(String val1, String val2) {
+    public static String getBooleStr(String val1, String val2) {
         return nextBoolean() ? val1 : val2;
+    }
+
+    private static boolean nextBoole;
+
+    /**
+     * @return 第一次返回true
+     */
+    public static boolean getBoole() {
+        return nextBoole = !nextBoole;
     }
 
     public String getRandmeStr(String val1, String val2, String val3) {
@@ -527,5 +536,6 @@ public class DataTestUtils {
             this.index = index;
         }
     }
+
 
 }
