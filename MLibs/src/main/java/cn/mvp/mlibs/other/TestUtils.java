@@ -78,12 +78,25 @@ public class TestUtils {
     }
 
     /**
+     * 包含起始值 `start` 和结束值 `end`
+     *
      * @param start 开始
      * @param end   结束
      * @return 获取范围内随机数字
      */
     public static int getRandomNum(int start, int end) {
         return (int) (Math.random() * (end - start + 1) + start);
+    }
+
+    /**
+     * 包含起始值 `start` 不包含结束值 `end`
+     *
+     * @param start 开始
+     * @param end   结束
+     * @return 获取范围内随机数字
+     */
+    public static int getRandomNum1(int start, int end) {
+        return (int) (Math.random() * (end - start) + start);
     }
 
     /**

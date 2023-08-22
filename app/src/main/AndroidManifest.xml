@@ -55,6 +55,9 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
         <activity
+            android:name=".acty.zfb.ZfbActivity"
+            android:exported="false" />
+        <activity
             android:name=".clipboard.ClipboardActivity"
             android:exported="false" />
 
@@ -102,7 +105,6 @@
             android:name=".chat1.Chat1Activity"
             android:exported="false" />
         <activity android:name=".acty.ShortcutSettingActy" />
-
         <!--
         不显示在挂起:https://blog.csdn.net/hanfengzqh/article/details/75249892
         android:excludeFromRecents="true"
@@ -111,7 +113,7 @@
             android:name=".MainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

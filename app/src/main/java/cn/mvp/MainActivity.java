@@ -1,5 +1,6 @@
 package cn.mvp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hjq.toast.ToastUtils;
@@ -21,6 +24,8 @@ import com.king.zxing.util.CodeUtils;
 import java.io.IOException;
 import java.net.DatagramSocket;
 
+import cn.mvp.acty.BaseActivity;
+import cn.mvp.acty.zfb.ZfbActivity;
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
 import cn.mvp.global.Constant;
@@ -32,45 +37,14 @@ import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
 import cn.mvp.test.TestActivity;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private boolean isRefuse;
     private TextView mTv;
     private DatagramSocket mClientSocket;
     private byte[] mReceiveData;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-//        PermissionsUtils.requestDefPermissions(this);
-        findViewById(R.id.main_btn_qr_code).setOnClickListener(this);
-        findViewById(R.id.main_btn_creat_qr_code).setOnClickListener(this);
-        mTv = findViewById(R.id.main_tv);
-        findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(this);
-        findViewById(R.id.main_btn_chat).setOnClickListener(this);
-        findViewById(R.id.main_btn_base_info).setOnClickListener(this);
-        findViewById(R.id.main_btn_base_tv_test).setOnClickListener(this);
 
-        findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
-        findViewById(R.id.btn2).setOnClickListener(v -> {
-//            ClipboardActivity.open(this);
-//            UdpClient.getInstance().sendBroadcast("21212");
-//            BluetoothUtil bluetoothUtil = new BluetoothUtil();
-//            bluetoothUtil.init(this);
-        });
-
-        // 处理接收到的Intent
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
-
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
-                handleSendText(intent); // 处理纯文本的分享内容
-            }
-        }
-    }
 
     private void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -146,5 +120,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TestActivity.open(this);
 
         }
+    }
+
+    @Override
+    public void initView() {
+//        PermissionsUtils.requestDefPermissions(this);
+        findViewById(R.id.main_btn_qr_code).setOnClickListener(this);
+        findViewById(R.id.main_btn_creat_qr_code).setOnClickListener(this);
+        mTv = findViewById(R.id.main_tv);
+        findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(this);
+        findViewById(R.id.main_btn_chat).setOnClickListener(this);
+        findViewById(R.id.main_btn_base_info).setOnClickListener(this);
+        findViewById(R.id.main_btn_base_tv_test).setOnClickListener(this);
+
+        findViewById(R.id.main_btn_test_page).setOnClickListener(v -> {
+            ZfbActivity.open(this);
+//            final String[] items3 = new String[]{"苍老湿", "小泽老湿", "波多野结衣老湿", "吉泽明步老湿"};//创建item
+//            AlertDialog alertDialog3 = new AlertDialog.Builder(this)
+//                    .setTitle("选择跳转页面")
+//                    .setItems(items3, new DialogInterface.OnClickListener() {//添加列表
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            Toast.makeText(MainActivity.this, "点的是：" + items3[i], Toast.LENGTH_SHORT).show();
+//                        }
+//                    })
+//                    .create();
+//            alertDialog3.show();
+        });
+        findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
+        findViewById(R.id.btn2).setOnClickListener(v -> {
+        });
+
+        // 处理接收到的Intent
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent); // 处理纯文本的分享内容
+            }
+        }
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public int setView() {
+        return R.layout.activity_main;
     }
 }

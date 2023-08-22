@@ -95,8 +95,7 @@ public class InputAlertDialog extends AlertDialog {
      * InputType.TYPE_NUMBER_FLAG_DECIMAL`：允许输入小数。
      * InputType.TYPE_NUMBER_FLAG_SIGNED`：允许输入带正负号的数字。
      *
-     * @param inputType
-     * @return
+     * @param inputType 输入框类型
      */
     public InputAlertDialog setInputType(int inputType) {
         mInputType = inputType;
