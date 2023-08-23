@@ -46,7 +46,7 @@ public class ZfbActivity extends BaseActivity {
     @BindView(R.id.zfb_tv_wrzje)
     AppCompatTextView zfb_tv_wrzje;
 
-    @BindView(R.id.refresh)
+    @BindView(R.id.zfb_refresh)
     NoScrollingRecyclerView mrv;
 
     @BindView(R.id.zfb_tv_wrz)

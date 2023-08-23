@@ -237,6 +237,10 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
+                File file = new File("mPath + fileName");
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
                 FileOutputStream fos = new FileOutputStream(mPath + fileName);
                 fos.write(sb.toString().getBytes());
                 fos.close();
