@@ -13,6 +13,12 @@ import java.util.TimeZone;
 import cn.mvp.mlibs.log.Log;
 import cn.mvp.mlibs.log.XLogUtil;
 
+/**
+ * `kk:mm`和`HH:mm`是两种不同的时间格式表示方式，具体区别如下：
+ * 1. `kk:mm`表示的是24小时制的时间，小时范围是1-24。例如，`13:30`表示下午1点30分，`23:45`表示晚上11点45分。
+ * 2. `HH:mm`表示的也是24小时制的时间，但小时范围是0-23。例如，`13:30`仍然表示下午1点30分，`23:45`表示晚上11点45分。
+ * 注意，这两种格式在大部分情况下是相似的，只是对于小时的表示范围稍有不同。在实际使用中，你可以根据需要选择合适的时间格式。
+ */
 public class DateUtil {
     private static final String TAG = "DateUtil";
     /** yyyy-MM-dd */

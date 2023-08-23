@@ -18,6 +18,7 @@ public class TestUtils {
      * 返回手机号码
      */
     private static String[] telFirst = "134,135,136,137,138,139,150,151,152,157,158,159,130,131,132,155,156,133,153".split(",");
+    private static int mClickNum;
 
     /**
      * 判断字符串是否有值，如果为null或者是空字符串或者只有空格或者为"null"字符串，则返回true，否则则返回false
@@ -387,6 +388,14 @@ public class TestUtils {
      */
     public static boolean getBoole() {
         return nextBoole = !nextBoole;
+    }
+
+    public static int setClickNum() {
+        return ++mClickNum;
+    }
+
+    public static int reSetClickNum() {
+        return mClickNum = 0;
     }
 
     public String getRandmeStr(String val1, String val2, String val3) {

@@ -315,4 +315,15 @@ public class StatusBarUtil {
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         return context.getResources().getDimensionPixelSize(resourceId);
     }
+
+    /**
+     * https://juejin.cn/post/6844903807046909966
+     * https://blog.csdn.net/xiaoerbuyu1233/article/details/132422554
+     *
+     * @param activity Android 显示、隐藏状态栏和导航栏
+     */
+    public static void hideStatusBar(Activity activity) {
+        // 隐藏状态栏
+        activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
 }

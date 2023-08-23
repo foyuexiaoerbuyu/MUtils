@@ -23,12 +23,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initStateBar();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(setView());
         ButterKnife.bind(this);
         receiverData();
         initView();
         initData();
+    }
+
+    protected void initStateBar() {
+
     }
 
     public void receiverData() {

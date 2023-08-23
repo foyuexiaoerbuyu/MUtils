@@ -55,6 +55,9 @@
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
         <activity
+            android:name=".acty.ElectricQuantityActivity"
+            android:exported="false" />
+        <activity
             android:name=".acty.zfb.ZfbActivity"
             android:exported="false" />
         <activity

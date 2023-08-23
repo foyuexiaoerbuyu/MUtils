@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 
 import cn.mvp.acty.BaseActivity;
+import cn.mvp.acty.ElectricQuantityActivity;
 import cn.mvp.acty.zfb.ZfbActivity;
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
@@ -43,7 +44,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView mTv;
     private DatagramSocket mClientSocket;
     private byte[] mReceiveData;
-
 
 
     private void handleSendText(Intent intent) {
@@ -93,9 +93,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.main_btn_qr_code) {
-            startActivityForResult(new Intent(this, CaptureActivity.class), Constant.REQUEST_CODE_SCAN_QRCODE);
-        } else if (v.getId() == R.id.main_btn_creat_qr_code) {
+        if (v.getId() == R.id.main_btn_creat_qr_code) {
             String content = String.valueOf(ClipboardUtils.getText(this));
             Bitmap qrCode = CodeUtils.createQRCode(content, 600);
             BitmapDrawable drawbale = new BitmapDrawable(this.getResources(), qrCode);
@@ -111,46 +109,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
             mTv.setCompoundDrawablesWithIntrinsicBounds(null, drawbale, null, null);
             mTv.setText(content);
-        } else if (v.getId() == R.id.main_btn_chat) {//WebSocketClient实现
-            Chat1Activity.open(MainActivity.this);
-        } else if (v.getId() == R.id.main_btn_base_info) {//获取手机基本信息
-            String deviceInfo = DeviceUtils.getDeviceInfo();
-            mTv.setText(deviceInfo);
-        } else if (v.getId() == R.id.main_btn_base_tv_test) {//测试按钮
-            TestActivity.open(this);
-
         }
     }
 
     @Override
     public void initView() {
-//        PermissionsUtils.requestDefPermissions(this);
-        findViewById(R.id.main_btn_qr_code).setOnClickListener(this);
-        findViewById(R.id.main_btn_creat_qr_code).setOnClickListener(this);
-        mTv = findViewById(R.id.main_tv);
-        findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(this);
-        findViewById(R.id.main_btn_chat).setOnClickListener(this);
-        findViewById(R.id.main_btn_base_info).setOnClickListener(this);
-        findViewById(R.id.main_btn_base_tv_test).setOnClickListener(this);
-
-        findViewById(R.id.main_btn_test_page).setOnClickListener(v -> {
-            ZfbActivity.open(this);
-//            final String[] items3 = new String[]{"苍老湿", "小泽老湿", "波多野结衣老湿", "吉泽明步老湿"};//创建item
-//            AlertDialog alertDialog3 = new AlertDialog.Builder(this)
-//                    .setTitle("选择跳转页面")
-//                    .setItems(items3, new DialogInterface.OnClickListener() {//添加列表
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            Toast.makeText(MainActivity.this, "点的是：" + items3[i], Toast.LENGTH_SHORT).show();
-//                        }
-//                    })
-//                    .create();
-//            alertDialog3.show();
-        });
-        findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
-        findViewById(R.id.btn2).setOnClickListener(v -> {
-        });
-
         // 处理接收到的Intent
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -161,6 +124,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 handleSendText(intent); // 处理纯文本的分享内容
             }
         }
+
+//        PermissionsUtils.requestDefPermissions(this);
+        findViewById(R.id.main_btn_qr_code).setOnClickListener(v -> startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), Constant.REQUEST_CODE_SCAN_QRCODE));
+        findViewById(R.id.main_btn_creat_qr_code).setOnClickListener(this);
+        mTv = findViewById(R.id.main_tv);
+        findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(this);
+        findViewById(R.id.main_btn_chat).setOnClickListener(v -> {
+            Chat1Activity.open(MainActivity.this);//WebSocketClient实现
+        });
+        findViewById(R.id.main_btn_base_info).setOnClickListener(v -> {
+            mTv.setText(DeviceUtils.getDeviceInfo());//获取手机基本信息
+        });
+        findViewById(R.id.main_btn_base_tv_test).setOnClickListener(v -> {
+            TestActivity.open(MainActivity.this);//测试按钮
+        });
+
+        findViewById(R.id.main_btn_test_page).setOnClickListener(v -> {
+            final String[] items3 = new String[]{"支付宝花呗", "剩余电量"};
+            new AlertDialog.Builder(this)
+                    .setTitle("选择跳转页面")
+                    .setItems(items3, (dialogInterface, pos) -> {
+                        if (pos == 0) {
+                            ZfbActivity.open(MainActivity.this);
+                        } else if (pos == 1) {
+                            ElectricQuantityActivity.open(MainActivity.this);
+                        }
+                    }).create().show();
+        });
+        findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
+        findViewById(R.id.btn2).setOnClickListener(v -> {
+        });
     }
 
     @Override
