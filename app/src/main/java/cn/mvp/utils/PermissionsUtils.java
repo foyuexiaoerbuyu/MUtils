@@ -5,13 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-
-import androidx.core.content.ContextCompat;
-
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import com.hjq.permissions.OnPermission;
 import com.hjq.permissions.Permission;
@@ -19,7 +18,6 @@ import com.hjq.permissions.XXPermissions;
 
 import java.util.List;
 
-import cn.mvp.MainActivity;
 import cn.mvp.mlibs.utils.UIUtils;
 
 public class PermissionsUtils {
@@ -63,13 +61,22 @@ public class PermissionsUtils {
      * Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE
      * 判断是否缺少权限
      */
-    public static boolean hasReadWriteSdCardPermission(Activity activity) {
+    public static boolean hasReadWriteSdCardPermission(Context activity) {
         return ContextCompat.checkSelfPermission(activity, Permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED &&
                 ContextCompat.checkSelfPermission(activity, Permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED;
     }
 
     /**
+     * Permission.WRITE_EXTERNAL_STORAGE
+     * 判断是否缺少权限
+     */
+    public static boolean hasReadWriteSdCardPermission(Context activity, String perm) {
+        return ContextCompat.checkSelfPermission(activity, perm) == PackageManager.PERMISSION_DENIED;
+    }
+
+    /**
      * 修改系统设置
+     *
      * @return 是否有修改系统设置权限
      */
     public static boolean requestWriteSettingsPermissions(Context context, boolean requestPermission) {

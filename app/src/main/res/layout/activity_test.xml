@@ -48,6 +48,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ProgressBar
+        android:id="@+id/test_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
     <!--    <cn.mvp.test.Mrv-->
     <!--        android:id="@+id/refresh"-->
     <!--        android:layout_width="match_parent"-->

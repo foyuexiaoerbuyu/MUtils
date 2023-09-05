@@ -1,20 +1,15 @@
 package cn.mvp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
@@ -29,6 +24,7 @@ import cn.mvp.acty.ElectricQuantityActivity;
 import cn.mvp.acty.zfb.ZfbActivity;
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
+import cn.mvp.chat1.test.Client;
 import cn.mvp.global.Constant;
 import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DeviceUtils;
@@ -103,12 +99,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             String content = NetworkUtils.getIpAddressByWifi(this);
             Bitmap qrCode = CodeUtils.createQRCode(content, 600);
             BitmapDrawable drawbale = new BitmapDrawable(this.getResources(), qrCode);
-            boolean checkedCopy = ((Switch) findViewById(R.id.main_btn_sw_copy)).isChecked();
-            if (checkedCopy) {
-                ClipboardUtils.copyToClipboard(this, content);
-            }
             mTv.setCompoundDrawablesWithIntrinsicBounds(null, drawbale, null, null);
             mTv.setText(content);
+            ClipboardUtils.copyToClipboard(this, content);
         }
     }
 
@@ -154,6 +147,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
         findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
         findViewById(R.id.btn2).setOnClickListener(v -> {
+            new Thread(() -> Client.main(null)).start();
         });
     }
 

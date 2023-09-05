@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
@@ -145,6 +146,10 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             webSocketClient.close();
         }
         String host = editText.getText().toString().trim();
+        if (StringUtil.isEmpty(host)) {
+            ToastUtils.show("请在输入框输入服务器地址");
+            return;
+        }
         URI serverURI = URI.create("ws://" + host);//"ws://172.31.254.234:8887"
         Map<String, String> headers = new HashMap<>();
 

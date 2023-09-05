@@ -7,14 +7,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <cn.mvp.mlibs.weight.CommonTopBar
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/black"
-        app:left_text="ces测试cs测试"
-        app:mid_text="biao标题"
-        app:right_img="@drawable/ic_launcher" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
