@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+
 import androidx.annotation.RequiresApi;
 
 import java.io.File;
@@ -17,8 +18,8 @@ import cn.mvp.mlibs.fileprovider.FileProvider7;
                         @Override
                         public void permissionsAwardedSituation(boolean state) {
                             XLog.showArgsInfo(state);
-                            if (state) {
-                                InstallUtils.installApk(FirstClsActivity.this, file);
+                            if (state) {//一般只需要判断false就行
+                                //InstallUtils.installApk(FirstClsActivity.this, file);
                             } else {
                                 //8.0没有授权安装未知应用,可以在这里提示给用户一个对话框
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -32,18 +33,25 @@ import cn.mvp.mlibs.fileprovider.FileProvider7;
  */
 
 /**
+ * <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
  * 纯安装(安装7.0需要适配文件路径共享权限"file:///"这种,8.0需要适配apk未知应用安装权限)
  */
 public class InstallUtils {
 
-    //安装应用的流程
-    public static void installProcess(Context context, File apk, InstallUtilsPermissions installUtilsPermissions, int requestCode) {
+    /**
+     * 安装应用的流程 这个包含安装了,有权限会直接安装
+     *
+     * @param apkPath                 apk路径
+     * @param installUtilsPermissions 权限回调,只需要判断false就行(有权限会直接安装)
+     * @param apkInstallRequestCode   安装apk请求码
+     */
+    public static void installProcess(Context context, File apkPath, InstallUtilsPermissions installUtilsPermissions, int apkInstallRequestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //先获取是否有安装未知来源应用的权限
             boolean haveInstallPermission = context.getPackageManager().canRequestPackageInstalls();
 //            ((Activity)context).onRequestPermissionsResult(, , );
             if (!haveInstallPermission) {//没有权限
-                installUtilsPermissions.permissionsAwardedSituation(haveInstallPermission, apk);
+                installUtilsPermissions.permissionsAwardedSituation(haveInstallPermission, apkPath);
                 /*DialogUtils.showDialog(this, "安装应用需要打开未知来源权限，请去设置中开启权限",
                         new View.OnClickListener() {
                             @Override
@@ -57,7 +65,7 @@ public class InstallUtils {
             }
         }
         //有权限，开始安装应用程序
-        installApk(context, apk, requestCode);
+        installApk(context, apkPath, apkInstallRequestCode);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

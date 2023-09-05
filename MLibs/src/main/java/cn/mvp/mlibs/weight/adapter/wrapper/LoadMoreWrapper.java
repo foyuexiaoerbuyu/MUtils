@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import cn.mvp.mlibs.R;
-import cn.mvp.mlibs.utils.UIUtils;
 import cn.mvp.mlibs.weight.adapter.base.ViewHolder;
 import cn.mvp.mlibs.weight.adapter.utils.WrapperUtils;
 
@@ -25,8 +23,6 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public LoadMoreWrapper(RecyclerView.Adapter adapter) {
         mInnerAdapter = adapter;
-        mLoadMoreLayoutId = R.layout.default_loading;
-//        mLoadMoreView = UIUtils.inflate(R.layout.default_loading);
     }
 
     private boolean hasLoadMore() {
@@ -127,14 +123,14 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public LoadMoreWrapper setLoadMoreView(View loadMoreView) {
+        mLoadMoreLayoutId = 0;
         mLoadMoreView = loadMoreView;
-        if (loadMoreView == null) mLoadMoreLayoutId = 0;
         return this;
     }
 
     public LoadMoreWrapper setLoadMoreView(int layoutId) {
+        mLoadMoreView = null;
         mLoadMoreLayoutId = layoutId;
-        if (layoutId == 0) mLoadMoreView = null;
         return this;
     }
 }

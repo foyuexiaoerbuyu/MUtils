@@ -3,9 +3,7 @@ package cn.mvp.mlibs.weight.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -44,7 +42,6 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
 //        }
 //        this.setCancelable(false);
         mTvTitle.setText(mTitle);
-        Log.i("调试信息", "onCreatmContente:  " + mContent);
         mTvContent.setText(mContent);
         mBtnCancel.setOnClickListener(this);
         mBtnOk.setOnClickListener(this);

@@ -10,15 +10,14 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
-
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.hjq.toast.ToastUtils;
 
@@ -130,8 +129,18 @@ public class UIUtils {
     public static int[] getScreenSize() {
         Resources resources = getContext().getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
-//        float density1 = dm.density;//密度
+        float density = dm.density;//屏幕密度
+        int densityDpi = dm.densityDpi;//像素密度(Android常用的dp/dip单位)
         return new int[]{dm.widthPixels, dm.heightPixels};
+    }
+
+    /**
+     * 获取屏幕密度
+     */
+    public static float getScreenDensity() {
+        Resources resources = getContext().getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        return dm.density;
     }
 
 

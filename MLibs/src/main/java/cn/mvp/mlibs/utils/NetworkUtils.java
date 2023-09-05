@@ -8,9 +8,12 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
-import androidx.annotation.RequiresPermission;
+import android.os.Build;
+import android.security.NetworkSecurityPolicy;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
+
+import androidx.annotation.RequiresPermission;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -315,4 +318,18 @@ public class NetworkUtils {
         if (wm == null) return "";
         return Formatter.formatIpAddress(wm.getDhcpInfo().ipAddress);
     }
+
+    /**
+     * 注意9.0以后不允许明文通信  需要增加     android:usesCleartextTraffic="true"
+     *
+     * @return 是否运行明文传输
+     */
+    public static boolean hasHttp() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            // 获取应用程序的网络安全配置
+            return NetworkSecurityPolicy.getInstance().isCleartextTrafficPermitted();
+        }
+        return true;
+    }
+
 }

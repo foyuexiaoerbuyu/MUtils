@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.UUID;
 
-import cn.mvp.mlibs.BuildConfig;
 import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.log.XLogUtil;
 
@@ -470,7 +469,7 @@ public class DeviceUtils {
         phnInfo.append("\n屏幕宽(px): ").append(metrics.widthPixels);
         phnInfo.append("\n屏幕高(px): ").append(metrics.heightPixels);
         phnInfo.append("\n屏幕密度: ").append(metrics.density);
-        phnInfo.append("\n屏幕密度dpi: ").append(metrics.densityDpi);
+        phnInfo.append("\n像素密度dpi(常用的dp/dip单位): ").append(metrics.densityDpi);
 
         phnInfo.append("\n手机制造商: ");
         phnInfo.append(Build.MANUFACTURER);
