@@ -1,13 +1,21 @@
 package cn.mvp.mlibs.utils;
 
 
+import static android.os.Environment.getExternalStorageState;
+import static cn.mvp.mlibs.utils.UIUtils.getResources;
+
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import androidx.core.content.ContextCompat;
+import android.provider.Settings;
 import android.text.TextUtils;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,9 +26,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import cn.mvp.mlibs.log.XLogUtil;
-
-import static android.os.Environment.getExternalStorageState;
-import static cn.mvp.mlibs.utils.UIUtils.getResources;
 
 /**
  * SD卡工具箱
@@ -149,8 +154,34 @@ public class SDCardUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             return ContextCompat.checkSelfPermission(context.getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
                     ContextCompat.checkSelfPermission(context.getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            //检查是否已经有权限
+            return Environment.isExternalStorageManager();
         }
         return true;
+    }
+
+    /**
+     * 请求权限
+     * <!--读写文件-->
+     * <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+     * <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+     * <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+     * <p>
+     * android:requestLegacyExternalStorage="true"
+     */
+    public static void requestRead2writePermission(Activity context, int requestCode) {
+        //运行设备>=Android 11.0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            //检查是否已经有权限
+            if (!Environment.isExternalStorageManager()) {
+                //跳转新页面申请权限
+                context.startActivityForResult(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION), requestCode);
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(context, permissions, requestCode);
+        }
     }
 
     /**
@@ -323,6 +354,14 @@ public class SDCardUtils {
             }
         }
         return dir.delete();
+    }
+
+    public static void testPermitted() throws IOException, InterruptedException {
+        //Environment.getDownloadCacheDirectory()
+        String testFile = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + File.separator + System.currentTimeMillis() + ".txt";
+        File file = new File(testFile);
+        file.createNewFile();
+        file.wait();
     }
 
 }

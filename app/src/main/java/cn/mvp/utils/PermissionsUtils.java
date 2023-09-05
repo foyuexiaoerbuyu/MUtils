@@ -10,6 +10,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.hjq.permissions.OnPermission;
@@ -87,5 +88,35 @@ public class PermissionsUtils {
             context.startActivity(intent);
         }
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.System.canWrite(context);
+    }
+
+    /*-------------------------------------------------------------------------------------*/
+    public static boolean hasPermissions(Activity activity, String[] permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (String permission : permissions) {
+                if (ContextCompat.checkSelfPermission(activity, permission)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static void requestPermissions(Activity activity, String[] permissions, int requestCode) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(activity, permissions, requestCode);
+        }
+    }
+
+    /**
+     * 如果返回true，表示之前已经请求过该权限，并且用户拒绝了授权。这时候可以向用户解释为何需要该权限，并再次请求权限。
+     * 如果返回false，表示之前未请求过该权限、用户拒绝授权并勾选了"不再询问"选项，或者系统规定不再提示权限请求解释。这时候不应该再显示权限请求解释，直接向用户请求权限即可。
+     */
+    public static boolean shouldShowRequestPermissionRationale(Activity activity, String permission) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
+        }
+        return false;
     }
 }

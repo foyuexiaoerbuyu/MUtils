@@ -24,7 +24,6 @@ import cn.mvp.acty.ElectricQuantityActivity;
 import cn.mvp.acty.zfb.ZfbActivity;
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
-import cn.mvp.chat1.test.Client;
 import cn.mvp.global.Constant;
 import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DeviceUtils;
@@ -147,7 +146,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
         findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
         findViewById(R.id.btn2).setOnClickListener(v -> {
-            new Thread(() -> Client.main(null)).start();
+
         });
     }
 
