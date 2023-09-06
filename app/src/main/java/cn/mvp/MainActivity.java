@@ -31,7 +31,6 @@ import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
-import cn.mvp.test.TestActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -129,7 +128,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mTv.setText(DeviceUtils.getDeviceInfo());//获取手机基本信息
         });
         findViewById(R.id.main_btn_base_tv_test).setOnClickListener(v -> {
-            TestActivity.open(MainActivity.this);//测试按钮
+//            SocketUtils socketUtils = new SocketUtils((e, errMsg) -> {
+//
+//            });
+
+//            socketUtils.connService();
+//            TestActivity.open(MainActivity.this);//测试按钮
         });
 
         findViewById(R.id.main_btn_test_page).setOnClickListener(v -> {

@@ -103,4 +103,8 @@ public class OtherUtils {
             }
         }
     }
+
+    public static String getPullAdb(String path) {
+        return "adb pull " + path + " \"D:/tmp/\"";
+    }
 }
