@@ -1,10 +1,5 @@
 package cn.mvp.acty.zfb;
 
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -13,6 +8,10 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.view.View;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 
@@ -73,7 +72,7 @@ public class ZfbActivity extends BaseActivity {
         double all = 20583.26 + TestUtils.getRandomNum(123, 999);
         zfb_tv_all_money.setText(all + "");
 //        zfb_tv_wrz.setText();
-        Glide.with(this).load(R.drawable.zfb_1).into(zfb_img);
+        Glide.with(this).load(R.drawable.zfb_def).into(zfb_img);
         SpannableString ss = new SpannableString("0.00\n淘宝/天猫交易 (除天猫国际、买就返业务外) ，认收货后才会计入账单  ");
         int len = ss.length();
         //图片
