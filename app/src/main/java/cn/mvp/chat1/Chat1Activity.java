@@ -66,7 +66,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
         String chatIp = MMKV.defaultMMKV().decodeString("chat_ip", "");
         InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
         String ip = NetworkUtils.getIpAddressByWifi(this) + ":8887";
-        Log.i("调试信息", "m1:  " + ip);
+        Log.i("调试信息", "m12:  " + ip);
         String str = ip.substring(0, ip.lastIndexOf(".") + 1) + chatIp + ip.substring(ip.indexOf(":"));
         inputAlertDialog.setEditText(str);
         inputAlertDialog.setCancelBtnClickDismiss(false);
