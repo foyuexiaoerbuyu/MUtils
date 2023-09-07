@@ -20,12 +20,32 @@ android {
 //        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        config {
+            /*项目编译用的jdk版本和签名不一致也会导致无法签名(控制台提示:签名文件信息异常) 本项目签名用jdk11编译*/
+            keyAlias 'Mi'
+            keyPassword 'android'
+            storeFile file('../Mi.jks')
+            storePassword 'android'
+            v1SigningEnabled false
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
+        debug {
+            minifyEnabled false //启用 R8 的代码缩减功能
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
+
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8

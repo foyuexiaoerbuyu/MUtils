@@ -353,4 +353,8 @@ public class DateUtil {
         //如果你想要包括毫秒，只需在返回字符串中添加 strMilliSecond。
         return strHour + ":" + strMinute + ":" + strSecond;
     }
+
+    public static String currentDate() {
+        return formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL);
+    }
 }
