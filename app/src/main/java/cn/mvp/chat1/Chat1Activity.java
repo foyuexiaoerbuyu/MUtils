@@ -80,22 +80,30 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showConnServiceDialog() {
+        String chatIp = MMKV.defaultMMKV().decodeString("chat_ip", "");
         InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
-        String ip = NetworkUtils.getIpAddressByWifi(this);
+        String ip = NetworkUtils.getIpAddressByWifi(this) + ":8887";
         Log.i("调试信息", "m1:  " + ip);
-        String str = ip.substring(0, ip.lastIndexOf(".") + 1);
-        inputAlertDialog.setEditText(str + ":8887");
+        String str = ip.substring(0, ip.lastIndexOf(".") + 1) + chatIp + ip.substring(ip.indexOf(":"));
+        inputAlertDialog.setEditText(str);
         inputAlertDialog.setCancelBtnClickDismiss(false);
         inputAlertDialog.setCancelClick("端口", (editText, inputStr) -> {
             if (inputStr.contains(":")) {
                 editText.setSelection(inputStr.indexOf(":") + 1, inputStr.length());
             }
         });
-        inputAlertDialog.setOkClick(this::connService);
+
+        inputAlertDialog.setOkClick(new InputAlertDialog.OnOkClickListener() {
+            @Override
+            public void click(String inputStr) {
+                MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
+                connService(inputStr);
+            }
+        });
         inputAlertDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
         inputAlertDialog.show();
 
-        inputAlertDialog.showInputDialog(str.length());
+        inputAlertDialog.showInputDialog(str.indexOf(":"));
 
     }
 
@@ -229,7 +237,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
-                sb.append("onClose at time：");
+                sb.append("\nonClose at time：");
                 sb.append(DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL));
                 sb.append("\n");
                 sb.append(" 与服务器连接断开: ").append(code);
