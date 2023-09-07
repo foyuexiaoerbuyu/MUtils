@@ -24,6 +24,7 @@ import cn.mvp.acty.ElectricQuantityActivity;
 import cn.mvp.acty.zfb.ZfbActivity;
 import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
+import cn.mvp.chat3.UdpUtils;
 import cn.mvp.global.Constant;
 import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DeviceUtils;
@@ -31,7 +32,6 @@ import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
-import cn.mvp.test.TestActivity;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -129,7 +129,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             mTv.setText(DeviceUtils.getDeviceInfo());//获取手机基本信息
         });
         findViewById(R.id.main_btn_base_tv_test).setOnClickListener(v -> {
-            TestActivity.open(MainActivity.this);//测试按钮
+//            TestActivity.open(MainActivity.this);//测试按钮
+            UdpUtils.sendToService("ni hao fwd", new UdpUtils.IUdpReceiveMsgCallBack() {
+                @Override
+                public void receiveMsg(String receiveMsg) {
+                    Log.i("调试信息", "receiveMsg:  " + receiveMsg);
+                }
+
+                @Override
+                public void onErr(Exception e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void serviceLog(String msg) {
+
+                }
+            });
         });
 
         findViewById(R.id.main_btn_test_page).setOnClickListener(v -> {
