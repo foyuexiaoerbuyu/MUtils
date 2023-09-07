@@ -18,12 +18,12 @@ import java.net.UnknownHostException;
  * <version>1.5.3</version>
  * </dependency>
  */
-public class ChatWebSocket extends WebSocketServer {
-    public ChatWebSocket(int port) throws UnknownHostException {
+public class ChatWebSocketService extends WebSocketServer {
+    public ChatWebSocketService(int port) throws UnknownHostException {
         super(new InetSocketAddress(port));
     }
 
-    public ChatWebSocket(InetSocketAddress address) {
+    public ChatWebSocketService(InetSocketAddress address) {
         super(address);
     }
 
@@ -31,7 +31,7 @@ public class ChatWebSocket extends WebSocketServer {
 //        WebSocketImpl.DEBUG = true;
         try {
             int port = 8887; // 843 flash policy port
-            ChatWebSocket s = new ChatWebSocket(port);
+            ChatWebSocketService s = new ChatWebSocketService(port);
 
             s.start();
             System.out.println("ChatServer started on port: " + s.getPort());

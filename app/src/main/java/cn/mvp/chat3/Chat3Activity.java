@@ -3,10 +3,11 @@ package cn.mvp.chat3;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hjq.toast.ToastUtils;
 import com.tencent.mmkv.MMKV;

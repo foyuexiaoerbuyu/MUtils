@@ -33,11 +33,11 @@ public class ClipboardUtils {
      *
      * @return 剪贴板的文本
      */
-    public static CharSequence getText(Context context) {
+    public static String getText(Context context) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = clipboard.getPrimaryClip();
         if (clip != null && clip.getItemCount() > 0) {
-            return clip.getItemAt(0).coerceToText(context);
+            return String.valueOf(clip.getItemAt(0).coerceToText(context));
         }
         return null;
     }

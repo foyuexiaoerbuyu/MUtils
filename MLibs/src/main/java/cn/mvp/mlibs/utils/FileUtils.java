@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,8 +28,6 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.Comparator;
 
 import cn.mvp.mlibs.log.XLogUtil;
 import cn.mvp.mlibs.utils.ents.FileInfos;
@@ -885,6 +884,55 @@ public class FileUtils {
                 }
             }
         }
+    }
+
+    public static void readFileBit(String filePath, IFileReadCallBack iCaliFileReadCallBackBack) {
+        FileInputStream fis = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            // 创建FileInputStream对象并指定要读取的MP4文件路径
+            fis = new FileInputStream(filePath);
+
+            // 创建ByteArrayOutputStream对象
+            baos = new ByteArrayOutputStream();
+
+            // 读取文件内容到ByteArrayOutputStream中
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                if (iCaliFileReadCallBackBack != null) {
+                    iCaliFileReadCallBackBack.read(buffer);
+                }
+                baos.write(buffer, 0, bytesRead);
+            }
+
+            // 将MP4文件内容保存在字节数组中
+            byte[] mp4Data = baos.toByteArray();
+
+            // 打印字节数组长度
+            System.out.println("MP4文件长度：" + mp4Data.length + " 字节");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (baos != null) {
+                    baos.close();
+                }
+                if (fis != null) {
+                    fis.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 通用回调方法
+     */
+    public interface IFileReadCallBack {
+
+        void read(byte[] buffer);
     }
 
 }

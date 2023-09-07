@@ -38,8 +38,9 @@ public class MyApplication extends Application {
             }
         });
 
-        ClipperReceiver clipperReceiver = new ClipperReceiver();
-        clipperReceiver.registerReceiver(this, null);
+        ClipperReceiver.getInstance().registerReceiver(this, null);
+//        ClipperReceiver clipperReceiver = new ClipperReceiver();
+//        clipperReceiver.registerReceiver(this, null);
         /*registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle bundle) {

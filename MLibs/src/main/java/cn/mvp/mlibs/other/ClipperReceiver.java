@@ -10,9 +10,6 @@ import android.util.Log;
 
 import com.hjq.toast.ToastUtils;
 
-import cn.mvp.mlibs.MLibs;
-import cn.mvp.mlibs.utils.UIUtils;
-
 /*
  * Receives broadcast commands and controls clipboard accordingly.
  * The broadcast receiver is active only as long as the application, or its service is active.
@@ -27,7 +24,7 @@ adb shell am broadcast -a clipper.get
 https://github.com/majido/clipper
  */
 public class ClipperReceiver extends BroadcastReceiver {
-    private static String TAG = "调试信息";
+    private static String TAG = "ClipperReceiver";
 
     public static String ACTION_GET = "clipper.get";
     public static String ACTION_GET_SHORT = "get";
@@ -35,6 +32,24 @@ public class ClipperReceiver extends BroadcastReceiver {
     public static String ACTION_SET_SHORT = "set";
     public static String EXTRA_TEXT = "text";
     private ICallBack iCallBack;
+
+    private static ClipperReceiver instance;
+
+    private ClipperReceiver() {
+
+    }
+
+    public static ClipperReceiver getInstance() {
+        if (instance == null) {
+            synchronized (ClipperReceiver.class) {
+                if (instance == null) {
+                    instance = new ClipperReceiver();
+                }
+            }
+        }
+        return instance;
+    }
+
 
     public static boolean isActionGet(final String action) {
         return ACTION_GET.equals(action) || ACTION_GET_SHORT.equals(action);
