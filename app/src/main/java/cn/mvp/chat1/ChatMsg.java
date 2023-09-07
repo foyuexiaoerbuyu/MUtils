@@ -1,6 +1,6 @@
 package cn.mvp.chat1;
 
-public class Msg {
+public class ChatMsg {
     private long id;
     private int msgType;//0:文本 1:文件
     private String fileName;
@@ -8,12 +8,12 @@ public class Msg {
     private String msgContent;
     private byte[] fileData;
 
-    public Msg(String msgContent) {
+    public ChatMsg(String msgContent) {
         this.id = System.currentTimeMillis();
         this.msgContent = msgContent;
     }
 
-    public Msg(String fileName, String md5, byte[] fileData) {
+    public ChatMsg(String fileName, String md5, byte[] fileData) {
         this.id = System.currentTimeMillis();
         this.msgType = 1;
         this.fileName = fileName;
