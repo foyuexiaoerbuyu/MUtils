@@ -34,6 +34,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="扫一扫" />
+
+        <Button
+            android:id="@+id/chat1_btn_clipboard_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="剪切板发送" />
     </LinearLayout>
 
     <LinearLayout

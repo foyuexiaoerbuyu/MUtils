@@ -3,8 +3,10 @@ package cn.mvp.mlibs.weight.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,13 +21,16 @@ public class InputAlertDialog extends AlertDialog {
     private EditText mEditText;
     private Button mBtnCancel, mBtnOk;
     private Context mContext;
+    private String mBtnOkName = "确定";
     private OnOkClickListener mOnOkClickListener;
+    private String mBtnCancelName = "取消";
     private OnCancelClickListener mOnCancelClickListener;
     private TextView mTvTitle;
     private String mTitle;
     private String mText;
     private String mHintText;
     private int mInputType = InputType.TYPE_CLASS_TEXT;
+    private boolean mCancelBtnClickDismiss = true;
 
     public InputAlertDialog(Context context) {
         super(context);
@@ -40,13 +45,16 @@ public class InputAlertDialog extends AlertDialog {
         mBtnCancel = (Button) findViewById(R.id.view_input_dialog_btn_cancel);
         mTvTitle = (TextView) findViewById(R.id.view_input_dialog_tv_title);
         mBtnOk = (Button) findViewById(R.id.view_input_dialog_btn_ok);
+        mBtnOk.setText(mBtnOkName);
+        mBtnCancel.setText(mBtnCancelName);
         //保证EditText能弹出键盘
         if (this.getWindow() != null) {
             this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         }
         mBtnCancel.setOnClickListener(v -> {
-            if (mOnCancelClickListener != null) mOnCancelClickListener.click();
-            dismiss();
+            if (mOnCancelClickListener != null)
+                mOnCancelClickListener.click(mEditText, mEditText.getText().toString());
+            if (mCancelBtnClickDismiss) dismiss();
         });
         mBtnOk.setOnClickListener(v -> {
             if (mOnOkClickListener != null)
@@ -119,6 +127,12 @@ public class InputAlertDialog extends AlertDialog {
         return mTvTitle;
     }
 
+    public InputAlertDialog setOkClick(String btnOkName, OnOkClickListener onClickListener) {
+        mBtnOkName = btnOkName;
+        mOnOkClickListener = onClickListener;
+        return this;
+    }
+
     public InputAlertDialog setOkClick(OnOkClickListener onClickListener) {
         mOnOkClickListener = onClickListener;
         return this;
@@ -129,12 +143,35 @@ public class InputAlertDialog extends AlertDialog {
         return this;
     }
 
+    public void showInputDialog(int seleIndex) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mEditText.requestFocus();
+                mEditText.setSelection(seleIndex);
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mEditText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 200); // 延时200毫秒
+    }
+
+
+    public InputAlertDialog setCancelClick(String btnCancelName, OnCancelClickListener onClickListener) {
+        mBtnCancelName = btnCancelName;
+        mOnCancelClickListener = onClickListener;
+        return this;
+    }
+
+    public void setCancelBtnClickDismiss(boolean cancelBtnClickDismiss) {
+        mCancelBtnClickDismiss = cancelBtnClickDismiss;
+    }
+
     public interface OnOkClickListener {
         void click(String inputStr);
     }
 
     public interface OnCancelClickListener {
-        void click();
+        void click(EditText editText, String inputStr);
     }
 
 }
