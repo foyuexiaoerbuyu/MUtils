@@ -33,6 +33,11 @@ import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
  */
 public class Chat1Activity extends AppCompatActivity implements View.OnClickListener {
 
+    /**
+     * 默认连接ip,最后一位为空
+     */
+    private String mDefConnIp;
+
     public static void open(Context context) {
         Intent starter = new Intent(context, Chat1Activity.class);
 //    starter.putExtra();
@@ -58,16 +63,15 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
         });
         editText.setText(MMKV.defaultMMKV().decodeString(Constant.SP_KEY_WEBSOCKET_ADDRESS));
 //        startActivityForResult(new Intent(this, CaptureActivity.class), Constant.REQUEST_CODE_SCAN_QRCODE);
-
-        showConnServiceDialog();
+        String num = MMKV.defaultMMKV().decodeString("chat_ip", "");
+        StringBuilder sb = new StringBuilder(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+        mDefConnIp = sb.replace(sb.lastIndexOf(".") + 1, sb.indexOf(":"), "").toString();
+        Log.i("调试信息", "m12:  " + sb);
+        connService(sb.replace(sb.lastIndexOf(".") + 1, sb.indexOf(":"), num).toString());
     }
 
-    private void showConnServiceDialog() {
-        String chatIp = MMKV.defaultMMKV().decodeString("chat_ip", "");
+    private void showConnServiceDialog(String str) {
         InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
-        String ip = NetworkUtils.getIpAddressByWifi(this) + ":8887";
-        Log.i("调试信息", "m12:  " + ip);
-        String str = ip.substring(0, ip.lastIndexOf(".") + 1) + chatIp + ip.substring(ip.indexOf(":"));
         inputAlertDialog.setEditText(str);
         inputAlertDialog.setCancelBtnClickDismiss(false);
         inputAlertDialog.setCancelClick("端口", (editText, inputStr) -> {
@@ -111,7 +115,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
                 sendMsg(tmp);
                 break;
             case R.id.chat1_btn_conn:
-                showConnServiceDialog();
+                showConnServiceDialog(mDefConnIp);
                 break;
             case R.id.chat1_btn_qr_scan:
                 startActivityForResult(new Intent(this, CaptureActivity.class), Constant.REQUEST_CODE_SCAN_QRCODE);
@@ -146,6 +150,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
     }
 
     private void connService(String host) {
+        Log.i("调试信息", "connService:  " + host);
         if (StringUtil.isEmpty(host)) {
             ToastUtils.show("请在输入框输入服务器地址");
             return;
@@ -166,6 +171,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             public void onErr(Exception e) {
                 e.printStackTrace();
                 print(e.getMessage());
+                showConnServiceDialog(mDefConnIp);
             }
 
             @Override
