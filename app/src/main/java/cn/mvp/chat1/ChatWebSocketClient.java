@@ -59,25 +59,22 @@ public class ChatWebSocketClient {
         headers.put("client_name", DeviceUtils.getDeviceModel() + "_" + DeviceUtils.getManufacturer());//连接名
         webSocketClient = new WebSocketClient(serverURI, headers) {
             @Override
-            public void onOpen(ServerHandshake handshakedata) {
-                StringBuffer sb = new StringBuffer();
-                sb.append("onOpen at time：");
-                sb.append(DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL));
-                sb.append("服务器状态：");
-                sb.append(handshakedata.getHttpStatusMessage());
-                sb.append("\n");
-                Log.i("调试信息", "onOpen:  " + sb);
-                iReceiver.log(sb.toString());
+            public void onOpen(ServerHandshake serverHandshake) {
+                String sb = "onOpen at time：" +
+                        DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
+                        "\n服务器状态：" +
+                        serverHandshake.getHttpStatusMessage() +
+                        "\n";
+                iReceiver.log(sb);
             }
 
             @Override
             public void onMessage(String message) {
                 ChatMsg msg = GsonUtil.fromJson(message, ChatMsg.class);
                 if (msg.getMsgType() == 0) {
-                    StringBuffer sb = new StringBuffer();
-                    sb.append("\n服务端返回数据：").append(DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL)).append("\n");
-                    sb.append(msg.getMsgContent());
-                    iReceiver.log(sb.toString());
+                    String sb = "服务端消息: " + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
+                            "\n   " + msg.getMsgContent() + "\n";
+                    iReceiver.log(sb);
                 } else {
                     File directory = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                     String name = directory + File.separator + msg.getFileName();
@@ -91,26 +88,26 @@ public class ChatWebSocketClient {
             @Override
             public void onMessage(ByteBuffer bytes) {
                 super.onMessage(bytes);
-
-                File directory = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                String name = directory + "/largefile.apk";
-                Log.i("调试信息", "文件名:  " + name);
-                FileUtils.writeFile(name, bytes, true);
-                Log.i("调试信息", "File received and saved!");
+                iReceiver.onReceiverMsg(bytes);
+//                SDCardUtils.getExPubDownDir();
+//                File directory = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+//                String name = directory + "/largefile.apk";
+//                Log.i("调试信息", "文件名:  " + name);
+//                FileUtils.writeFile(name, bytes, true);
+//                Log.i("调试信息", "File received and saved!");
             }
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
                 StringBuffer sb = new StringBuffer();
-                sb.append("\nonClose at time：");
+                sb.append("客户端消息：");
                 sb.append(DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL));
                 sb.append("\n");
-                sb.append(" 与服务器连接断开: ").append(code);
-                sb.append(" 关闭原因: ").append(reason);
-                sb.append(remote);
+                sb.append(" 与服务器连接断开连接: ").append(code);
+                sb.append(" \n关闭原因: ").append(remote ? "服务器已关闭..." : reason);
+//                sb.append(remote);
                 sb.append("\n");
                 iReceiver.log(sb.toString());
-                Log.i("调试信息", "onClose:  " + sb);
                 if (webSocketClient != null) {
                     webSocketClient.close();
                 }
@@ -119,14 +116,14 @@ public class ChatWebSocketClient {
 
             @Override
             public void onError(Exception ex) {
-                StringBuffer sb = new StringBuffer();
+                iReceiver.onErr(ex);
+                StringBuilder sb = new StringBuilder();
                 sb.append("onError at time：");
                 sb.append(DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL));
                 sb.append("\n");
                 sb.append(ex);
                 sb.append("\n");
                 iReceiver.log(sb.toString());
-                Log.i("调试信息", "onError:  " + sb);
             }
         };
         InetSocketAddress localSocketAddress = webSocketClient.getLocalSocketAddress();

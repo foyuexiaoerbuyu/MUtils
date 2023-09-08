@@ -17,6 +17,7 @@ import com.king.zxing.CaptureActivity;
 import com.king.zxing.Intents;
 import com.tencent.mmkv.MMKV;
 
+import java.net.ConnectException;
 import java.nio.ByteBuffer;
 
 import cn.mvp.R;
@@ -25,6 +26,7 @@ import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
+import cn.mvp.mlibs.utils.UIUtils;
 import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
 
 /**
@@ -46,7 +48,6 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
 
     private TextView showMessage;
     private EditText editText;
-    private StringBuilder sb = new StringBuilder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,24 +96,14 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
     }
 
     private void print(String contetn) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showMessage.setText(contetn);
-            }
-        });
+        runOnUiThread(() -> showMessage.append(contetn));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.chat1_tv_send:
-                String tmp = editText.getText().toString().trim();
-                if (StringUtil.isBlank(tmp)) {
-                    ToastUtils.show("发送消息不能为空");
-                    return;
-                }
-                sendMsg(tmp);
+                sendMsg(editText.getText().toString().trim());
                 break;
             case R.id.chat1_btn_conn:
                 showConnServiceDialog(mDefConnIp);
@@ -131,12 +122,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             return;
         }
         ChatWebSocketClient.getInstance().sendMsg(msg);
-        sb.append("\n客户端发送消息：");
-        sb.append(DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL));
-        sb.append("\n");
-        sb.append(msg);
-//                sb.append("\n");
-        showMessage.setText(sb.toString());
+        showMessage.append("客户端消息：" + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) + "\n   " + msg + "\n");
         editText.setText("");
     }
 
@@ -171,7 +157,9 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             public void onErr(Exception e) {
                 e.printStackTrace();
                 print(e.getMessage());
-                showConnServiceDialog(mDefConnIp);
+                if (e instanceof ConnectException) {
+                    UIUtils.runOnUIThread(() -> showConnServiceDialog(mDefConnIp));
+                }
             }
 
             @Override

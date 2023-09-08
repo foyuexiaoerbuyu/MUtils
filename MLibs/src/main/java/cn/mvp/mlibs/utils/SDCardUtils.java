@@ -320,6 +320,10 @@ public class SDCardUtils {
 
     }
 
+    public static String getExPubDownDir() {
+        return getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + File.separator;
+    }
+
     /**
      * @param path 文件夹路径
      * @return 剩余控空间

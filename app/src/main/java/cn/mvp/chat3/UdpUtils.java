@@ -5,6 +5,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+/**
+ * udp广播服务类服务
+ */
 public class UdpUtils {
 
     private static UdpUtils udpServer;
