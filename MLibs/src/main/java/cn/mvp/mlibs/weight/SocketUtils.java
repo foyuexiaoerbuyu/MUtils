@@ -1,7 +1,12 @@
 package cn.mvp.mlibs.weight;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -16,12 +21,13 @@ public class SocketUtils {
 
     private final IServiceNotifyMsg iServiceNotifyMsg;
     private ServerSocket serverSocket;
-    private Socket clientSocket;
+    private Socket mClientSocket;
 
     private BufferedWriter clientWriter;
     private BufferedReader clientReader;
     private BufferedWriter serviceWriter;
     private BufferedReader serviceReader;
+    private Socket mServiceSocket;
 
     public SocketUtils(IServiceNotifyMsg iServiceNotifyMsg) {
         this.iServiceNotifyMsg = iServiceNotifyMsg;
@@ -40,13 +46,13 @@ public class SocketUtils {
                 System.out.printf("启动服务 %d\n", serverSocket.getLocalPort());
 
                 while (true) {
-                    Socket serviceSocket = serverSocket.accept();
-                    serviceWriter = new BufferedWriter(new OutputStreamWriter(serviceSocket.getOutputStream()));
-                    serviceReader = new BufferedReader(new InputStreamReader(serviceSocket.getInputStream()));
+                    mServiceSocket = serverSocket.accept();
+                    serviceWriter = new BufferedWriter(new OutputStreamWriter(mServiceSocket.getOutputStream()));
+                    serviceReader = new BufferedReader(new InputStreamReader(mServiceSocket.getInputStream()));
 
                     receiverMsg(serviceCall, serviceReader);
 
-                    serviceSocket.close();
+                    mServiceSocket.close();
                 }
             } catch (IOException e) {
                 iServiceNotifyMsg.errMsg(e, "启动服务器失败");
@@ -64,9 +70,9 @@ public class SocketUtils {
      */
     public void connService(String host, int port, IReceiverMsg clientCall) {
         try {
-            clientSocket = new Socket(host, port);
-            clientWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-            clientReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            mClientSocket = new Socket(host, port);
+            clientWriter = new BufferedWriter(new OutputStreamWriter(mClientSocket.getOutputStream()));
+            clientReader = new BufferedReader(new InputStreamReader(mClientSocket.getInputStream()));
 
             clientWriter.write("连接服务器成功");
             clientWriter.newLine();
@@ -148,7 +154,7 @@ public class SocketUtils {
      */
     public void stopClient() {
         try {
-            clientSocket.close();
+            mClientSocket.close();
         } catch (IOException e) {
             iServiceNotifyMsg.errMsg(e, "停止客户端失败");
             e.printStackTrace();
@@ -163,6 +169,143 @@ public class SocketUtils {
     @FunctionalInterface
     public interface IServiceNotifyMsg {
         void errMsg(Exception e, String errMsg);
+    }
+//-----------------------------------------------------------------------------------------
+
+    /**
+     * @param filePath 文件路径
+     */
+    public void serviceSendFile(String filePath) {
+        if (serviceWriter == null) {
+            iServiceNotifyMsg.errMsg(new RuntimeException("没起服务器"), "没起服务器");
+            System.out.println("没起服务器");
+            return;
+        }
+
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                iServiceNotifyMsg.errMsg(new RuntimeException("文件不存在"), "文件不存在");
+                System.out.println("文件不存在");
+                return;
+            }
+
+            // 发送文件名
+            serviceWriter.write(file.getName());
+            serviceWriter.newLine();
+            serviceWriter.flush();
+
+            byte[] buffer = new byte[1024];
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            BufferedOutputStream bos = new BufferedOutputStream(mServiceSocket.getOutputStream());
+
+            int len;
+            while ((len = bis.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+
+            bis.close();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            iServiceNotifyMsg.errMsg(e, "服务端发送文件异常");
+        }
+    }
+
+    /**
+     * @param savePath 文件保存路径
+     */
+    public void serviceReceiveFile(String savePath) {
+        try {
+            String fileName = serviceReader.readLine();
+            if (fileName == null) {
+                iServiceNotifyMsg.errMsg(new RuntimeException("接收文件名失败"), "接收文件名失败");
+                System.out.println("接收文件名失败");
+                return;
+            }
+
+            File file = new File(savePath, fileName);
+
+            byte[] buffer = new byte[1024];
+            BufferedInputStream bis = new BufferedInputStream(mServiceSocket.getInputStream());
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+
+            int len;
+            while ((len = bis.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+
+            bis.close();
+            bos.close();
+        } catch (IOException e) {
+            iServiceNotifyMsg.errMsg(e, "服务端接收文件异常");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param filePath 文件路径
+     */
+    public void clientSendFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                iServiceNotifyMsg.errMsg(new RuntimeException("文件不存在"), "文件不存在");
+                System.out.println("文件不存在");
+                return;
+            }
+
+            // 发送文件名
+            clientWriter.write(file.getName());
+            clientWriter.newLine();
+            clientWriter.flush();
+
+            byte[] buffer = new byte[1024];
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            BufferedOutputStream bos = new BufferedOutputStream(mClientSocket.getOutputStream());
+
+            int len;
+            while ((len = bis.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+
+            bis.close();
+            bos.close();
+        } catch (IOException e) {
+            iServiceNotifyMsg.errMsg(e, "客户端发送文件异常");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param savePath 文件保存路径
+     */
+    public void clientReceiveFile(String savePath) {
+        try {
+            String fileName = clientReader.readLine();
+            if (fileName == null) {
+                iServiceNotifyMsg.errMsg(new RuntimeException("接收文件名失败"), "接收文件名失败");
+                System.out.println("接收文件名失败");
+                return;
+            }
+
+            File file = new File(savePath, fileName);
+
+            byte[] buffer = new byte[1024];
+            BufferedInputStream bis = new BufferedInputStream(mClientSocket.getInputStream());
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+
+            int len;
+            while ((len = bis.read(buffer)) != -1) {
+                bos.write(buffer, 0, len);
+            }
+
+            bis.close();
+            bos.close();
+        } catch (IOException e) {
+            iServiceNotifyMsg.errMsg(e, "客户端接收文件异常");
+            e.printStackTrace();
+        }
     }
 
 }
