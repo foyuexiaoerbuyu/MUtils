@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -31,7 +30,7 @@ import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity {
 
     private boolean isRefuse;
     private TextView mTv;
@@ -82,24 +81,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.main_btn_creat_qr_code) {
-            String content = String.valueOf(ClipboardUtils.getText(this));
-            Bitmap qrCode = CodeUtils.createQRCode(content, 600);
-            BitmapDrawable drawbale = new BitmapDrawable(this.getResources(), qrCode);
-            mTv.setCompoundDrawablesWithIntrinsicBounds(null, drawbale, null, null);
-            mTv.setText(content);
-        } else if (v.getId() == R.id.main_btn_ip_qr_code) {
-            String content = NetworkUtils.getIpAddressByWifi(this);
-            Bitmap qrCode = CodeUtils.createQRCode(content, 600);
-            BitmapDrawable drawbale = new BitmapDrawable(this.getResources(), qrCode);
-            mTv.setCompoundDrawablesWithIntrinsicBounds(null, drawbale, null, null);
-            mTv.setText(content);
-            ClipboardUtils.copyToClipboard(this, content);
-        }
-    }
-
-    @Override
     public void initView() {
         // 处理接收到的Intent
         Intent intent = getIntent();
@@ -114,9 +95,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 //        PermissionsUtils.requestDefPermissions(this);
         findViewById(R.id.main_btn_qr_code).setOnClickListener(v -> startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), Constant.REQUEST_CODE_SCAN_QRCODE));
-        findViewById(R.id.main_btn_creat_qr_code).setOnClickListener(this);
+        findViewById(R.id.main_btn_creat_qr_code).setOnClickListener(v -> {
+            String content = String.valueOf(ClipboardUtils.getText(MainActivity.this));
+            Bitmap qrCode = CodeUtils.createQRCode(content, 600);
+            BitmapDrawable drawbale = new BitmapDrawable(MainActivity.this.getResources(), qrCode);
+            mTv.setCompoundDrawablesWithIntrinsicBounds(null, drawbale, null, null);
+            mTv.setText(content);
+        });
         mTv = findViewById(R.id.main_tv);
-        findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(this);
+        findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(v -> showIp());
         findViewById(R.id.main_btn_chat).setOnClickListener(v -> {
             Chat1Activity.open(MainActivity.this);//WebSocketClient实现
         });
@@ -143,6 +130,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         findViewById(R.id.btn2).setOnClickListener(v -> {
 
         });
+
+        showIp();
+    }
+
+    private void showIp() {
+        String content = NetworkUtils.getIpAddressByWifi(MainActivity.this);
+        Bitmap qrCode = CodeUtils.createQRCode(content, 600);
+        BitmapDrawable drawbale = new BitmapDrawable(MainActivity.this.getResources(), qrCode);
+        mTv.setCompoundDrawablesWithIntrinsicBounds(null, drawbale, null, null);
+        mTv.setText(content);
+        ClipboardUtils.copyToClipboard(MainActivity.this, content);
     }
 
     @Override
