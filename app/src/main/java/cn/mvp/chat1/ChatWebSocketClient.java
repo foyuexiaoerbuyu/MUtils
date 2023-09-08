@@ -4,6 +4,9 @@ package cn.mvp.chat1;
 import android.os.Environment;
 import android.util.Log;
 
+import com.blankj.utilcode.util.ClipboardUtils;
+import com.hjq.toast.ToastUtils;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
@@ -72,9 +75,17 @@ public class ChatWebSocketClient {
             public void onMessage(String message) {
                 ChatMsg msg = GsonUtil.fromJson(message, ChatMsg.class);
                 if (msg.getMsgType() == 0) {
-                    String sb = "服务端消息: " + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
-                            "\n   " + msg.getMsgContent() + "\n";
-                    iReceiver.log(sb);
+                    if (msg.getMsgContent().startsWith("cmd_clipboard_set")) {//pc给手机设置剪切板
+                        ClipboardUtils.copyText(msg.getMsgContent().replace("cmd_clipboard_set", ""));
+                        ToastUtils.show("已复制pc剪贴板");
+                    } else if (msg.getMsgContent().startsWith("cmd_clipboard_get")) {//获取手机剪切板给pc
+                        sendMsg("cmd_clipboard_get" + ClipboardUtils.getText().toString());
+                        ToastUtils.show("已设置pc剪贴板");
+                    } else {
+                        String sb = "服务端消息: " + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
+                                "\n   " + msg.getMsgContent() + "\n";
+                        iReceiver.log(sb);
+                    }
                 } else {
                     File directory = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                     String name = directory + File.separator + msg.getFileName();
