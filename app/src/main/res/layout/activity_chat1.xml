@@ -40,6 +40,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="剪切板发送" />
+
+        <Button
+            android:id="@+id/chat1_btn_reconnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="重连" />
     </LinearLayout>
 
     <LinearLayout

@@ -56,6 +56,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
         showMessage = findViewById(R.id.chat1_show_message);
         editText = findViewById(R.id.chat1_edit_text);
         findViewById(R.id.chat1_btn_conn).setOnClickListener(this);
+        findViewById(R.id.chat1_btn_reconnection).setOnClickListener(this);
         findViewById(R.id.chat1_btn_qr_scan).setOnClickListener(this);
         findViewById(R.id.chat1_tv_send).setOnClickListener(this);
         findViewById(R.id.chat1_btn_clipboard_send).setOnClickListener(v -> {
@@ -108,6 +109,9 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             case R.id.chat1_btn_qr_scan:
                 startActivityForResult(new Intent(this, CaptureActivity.class), Constant.REQUEST_CODE_SCAN_QRCODE);
                 break;
+            case R.id.chat1_btn_reconnection:
+                ChatWebSocketClient.getInstance().reconnection();
+                break;
             default:
                 break;
         }
@@ -144,7 +148,10 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onOpen() {
                 //连接时如果有数据发送输入框内的数据
-                sendMsg(editText.getText().toString());
+                String msg = editText.getText().toString();
+                if (msg.trim().length() > 0) {
+                    sendMsg(msg);
+                }
             }
 
             @Override

@@ -163,6 +163,14 @@ public class ChatWebSocketClient {
     }
 
     public boolean sendMsg(String msg) {
+        if (reconnection()) return false;
+
+        webSocketClient.send(msg);
+
+        return true;
+    }
+
+    public boolean reconnection() {
         if (!webSocketClient.isOpen()) {
             iReceiver.log("正在重连...\n");
             if (webSocketClient.getReadyState().equals(ReadyState.NOT_YET_CONNECTED)) {
@@ -176,12 +184,9 @@ public class ChatWebSocketClient {
                 webSocketClient.reconnect();
                 iReceiver.log("正在重连...\n");
             }
-            return false;
+            return true;
         }
-
-        webSocketClient.send(msg);
-
-        return true;
+        return false;
     }
 
     public interface IReceiver {
