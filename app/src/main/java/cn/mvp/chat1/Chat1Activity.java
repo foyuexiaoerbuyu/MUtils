@@ -81,12 +81,9 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        inputAlertDialog.setOkClick(new InputAlertDialog.OnOkClickListener() {
-            @Override
-            public void click(String inputStr) {
-                MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
-                connService(inputStr);
-            }
+        inputAlertDialog.setOkClick(inputStr -> {
+            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
+            connService(inputStr);
         });
         inputAlertDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
         inputAlertDialog.show();
@@ -121,9 +118,10 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             ToastUtils.show("消息不能为空");
             return;
         }
-        ChatWebSocketClient.getInstance().sendMsg(msg);
-        showMessage.append("客户端消息：" + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) + "\n   " + msg + "\n");
-        editText.setText("");
+        if (ChatWebSocketClient.getInstance().sendMsg(msg)) {
+            showMessage.append("客户端消息：" + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) + "\n   " + msg + "\n");
+            editText.setText("");
+        }
     }
 
     @Override
@@ -142,6 +140,12 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             return;
         }
         ChatWebSocketClient.getInstance().connService(host, new ChatWebSocketClient.IReceiver() {
+
+            @Override
+            public void onOpen() {
+                //连接时如果有数据发送输入框内的数据
+                sendMsg(editText.getText().toString());
+            }
 
             @Override
             public void onReceiverMsg(String msg) {

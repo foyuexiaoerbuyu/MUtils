@@ -63,16 +63,19 @@ public class ChatWebSocketClient {
         webSocketClient = new WebSocketClient(serverURI, headers) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
+                // 连接成功后发送消息(主要是为了重连后发送待发送数据)
                 String sb = "onOpen at time：" +
                         DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
                         "\n服务器状态：" +
                         serverHandshake.getHttpStatusMessage() +
                         "\n";
                 iReceiver.log(sb);
+                iReceiver.onOpen();
             }
 
             @Override
             public void onMessage(String message) {
+                // 接收到消息的处理逻辑
                 ChatMsg msg = GsonUtil.fromJson(message, ChatMsg.class);
                 if (msg.getMsgType() == 0) {
                     if (msg.getMsgContent().startsWith("cmd_clipboard_set")) {//pc给手机设置剪切板
@@ -110,6 +113,7 @@ public class ChatWebSocketClient {
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
+                // 连接关闭的处理逻辑
                 StringBuffer sb = new StringBuffer();
                 sb.append("客户端消息：");
                 sb.append(DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL));
@@ -127,6 +131,7 @@ public class ChatWebSocketClient {
 
             @Override
             public void onError(Exception ex) {
+                // 错误处理逻辑
                 iReceiver.onErr(ex);
                 StringBuilder sb = new StringBuilder();
                 sb.append("onError at time：");
@@ -157,9 +162,9 @@ public class ChatWebSocketClient {
         }
     }
 
-    public void sendMsg(String msg) {
+    public boolean sendMsg(String msg) {
         if (!webSocketClient.isOpen()) {
-            iReceiver.log("正在重连...");
+            iReceiver.log("正在重连...\n");
             if (webSocketClient.getReadyState().equals(ReadyState.NOT_YET_CONNECTED)) {
                 try {
                     webSocketClient.connect();
@@ -169,21 +174,21 @@ public class ChatWebSocketClient {
                 }
             } else if (webSocketClient.getReadyState().equals(ReadyState.CLOSING) || webSocketClient.getReadyState().equals(ReadyState.CLOSED)) {
                 webSocketClient.reconnect();
-                iReceiver.log("正在重连...");
+                iReceiver.log("正在重连...\n");
             }
-            return;
+            return false;
         }
-//                if (webSocketClient.isClosed() || webSocketClient.isClosing()) {
-//                    Toast.makeText(this, "Client正在关闭", Toast.LENGTH_SHORT).show();
-//                    webSocketClient.connect();
-//                    break;
-//                }
 
         webSocketClient.send(msg);
 
+        return true;
     }
 
     public interface IReceiver {
+        default void onOpen() {
+
+        }
+
         void onReceiverMsg(String msg);
 
         void onReceiverMsg(ByteBuffer bytes);
