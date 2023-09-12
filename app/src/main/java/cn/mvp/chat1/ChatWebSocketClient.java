@@ -77,7 +77,7 @@ public class ChatWebSocketClient {
             public void onMessage(String message) {
                 // 接收到消息的处理逻辑
                 ChatMsg msg = GsonUtil.fromJson(message, ChatMsg.class);
-                if (msg.getMsgType() == 0) {
+                if (msg.getMsgType() == msg.MSG_TYPE_MSG) {
                     if (msg.getMsgContent().startsWith("cmd_clipboard_set")) {//pc给手机设置剪切板
                         ClipboardUtils.copyText(msg.getMsgContent().replace("cmd_clipboard_set", ""));
                         ToastUtils.show("已复制pc剪贴板");
@@ -87,29 +87,42 @@ public class ChatWebSocketClient {
                     } else {
                         String sb = "服务端消息: " + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
                                 "\n   " + msg.getMsgContent() + "\n";
-                        iReceiver.log(sb);
+                        iReceiver.onReceiverMsg(sb);
                     }
                 } else {
                     File directory = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                     String name = directory + File.separator + msg.getFileName();
-                    Log.i("调试信息", "文件名:  " + name);
+                    String fileMD5 = FileUtils.getFileMD5(name);
+                    if (!FileUtils.isFileExist(name)) {
+                        iReceiver.onReceiverMsg("收到服务端传来的文件,正在下载...");
+                    } else if (directory.isFile() && fileMD5.equals(msg.getMd5())) {
+                        FileUtils.deleteFile(name);//存在且文件相同就删除掉
+                    }
+                    Log.i("调试信息", "文件名:  " + name + "  prs: " + msg.getProgress() + " md5: " + msg.getMd5());
                     FileUtils.writeFile(name, msg.getFileData(), true);
-                    Log.i("调试信息", "File received and saved!");
+                    int prs = (int) (msg.getProgress() * 100 / msg.getFileSize());
+                    if (fileMD5.equals(msg.getMd5())) {
+                        iReceiver.progress("接收完毕", 100, msg);
+                        iReceiver.onReceiverMsg("接收完毕");
+                    } else {
+                        iReceiver.progress("正在接收文件...", prs, msg);
+                        Log.i("调试信息", "正在接收: " + msg.getProgress() + "  " + msg.getFileSize() + " 接收进度: " + prs);
+                    }
                 }
-                Log.i("调试信息", "onMessage:  " + message);
+//                Log.i("调试信息", "onMessage:  " + message);
             }
 
-            @Override
-            public void onMessage(ByteBuffer bytes) {
-                super.onMessage(bytes);
-                iReceiver.onReceiverMsg(bytes);
-//                SDCardUtils.getExPubDownDir();
-//                File directory = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-//                String name = directory + "/largefile.apk";
-//                Log.i("调试信息", "文件名:  " + name);
-//                FileUtils.writeFile(name, bytes, true);
-//                Log.i("调试信息", "File received and saved!");
-            }
+//            @Override
+//            public void onMessage(ByteBuffer bytes) {
+//                super.onMessage(bytes);
+//                iReceiver.onReceiverMsg(bytes);
+////                SDCardUtils.getExPubDownDir();
+////                File directory = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+////                String name = directory + "/largefile.apk";
+////                Log.i("调试信息", "文件名:  " + name);
+////                FileUtils.writeFile(name, bytes, true);
+////                Log.i("调试信息", "File received and saved!");
+//            }
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
@@ -196,11 +209,15 @@ public class ChatWebSocketClient {
 
         void onReceiverMsg(String msg);
 
-        void onReceiverMsg(ByteBuffer bytes);
+        default void onReceiverMsg(ByteBuffer bytes) {
+
+        }
 
         void onErr(Exception e);
 
         void log(String log);
+
+        void progress(String msg, int currPrs, ChatMsg fileInfo);
     }
 
 

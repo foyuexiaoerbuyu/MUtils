@@ -18,7 +18,6 @@ import com.king.zxing.Intents;
 import com.tencent.mmkv.MMKV;
 
 import java.net.ConnectException;
-import java.nio.ByteBuffer;
 
 import cn.mvp.R;
 import cn.mvp.global.Constant;
@@ -160,11 +159,6 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             }
 
             @Override
-            public void onReceiverMsg(ByteBuffer bytes) {
-
-            }
-
-            @Override
             public void onErr(Exception e) {
                 e.printStackTrace();
                 print(e.getMessage());
@@ -176,6 +170,11 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             @Override
             public void log(String log) {
                 print(log);
+            }
+
+            @Override
+            public void progress(String msg, int currPrs, ChatMsg fileInfo) {
+
             }
         });
 

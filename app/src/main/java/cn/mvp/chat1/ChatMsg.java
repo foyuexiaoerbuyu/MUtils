@@ -6,6 +6,7 @@ public class ChatMsg {
     /*文本消息(ChatMsg对象);文件类型(ChatMsg对象);*/
     public final int MSG_TYPE_MSG = 0, MSG_TYPE_FILE = 1;
     private long id;
+    private long progress;
     private int msgType;//0:文本消息 1:文件
     private long fileSize;
     private String fileName;
@@ -80,12 +81,12 @@ public class ChatMsg {
         this.fileData = fileData;
     }
 
-    public long getFileSize() {
-        return fileSize;
-    }
-
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public long getFileSize() {
+        return fileSize;
     }
 
     public String getExtra() {
@@ -94,6 +95,14 @@ public class ChatMsg {
 
     public void setExtra(String extra) {
         this.extra = extra;
+    }
+
+    public long getProgress() {
+        return progress;
+    }
+
+    public void setProgress(long progress) {
+        this.progress = progress;
     }
 
     public String toJson() {
