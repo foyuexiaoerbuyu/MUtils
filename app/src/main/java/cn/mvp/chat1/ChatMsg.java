@@ -1,11 +1,17 @@
 package cn.mvp.chat1;
 
+import com.blankj.utilcode.util.GsonUtils;
+
 public class ChatMsg {
+    /*文本消息(ChatMsg对象);文件类型(ChatMsg对象);*/
+    public final int MSG_TYPE_MSG = 0, MSG_TYPE_FILE = 1;
     private long id;
-    private int msgType;//0:文本 1:文件
+    private int msgType;//0:文本消息 1:文件
+    private long fileSize;
     private String fileName;
     private String md5;
     private String msgContent;
+    private String extra;
     private byte[] fileData;
 
     public ChatMsg(String msgContent) {
@@ -13,12 +19,17 @@ public class ChatMsg {
         this.msgContent = msgContent;
     }
 
-    public ChatMsg(String fileName, String md5, byte[] fileData) {
+    public ChatMsg(String fileName, String md5, long fileSize, byte[] fileData) {
         this.id = System.currentTimeMillis();
-        this.msgType = 1;
+        this.msgType = MSG_TYPE_FILE;
         this.fileName = fileName;
+        this.fileSize = fileSize;
         this.md5 = md5;
         this.fileData = fileData;
+    }
+
+    public boolean isFile() {
+        return msgType == MSG_TYPE_FILE;
     }
 
     public long getId() {
@@ -68,4 +79,25 @@ public class ChatMsg {
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
     }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
+
+    public String toJson() {
+        return GsonUtils.toJson(this);
+    }
+
 }
