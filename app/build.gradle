@@ -147,6 +147,8 @@ dependencies {
 //    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
+    implementation 'io.github.lucksiege:pictureselector:v3.11.1'
+
 //    implementation 'com.github.liangjingkanji:BRV:1.4.3'
 //
 //    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖

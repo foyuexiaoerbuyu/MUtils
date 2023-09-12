@@ -14,8 +14,14 @@ import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
 import com.king.zxing.Intents;
 import com.king.zxing.util.CodeUtils;
+import com.luck.picture.lib.basic.PictureSelector;
+import com.luck.picture.lib.config.SelectMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import cn.mvp.acty.BaseActivity;
 import cn.mvp.acty.ElectricQuantityActivity;
@@ -25,8 +31,11 @@ import cn.mvp.chat1.Chat1Activity;
 import cn.mvp.global.Constant;
 import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DeviceUtils;
+import cn.mvp.mlibs.utils.FileUtils;
+import cn.mvp.mlibs.utils.GsonUtil;
 import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
+import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
 
@@ -126,12 +135,37 @@ public class MainActivity extends BaseActivity {
                         }
                     }).create().show();
         });
+        findViewById(R.id.main_btn_camera).setOnClickListener(v -> {
+            takePicture();
+        });
         findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
         findViewById(R.id.btn2).setOnClickListener(v -> {
-
+            // TODO: 2023/9/12 按钮2
         });
 
         showIp();
+    }
+
+    private void takePicture() {
+        PictureSelector.create(MainActivity.this).openCamera(SelectMimeType.ofImage())
+                .forResult(new OnResultCallbackListener<LocalMedia>() {
+                    @Override
+                    public void onResult(ArrayList<LocalMedia> result) {
+                        for (LocalMedia localMedia : result) {
+                            try {
+                                FileUtils.moveFile(localMedia.getRealPath(), SDCardUtils.getExPubDownDir() + "." + FileUtils.getFileName(localMedia.getRealPath()));
+                            } catch (FileNotFoundException e) {
+                                Log.e("调试信息", "onR1esult:  --", e);
+                            }
+                        }
+                        Log.i("调试信息", "onResult:  " + GsonUtil.toJson(result));
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
     }
 
     private void showIp() {
