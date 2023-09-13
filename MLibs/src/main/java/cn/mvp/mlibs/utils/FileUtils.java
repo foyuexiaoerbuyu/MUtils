@@ -31,6 +31,7 @@ import java.text.DecimalFormat;
 
 import cn.mvp.mlibs.log.XLogUtil;
 import cn.mvp.mlibs.utils.ents.FileInfos;
+import kotlin.Deprecated;
 
 /**
  * @author： wlj
@@ -241,7 +242,7 @@ public class FileUtils {
 
         File file = new File(filename);
         if (filename == null || filename.equals("")) {
-            throw new NullPointerException("无效的文件路径");
+            throw new IOException("无效的文件路径");
         }
         long len = file.length();
         byte[] bytes = new byte[(int) len];
@@ -254,6 +255,35 @@ public class FileUtils {
         in.close();
         bufferedInputStream.close();
         return bytes;
+
+    }
+
+    /**
+     * 读取源文件内容
+     *
+     * @param filename String 文件路径
+     * @param readSize 读取文件字节长度
+     * @throws IOException .
+     */
+    public static void readFile(String filename, int readSize, IReadByte iReadByte) throws IOException {
+
+        File file = new File(filename);
+        if (filename.equals("") || !file.exists()) {
+            throw new IOException("无效的文件路径");
+        }
+        try (FileInputStream fis = new FileInputStream(file)) {
+            byte[] buffer = new byte[readSize];
+            int bytesRead;
+
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                // 处理读取的数据，例如写入到另外的文件中或进行其他操作
+                // 这里只是简单地打印读取的字节数
+                iReadByte.read(buffer);
+                System.out.println("读取了 " + bytesRead + " 字节");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -854,7 +884,7 @@ public class FileUtils {
     /**
      * 插入文件第一行 推荐使用 insertAtBeginning
      */
-    @Deprecated
+    @Deprecated(message = "推荐使用 insertAtBeginning 方法")
     public static void writeFileToFirstLine(String filePath, String content) {
         File file = new File(filePath);
         RandomAccessFile randomAccessFile = null;
@@ -935,4 +965,7 @@ public class FileUtils {
         void read(byte[] buffer);
     }
 
+    interface IReadByte {
+        void read(byte[] buffer);
+    }
 }
