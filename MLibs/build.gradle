@@ -1,3 +1,8 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.foyuexiaoerbuyu'
@@ -74,6 +79,16 @@ android {
         println "VersionName remains the same: $currentVersionName"
     }
 
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+    }
 }
 
 /*//将源码打包  为了保证引入的aar  包可以查看源码
