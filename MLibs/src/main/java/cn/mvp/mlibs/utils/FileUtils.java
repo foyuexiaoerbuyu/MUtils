@@ -968,4 +968,57 @@ public class FileUtils {
     interface IReadByte {
         void read(byte[] buffer);
     }
+
+
+    /**
+     * 递归读取文件路径
+     */
+    public static void readFileNames(String path, ReadFileNames readLines) {
+        File file = new File(path);
+        if (file.exists() && file.isFile()) {
+            readLines.onReadLine(file.getPath(), file);
+        } else if (file.exists() && file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                readFileNames(files[i].getPath(), readLines);
+            }
+        }
+    }
+
+    public static void createFile(String filePath) {
+        // 创建文件对象
+        File file = new File(filePath);
+        if (file.exists()) {
+            return;
+        }
+        try {
+            // 获取文件所在目录
+            File parentDir = file.getParentFile();
+
+            if (!parentDir.exists()) {
+                // 如果父目录不存在，则创建父目录
+                boolean created = parentDir.mkdirs();
+                if (created) {
+                    System.out.println("父目录创建成功");
+                } else {
+                    System.out.println("父目录创建失败");
+                }
+            }
+
+            // 创建文件
+            boolean created = file.createNewFile();
+            if (created) {
+                System.out.println("文件创建成功");
+            } else {
+                System.out.println("文件创建失败");
+            }
+        } catch (IOException e) {
+            System.out.println("文件创建失败：" + e.getMessage());
+        }
+    }
+
+    public interface ReadFileNames {
+
+        void onReadLine(String filePath, File file);
+    }
 }

@@ -4,7 +4,7 @@ import com.blankj.utilcode.util.GsonUtils;
 
 public class ChatMsg {
     /*文本消息(ChatMsg对象);文件类型(ChatMsg对象);*/
-    public final int MSG_TYPE_MSG = 0, MSG_TYPE_FILE = 1;
+    public static final int MSG_TYPE_MSG = 0, MSG_TYPE_FILE = 1, MSG_TYPE_CMD = 2;
     private long id;
     private long progress;
     private int msgType;//0:文本消息 1:文件
@@ -17,6 +17,12 @@ public class ChatMsg {
 
     public ChatMsg(String msgContent) {
         this.id = System.currentTimeMillis();
+        this.msgContent = msgContent;
+    }
+
+    public ChatMsg(String msgContent, int msgType) {
+        this.id = System.currentTimeMillis();
+        this.msgType = msgType;
         this.msgContent = msgContent;
     }
 
