@@ -6,35 +6,3 @@ https://github.com/Ajian-studio/GAHonorClock
 https://github.com/MonkeyMushroom/MiClockView
 
 =====================================
-todos_tab//待办列表
-	id
-	matterTitle//事项名称
-	creatDate//创建时间
-	importantLevel//重要等级
-	remindTime//提醒时间
-	remindRepeat//重复提醒
-	noteContent//备注
-	archive//归档(已完成)
-	archiveDate//归档时间(已完成时间)
-
-
-notepad_tab//记事列表
-	id
-	matterTitle//事项名称
-	creatDate//创建时间
-	importantLevel//重要等级
-	noteContent//备注
-
-
-成就感
-
-todo
-	历史倒计时
-
-进度安排
-    1.实现基本增删改
-    2.排序
-    3.增加专注模式
-    4.增加日程管理(特定日期时间做某事)
-    5.完成定时提醒功能
-    6.增加记事本功能
