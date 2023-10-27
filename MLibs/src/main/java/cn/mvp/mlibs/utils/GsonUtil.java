@@ -17,6 +17,10 @@ public class GsonUtil {
         return new Gson().fromJson(json, clazz);
     }
 
+    public static <T> String[] fromJsonToStrArr(String json) {
+        return new Gson().fromJson(json, TypeToken.getArray(String.class).getType());
+    }
+
     public synchronized static <T> List<T> fromJsonToList(String json, Class<T> elementClass) {
         Type listType = TypeToken.getParameterized(List.class, elementClass).getType();
         return new Gson().fromJson(json, listType);

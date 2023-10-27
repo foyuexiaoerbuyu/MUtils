@@ -431,6 +431,7 @@ public class FileUtils {
      * @return
      */
     public static boolean makeDirs(String filePath) {
+        filePath = filePath.replace("\\", File.separator).replace("/", File.separator);
         String folderName = getFolderName(filePath);
         if (TextUtils.isEmpty(folderName)) {
             return false;
@@ -967,6 +968,13 @@ public class FileUtils {
 
     interface IReadByte {
         void read(byte[] buffer);
+    }
+
+    /**
+     * 递归读取文件路径
+     */
+    public static void readDirFiles(String path, ReadFileNames readLines) {
+        readFileNames(path, readLines);
     }
 
 

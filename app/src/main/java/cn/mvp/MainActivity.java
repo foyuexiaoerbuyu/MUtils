@@ -5,11 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Environment;
+import android.text.InputType;
 import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.gson.Gson;
 import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
 import com.king.zxing.Intents;
@@ -19,16 +21,21 @@ import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cn.mvp.acty.BaseActivity;
 import cn.mvp.acty.ElectricQuantityActivity;
 import cn.mvp.acty.zfb.ZfbActivity;
-import cn.mvp.chat.ChatActivity;
 import cn.mvp.chat1.Chat1Activity;
+import cn.mvp.global.CfgInfo;
 import cn.mvp.global.Constant;
+import cn.mvp.mlibs.socket.SocketUtils;
 import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DeviceUtils;
 import cn.mvp.mlibs.utils.FileUtils;
@@ -38,6 +45,8 @@ import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.StringUtil;
 import cn.mvp.mlibs.utils.VerifyUtils;
+import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
+import cn.mvp.utils.SpUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -51,43 +60,36 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    // 带回授权结果
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1024 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // 检查是否有权限
-            if (Environment.isExternalStorageManager()) {
-                isRefuse = false;
-                // 授权成功
-            } else {
-                isRefuse = true;
-                // 授权失败
+    private void showConnServiceDialog(String str) {
+        InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
+        inputAlertDialog.setEditText(str);
+        inputAlertDialog.setCancelBtnClickDismiss(false);
+        inputAlertDialog.setCancelClick("端口", (editText, inputStr) -> {
+            if (inputStr.contains(":")) {
+                editText.setSelection(inputStr.indexOf(":") + 1, inputStr.length());
             }
-        }
-        if (requestCode == Constant.REQUEST_CODE_SCAN_QRCODE) {
-            try {
-                VerifyUtils.checkTrue(StringUtil.isBlank(data), "二维码数据为空");
-                String result = data.getStringExtra(Intents.Scan.RESULT);
-                ClipboardUtils.copyToClipboard(MainActivity.this, result);
-                ToastUtils.show("已复制二维码信息到剪切板: " + result);
-                String trim = result.trim();
-                Log.i("调试信息", "onActivityRtrimesult:  " + trim);
-                Log.i("调试信息", "onActivityResult:  " + trim.startsWith("http://") + " = " + trim.startsWith("https://") + " = " + trim.startsWith("www."));
-                if (trim.startsWith("http://") || trim.startsWith("https://") || trim.startsWith("www.")) {
-                    Log.i("调试信息", "onActivityResult:  " + trim);
-                    IntentUtil.goBrowser(this, trim);
-                }
-            } catch (IOException e) {
-                ToastUtils.show(e.getLocalizedMessage());
-            }
-        }
-    }
+        });
 
+        inputAlertDialog.setOkClick(inputStr -> {
+//            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
+            CfgInfo cfgInfo = SpUtils.getCfgInfo();
+            cfgInfo.addConnectIp(inputStr);
+            connService(cfgInfo.getConnectIps());
+        });
+        inputAlertDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
+        inputAlertDialog.show();
 
-    public void print(String msg) {
-        mTv.setText(msg);
-    }
+        inputAlertDialog.showInputDialog(str.indexOf(":"));
+
+    }    private SocketUtils socketUtils = new SocketUtils((e, errMsg) -> {
+        e.printStackTrace();
+        if (e instanceof ConnectException) {
+            ToastUtils.show("连接服务器异常");
+            showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+            return;
+        }
+        ToastUtils.show(errMsg);
+    });
 
     @Override
     public void initView() {
@@ -138,13 +140,124 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.main_btn_camera).setOnClickListener(v -> {
             takePicture();
         });
-        findViewById(R.id.btn1).setOnClickListener(v -> ChatActivity.open(MainActivity.this));
+        findViewById(R.id.btn1).setOnClickListener(v -> {
+            // TODO: 2023/9/12 按钮1
+//            String host = "192.168.10.9";
+//            List<String> ips = Arrays.asList("192.168.10.9:9090", "192.168.10.9:9090");
+            CfgInfo cfgInfo = SpUtils.getCfgInfo();
+            if (cfgInfo.getConnectIps() == null || cfgInfo.getConnectIps().size() == 0) {
+                showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+                return;
+            }
+            List<String> ips = cfgInfo.getConnectIps();
+            connService(ips);
+        });
         findViewById(R.id.btn2).setOnClickListener(v -> {
             // TODO: 2023/9/12 按钮2
         });
 
         showIp();
+//        String[] items3 = new String[]{"连接socket", "按钮1", "按钮2", "按钮3", "按钮4", "按钮5", "按钮6"};//创建item
+//        //添加列表
+//        new AlertDialog.Builder(this)
+//                .setItems(items3, (dialogInterface, pos) -> {
+//                    Toast.makeText(MainActivity.this, "点的是：" + items3[pos], Toast.LENGTH_SHORT).show();
+//                    if (pos == 0) {
+//
+//                    } else if (pos == 1) {
+//                    } else if (pos == 2) {
+//                    } else if (pos == 3) {
+//                    } else if (pos == 4) {
+//                    } else if (pos == 5) {
+//                    } else {
+//                    }
+//                }).create().show();
     }
+
+    // 带回授权结果
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1024 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 检查是否有权限
+            if (Environment.isExternalStorageManager()) {
+                isRefuse = false;
+                // 授权成功
+            } else {
+                isRefuse = true;
+                // 授权失败
+            }
+        }
+        if (requestCode == Constant.REQUEST_CODE_SCAN_QRCODE) {
+            try {
+                VerifyUtils.checkTrue(StringUtil.isBlank(data), "二维码数据为空");
+                String result = data.getStringExtra(Intents.Scan.RESULT);
+                ClipboardUtils.copyToClipboard(MainActivity.this, result);
+                ToastUtils.show("已复制二维码信息到剪切板: " + result);
+                String trim = result.trim();
+                Log.i("调试信息", "onActivityRtrimesult:  " + trim);
+                Log.i("调试信息", "onActivityResult:  " + trim.startsWith("http://") + " = " + trim.startsWith("https://") + " = " + trim.startsWith("www."));
+                if (trim.startsWith("http://") || trim.startsWith("https://") || trim.startsWith("www.")) {
+                    Log.i("调试信息", "onActivityResult:  " + trim);
+                    IntentUtil.goBrowser(this, trim);
+                }
+            } catch (IOException e) {
+                ToastUtils.show(e.getLocalizedMessage());
+            }
+        }
+    }
+
+
+    public void print(String msg) {
+        mTv.setText(msg);
+    }
+
+    private void connService(List<String> ips) {
+        String receiverPath = SDCardUtils.getExternalPublicStorageDirectory() + "/01tmp/";
+        socketUtils.connService(ips, receiverPath, new SocketUtils.IReceiverMsg() {
+            @Override
+            public void receiverMsg(String receiveMsg) {
+                if (receiveMsg.startsWith("cmd_setClipboardText_")) {
+                    //设置客户端剪切板
+                    ClipboardUtils.copyText(MainActivity.this, receiveMsg.replace("cmd_setClipboardText_", ""));
+                    ToastUtils.show("已复制剪贴板");
+                } else if (receiveMsg.startsWith("cmd_getClipboardText")) {
+                    //发送客户端剪切板给服务端
+                    socketUtils.sendMsgToService("cmd_setClipboardText_" + ClipboardUtils.getText(MainActivity.this));
+                    ToastUtils.show("已发送剪贴板");
+                } else if (receiveMsg.startsWith("cmd_pullFiles")) {
+                    //服务端希望拉取客户端文件数据
+                    String[] list = new File(receiverPath).list();
+                    for (String s : list) {
+                        System.out.println("s = " + s);
+                        socketUtils.sendFileToService(receiverPath + s);
+                    }
+                    socketUtils.sendMsgToService("cmd_pullFiles_success");
+                } else if (receiveMsg.startsWith("cmd_getFiles")) {
+                    //服务端希望获取客户端文件数据
+                    String[] list = new File(receiverPath).list();
+                    socketUtils.sendMsgToService("cmd_setFiles" + new Gson().toJson(list));
+                } else if (receiveMsg.startsWith("cmd_delFiles")) {
+                    //服务端希望删除客户端文件数据
+                    String[] delFiles = GsonUtil.fromJsonToStrArr(receiveMsg.replace("cmd_delFiles", ""));
+                    System.out.println("delFiles = " + Arrays.toString(delFiles));
+                    for (String file : delFiles) {
+                        System.out.println("file = " + file);
+                        FileUtils.deleteFile(receiverPath + file);
+                    }
+                    socketUtils.sendMsgToService("cmd_delFiles_success");
+                }
+                System.out.println("接收到服务端信息: " + receiveMsg);
+            }
+
+            @Override
+            public void log(int type, String msg) {
+                ToastUtils.show(msg);
+            }
+        });
+    }
+
+
 
     private void takePicture() {
         PictureSelector.create(MainActivity.this).openCamera(SelectMimeType.ofImage())
