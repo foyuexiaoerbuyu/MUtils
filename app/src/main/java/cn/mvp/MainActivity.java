@@ -74,6 +74,7 @@ public class MainActivity extends BaseActivity {
 //            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
             CfgInfo cfgInfo = SpUtils.getCfgInfo();
             cfgInfo.addConnectIp(inputStr);
+            SpUtils.setCfgInfo(cfgInfo);
             connService(cfgInfo.getConnectIps());
         });
         inputAlertDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -81,15 +82,7 @@ public class MainActivity extends BaseActivity {
 
         inputAlertDialog.showInputDialog(str.indexOf(":"));
 
-    }    private SocketUtils socketUtils = new SocketUtils((e, errMsg) -> {
-        e.printStackTrace();
-        if (e instanceof ConnectException) {
-            ToastUtils.show("连接服务器异常");
-            showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
-            return;
-        }
-        ToastUtils.show(errMsg);
-    });
+    }
 
     @Override
     public void initView() {
@@ -118,6 +111,9 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.main_btn_chat).setOnClickListener(v -> {
             Chat1Activity.open(MainActivity.this);//WebSocketClient实现
         });
+        findViewById(R.id.main_btn_conn_service).setOnClickListener(v -> {
+            showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+        });
         findViewById(R.id.main_btn_base_info).setOnClickListener(v -> {
             mTv.setText(DeviceUtils.getDeviceInfo());//获取手机基本信息
         });
@@ -144,13 +140,6 @@ public class MainActivity extends BaseActivity {
             // TODO: 2023/9/12 按钮1
 //            String host = "192.168.10.9";
 //            List<String> ips = Arrays.asList("192.168.10.9:9090", "192.168.10.9:9090");
-            CfgInfo cfgInfo = SpUtils.getCfgInfo();
-            if (cfgInfo.getConnectIps() == null || cfgInfo.getConnectIps().size() == 0) {
-                showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
-                return;
-            }
-            List<String> ips = cfgInfo.getConnectIps();
-            connService(ips);
         });
         findViewById(R.id.btn2).setOnClickListener(v -> {
             // TODO: 2023/9/12 按钮2
@@ -172,7 +161,26 @@ public class MainActivity extends BaseActivity {
 //                    } else {
 //                    }
 //                }).create().show();
+        CfgInfo cfgInfo = SpUtils.getCfgInfo();
+        if (cfgInfo.getConnectIps() == null || cfgInfo.getConnectIps().size() == 0) {
+            showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+            return;
+        }
+        List<String> ips = cfgInfo.getConnectIps();
+        Log.i("调试信息", "initView:  " + ips);
+        connService(ips);
     }
+
+    private SocketUtils socketUtils = new SocketUtils((e, errMsg) -> {
+        e.printStackTrace();
+        if (e instanceof ConnectException) {
+            ToastUtils.show("连接服务器异常...");
+            showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+            return;
+        }
+        ToastUtils.show(errMsg);
+    });
+
 
     // 带回授权结果
     @Override
@@ -256,7 +264,6 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
 
 
     private void takePicture() {

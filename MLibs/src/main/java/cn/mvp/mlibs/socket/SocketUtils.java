@@ -88,7 +88,10 @@ public class SocketUtils {
                         }
                     }
                 }
-
+                if (mClientSocket == null) {
+                    iReceiverMsg.log(IReceiverMsg.MSG_TYPE_COMM_LOG, "连接服务器异常.");
+                    return;
+                }
                 BufferedReader clientReader = new BufferedReader(new InputStreamReader(mClientSocket.getInputStream()));
                 iReceiverMsg.log(IReceiverMsg.MSG_TYPE_COMM_LOG, "连接服务器成功");
                 sendMsgToService("客户端连接服务器成功");
