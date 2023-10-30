@@ -174,7 +174,7 @@ public class SocketUtils {
             while ((msg = reader.readLine()) != null) {
                 System.out.println("msg = " + msg);
                 ChatMsg chatMsg = GsonUtil.fromJson(msg, ChatMsg.class);
-                if (chatMsg.getMsgType() == chatMsg.MSG_TYPE_FILE) {
+                if (chatMsg.getMsgType() == ChatMsgType.MSG_TYPE_FILE) {
 //                    XLog.showLogArgs(receiverPath, chatMsg.getFileName(), chatMsg.getMd5());
                     String filePath = receiverPath + chatMsg.getFileName();
                     if (FileUtils.isFileExist(filePath) && FileUtils.getFileMD5(filePath).equals(chatMsg.getMd5())) {
@@ -182,7 +182,7 @@ public class SocketUtils {
                         continue;
                     }
                     FileUtils.writeFile(filePath, chatMsg.getFileData(), true);
-                } else if (chatMsg.getMsgType() == chatMsg.MSG_TYPE_MSG) {
+                } else if (chatMsg.getMsgType() == ChatMsgType.MSG_TYPE_MSG) {
                     clientCall.receiverMsg(chatMsg.getMsgContent().trim());
                 }
                 if ("Bye".equals(chatMsg.getMsgContent())) {
@@ -220,10 +220,30 @@ public class SocketUtils {
         }
     }
 
+    //-----------------------------------------------------------------------------------------
     public void sendMsgToClient(String msg) {
         sendMsgToClientPrimitive(new ChatMsg(msg).toJson());
     }
-//-----------------------------------------------------------------------------------------
+
+    public interface IReceiverMsg {
+        /*0:普通日志*/
+        static final int MSG_TYPE_COMM_LOG = 0;
+
+        void receiverMsg(String receiveMsg);
+
+        default void progress(int progress) {
+
+        }
+
+        default void log(int type, String msg) {
+
+        }
+    }
+
+    @FunctionalInterface
+    public interface IServiceNotifyMsg {
+        void errMsg(Exception e, String errMsg);
+    }
 
     public void sendMsgToService(String msg) {
         sendMsgToServicePrimitive(new ChatMsg(msg).toJson());
@@ -251,10 +271,6 @@ public class SocketUtils {
         }
     }
 
-//    public void sendMsgToClient(ChatMsg msg) {
-//        sendMsgToClientPrimitive(msg.toJson());
-//    }
-
     public void sendFileToClient(String filePath) {
         File file = new File(filePath);
         String md5 = FileUtils.getFileMD5(file);
@@ -275,29 +291,5 @@ public class SocketUtils {
             iServiceNotifyMsg.errMsg(e, "接收文件异常: " + e.getMessage());
             System.err.println("Error sending file: " + e.getMessage());
         }
-    }
-
-//    public void sendMsgToService(ChatMsg msg) {
-//        sendMsgToServicePrimitive(msg.toJson());
-//    }
-
-    public interface IReceiverMsg {
-        /*0:普通日志*/
-        static final int MSG_TYPE_COMM_LOG = 0;
-
-        void receiverMsg(String receiveMsg);
-
-        default void progress(int progress) {
-
-        }
-
-        default void log(int type, String msg) {
-
-        }
-    }
-
-    @FunctionalInterface
-    public interface IServiceNotifyMsg {
-        void errMsg(Exception e, String errMsg);
     }
 }

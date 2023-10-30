@@ -60,7 +60,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void showConnServiceDialog(String str) {
+    private void showConnServiceDialog() {
+        String ip = NetworkUtils.getIpAddressByWifi(this);
+        String str = ip.substring(0, ip.lastIndexOf(".") + 1) + ":8887";
         InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
         inputAlertDialog.setEditText(str);
         inputAlertDialog.setCancelBtnClickDismiss(false);
@@ -112,7 +114,7 @@ public class MainActivity extends BaseActivity {
             Chat1Activity.open(MainActivity.this);//WebSocketClient实现
         });
         findViewById(R.id.main_btn_conn_service).setOnClickListener(v -> {
-            showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+            showConnServiceDialog();
         });
         findViewById(R.id.main_btn_base_info).setOnClickListener(v -> {
             mTv.setText(DeviceUtils.getDeviceInfo());//获取手机基本信息
@@ -163,7 +165,7 @@ public class MainActivity extends BaseActivity {
 //                }).create().show();
         CfgInfo cfgInfo = SpUtils.getCfgInfo();
         if (cfgInfo.getConnectIps() == null || cfgInfo.getConnectIps().size() == 0) {
-            showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+            showConnServiceDialog();
             return;
         }
         List<String> ips = cfgInfo.getConnectIps();
@@ -175,7 +177,7 @@ public class MainActivity extends BaseActivity {
         e.printStackTrace();
         if (e instanceof ConnectException) {
             ToastUtils.show("连接服务器异常...");
-            showConnServiceDialog(NetworkUtils.getIpAddressByWifi(this) + ":8887");
+            showConnServiceDialog();
             return;
         }
         ToastUtils.show(errMsg);

@@ -1,10 +1,9 @@
 package cn.mvp.mlibs.socket;
 
+
 import cn.mvp.mlibs.utils.GsonUtil;
 
 public class ChatMsg {
-    /*文本消息(ChatMsg对象);文件类型(ChatMsg对象);*/
-    public final int MSG_TYPE_MSG = 0, MSG_TYPE_FILE = 1;
     private long id;
     private int msgType;//0:文本消息 1:文件
     private long progress;
@@ -23,7 +22,7 @@ public class ChatMsg {
 
     public ChatMsg(String fileName, String md5, long fileSize, byte[] fileData) {
         this.id = System.currentTimeMillis();
-        this.msgType = MSG_TYPE_FILE;
+        this.msgType = ChatMsgType.MSG_TYPE_FILE;
         this.fileName = fileName;
         this.fileSize = fileSize;
         this.md5 = md5;
@@ -31,7 +30,7 @@ public class ChatMsg {
     }
 
     public boolean isFile() {
-        return msgType == MSG_TYPE_FILE;
+        return msgType == ChatMsgType.MSG_TYPE_FILE;
     }
 
     public long getId() {
@@ -82,12 +81,12 @@ public class ChatMsg {
         this.fileData = fileData;
     }
 
-    public long getFileSize() {
-        return fileSize;
-    }
-
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public long getFileSize() {
+        return fileSize;
     }
 
     public String getExtra() {
