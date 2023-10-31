@@ -18,6 +18,8 @@ android {
             abiFilters 'armeabi-v7a'
         }
 //        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        Log.d("Tag", "Build time: " + BuildConfig.BUILD_TIME);
+        buildConfigField "String", "BUILD_TIME", "\"" + new Date().format("yyyy年MM月dd日 HH:mm:ss") + "\""
     }
 
     signingConfigs {
