@@ -275,7 +275,7 @@ public class MainActivity extends BaseActivity {
                     public void onResult(ArrayList<LocalMedia> result) {
                         for (LocalMedia localMedia : result) {
                             try {
-                                FileUtils.moveFile(localMedia.getRealPath(), SDCardUtils.getExPubDownDir() + "." + FileUtils.getFileName(localMedia.getRealPath()));
+                                FileUtils.moveFile(localMedia.getRealPath(), SDCardUtils.getPublicDownDir() + "." + FileUtils.getFileName(localMedia.getRealPath()));
                             } catch (FileNotFoundException e) {
                                 Log.e("调试信息", "onR1esult:  --", e);
                             }

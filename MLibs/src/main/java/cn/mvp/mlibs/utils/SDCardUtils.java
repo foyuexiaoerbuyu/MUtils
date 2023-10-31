@@ -88,6 +88,7 @@ public class SDCardUtils {
      *
      * @return /storage/sdcard0/Android/data/package/files
      */
+    @Deprecated
     public static File getExternalFilesDir(Context context, String directoryType) {
         return context.getExternalFilesDir(directoryType);
     }
@@ -98,6 +99,7 @@ public class SDCardUtils {
      *
      * @return /storage/sdcard0
      */
+    @Deprecated
     public static File getExternalPublicStorageDirectory() {
         return Environment.getExternalStorageDirectory();
     }
@@ -114,8 +116,9 @@ public class SDCardUtils {
      * Environment.DIRECTORY_PODCASTS 	/storage/sdcard0/Podcasts
      * Environment.DIRECTORY_RINGTONES 	/storage/sdcard0/Ringtones
      */
-    public static File getExternalStoragePublicDirectory(String directoryType) {
-        return Environment.getExternalStoragePublicDirectory(directoryType);
+    @Deprecated
+    public static File getExternalStoragePublicDirectory(String Environment_DIRECTORY) {
+        return Environment.getExternalStoragePublicDirectory(Environment_DIRECTORY);
     }
 
     /**
@@ -320,8 +323,11 @@ public class SDCardUtils {
 
     }
 
-    public static String getExPubDownDir() {
-        return getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + File.separator;
+    /**
+     * @return 公共下载路径
+     */
+    public static String getPublicDownDir() {
+        return getPublicDir(Environment.DIRECTORY_DOWNLOADS).getPath() + File.separator;
     }
 
     /**
@@ -366,6 +372,58 @@ public class SDCardUtils {
         File file = new File(testFile);
         file.createNewFile();
         file.wait();
+    }
+
+
+    /**
+     * 获取SD卡的根目录
+     *
+     * @return /storage/emulated/0/
+     */
+    public static String getPublicDir() {
+        return Environment.getExternalStorageDirectory().getPath() + File.separator;
+    }
+
+    /**
+     * @return /storage/emulated/0/Download
+     */
+    public static File getPublicDir(String Environment_DIRECTORY) {
+        return Environment.getExternalStoragePublicDirectory(Environment_DIRECTORY);
+    }
+
+    /**
+     * @return /storage/emulated/0/Android/data/cn.mvp/files
+     */
+    public static File getInnerDir(Context context) {
+        return getInnerDir(context, "");
+    }
+
+
+    /**
+     * @return /storage/emulated/0/Android/data/cn.mvp/files/Download
+     */
+    public static File getInnerDir(Context context, String Environment_DIRECTORY) {
+        return context.getExternalFilesDir(Environment_DIRECTORY);
+    }
+
+    /**
+     * 获取应用的私有存储目录路径
+     *
+     * @return 应用的私有存储目录路径，类似 "/data/user/0/cn.mvp/app_/"
+     */
+    public static String getPrivateDir(Context context) {
+        return getPrivateDir(context, "");
+    }
+
+    /**
+     * 获取应用的私有存储目录路径
+     *
+     * @param context               Context 对象
+     * @param Environment_DIRECTORY 目录名称
+     * @return 应用的私有存储目录路径，类似 "/data/user/0/cn.mvp/app_Download/"
+     */
+    public static String getPrivateDir(Context context, String Environment_DIRECTORY) {
+        return context.getDir(Environment_DIRECTORY, Context.MODE_PRIVATE).getAbsolutePath() + File.separator;
     }
 
 }
