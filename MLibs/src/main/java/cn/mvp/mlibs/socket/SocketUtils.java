@@ -23,7 +23,7 @@ import cn.mvp.mlibs.utils.GsonUtil;
 
 public class SocketUtils {
 
-    private static final int BUFFER_SIZE = 1024 * 1024; // 1 MB
+    private static final int BUFFER_SIZE = 1024 * 1024 * 2; // 1 MB
     private final IServiceNotifyMsg iServiceNotifyMsg;
     private ServerSocket serverSocket;
     private Socket mClientSocket;

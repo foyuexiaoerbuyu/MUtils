@@ -9,10 +9,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -425,5 +427,32 @@ public class SDCardUtils {
     public static String getPrivateDir(Context context, String Environment_DIRECTORY) {
         return context.getDir(Environment_DIRECTORY, Context.MODE_PRIVATE).getAbsolutePath() + File.separator;
     }
+
+    /**
+     * Android13
+     * https://juejin.cn/post/7283152332622610492?utm_source=gold_browser_extension
+     * <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+     */
+    public static void openAllFileAccessPermissions(Context context, int requestCode) {
+        // 方案一：跳转到系统文件访问页面，手动赋予
+//        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+//        intent.setData(Uri.parse("package:" + context.getPackageName()));
+//        ((Activity)context).startActivityForResult(intent,requestCode);
+        // 方案二：跳转到系统所有需要文件访问页面，选择你的APP，手动赋予权限
+//        Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+//        context.startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 先判断有没有权限
+            if (Environment.isExternalStorageManager()) {
+                Toast.makeText(context, "Android R或以上版本，已授予MANAGE_EXTERNAL_STORAGE权限!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, "Android版本R或更高，不允许使用MANAGE_EXTERNAL_STORAGE!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + context.getPackageName()));
+                ((Activity) context).startActivityForResult(intent, requestCode);
+            }
+        }
+    }
+
 
 }
