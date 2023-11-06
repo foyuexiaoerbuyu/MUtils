@@ -173,7 +173,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             }
 
             @Override
-            public void progress(String msg, int currPrs, ChatMsg fileInfo) {
+            public void progress(String msg, int currPrs, WebSocketChatMsg fileInfo) {
 
             }
         });

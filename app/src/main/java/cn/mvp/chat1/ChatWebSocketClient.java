@@ -91,8 +91,8 @@ public class ChatWebSocketClient {
             @Override
             public void onMessage(String message) {
                 // 接收到消息的处理逻辑
-                ChatMsg msg = GsonUtil.fromJson(message, ChatMsg.class);
-                if (msg.getMsgType() == ChatMsg.MSG_TYPE_MSG) {
+                WebSocketChatMsg msg = GsonUtil.fromJson(message, WebSocketChatMsg.class);
+                if (msg.getMsgType() == WebSocketChatMsg.MSG_TYPE_MSG) {
                     if (msg.getMsgContent().startsWith("cmd_clipboard_set")) {//pc给手机设置剪切板
                         ClipboardUtils.copyText(msg.getMsgContent().replace("cmd_clipboard_set", ""));
                         ToastUtils.show("已复制pc剪贴板");
@@ -104,7 +104,7 @@ public class ChatWebSocketClient {
                                 "\n   " + msg.getMsgContent() + "\n";
                         iReceiver.onReceiverMsg(sb);
                     }
-                } else if (msg.getMsgType() == ChatMsg.MSG_TYPE_CMD) {
+                } else if (msg.getMsgType() == WebSocketChatMsg.MSG_TYPE_CMD) {
                     if (msg.getMsgContent().equals("cm_pull_files")) {
                         String path = SDCardUtils.getExternalPublicStorageDirectory().getPath() + File.separator + "01tmp" + File.separator;
                         FileUtils.readFileNames(path, (filePath, file) -> {
@@ -192,7 +192,7 @@ public class ChatWebSocketClient {
 
     public boolean sendMsg(String msg) {
         if (reconnection()) return false;
-        webSocketClient.send(new ChatMsg(msg).toJson());
+        webSocketClient.send(new WebSocketChatMsg(msg).toJson());
         return true;
     }
 
@@ -215,25 +215,7 @@ public class ChatWebSocketClient {
         return false;
     }
 
-    public interface IReceiver {
-        default void onOpen() {
-
-        }
-
-        void onReceiverMsg(String msg);
-
-        default void onReceiverMsg(ByteBuffer bytes) {
-
-        }
-
-        void onErr(Exception e);
-
-        void log(String log);
-
-        void progress(String msg, int currPrs, ChatMsg fileInfo);
-    }
-
-    public boolean sendMsg(ChatMsg msg) {
+    public boolean sendMsg(WebSocketChatMsg msg) {
         if (reconnection()) return false;
         webSocketClient.send(msg.toJson());
         return true;
@@ -249,7 +231,7 @@ public class ChatWebSocketClient {
 
             while ((bytesRead = fis.read(buffer)) != -1) {
                 byte[] dataToSend = Arrays.copyOf(buffer, bytesRead);
-                ChatMsg fileMsg = new ChatMsg(file.getName(), md5, file.length(), dataToSend);
+                WebSocketChatMsg fileMsg = new WebSocketChatMsg(file.getName(), md5, file.length(), dataToSend);
                 sendMsg(fileMsg);
             }
             sendMsg("接收完毕: " + file.getName());
@@ -259,6 +241,24 @@ public class ChatWebSocketClient {
             sendMsg("接收文件异常: " + e.getMessage());
             System.err.println("Error sending file: " + e.getMessage());
         }
+    }
+
+    public interface IReceiver {
+        default void onOpen() {
+
+        }
+
+        void onReceiverMsg(String msg);
+
+        default void onReceiverMsg(ByteBuffer bytes) {
+
+        }
+
+        void onErr(Exception e);
+
+        void log(String log);
+
+        void progress(String msg, int currPrs, WebSocketChatMsg fileInfo);
     }
 
 

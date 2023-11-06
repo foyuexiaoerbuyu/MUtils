@@ -2,7 +2,7 @@ package cn.mvp.chat1;
 
 import com.blankj.utilcode.util.GsonUtils;
 
-public class ChatMsg {
+public class WebSocketChatMsg {
     /*文本消息(ChatMsg对象);文件类型(ChatMsg对象);*/
     public static final int MSG_TYPE_MSG = 0, MSG_TYPE_FILE = 1, MSG_TYPE_CMD = 2;
     private long id;
@@ -15,18 +15,18 @@ public class ChatMsg {
     private String extra;
     private byte[] fileData;
 
-    public ChatMsg(String msgContent) {
+    public WebSocketChatMsg(String msgContent) {
         this.id = System.currentTimeMillis();
         this.msgContent = msgContent;
     }
 
-    public ChatMsg(String msgContent, int msgType) {
+    public WebSocketChatMsg(String msgContent, int msgType) {
         this.id = System.currentTimeMillis();
         this.msgType = msgType;
         this.msgContent = msgContent;
     }
 
-    public ChatMsg(String fileName, String md5, long fileSize, byte[] fileData) {
+    public WebSocketChatMsg(String fileName, String md5, long fileSize, byte[] fileData) {
         this.id = System.currentTimeMillis();
         this.msgType = MSG_TYPE_FILE;
         this.fileName = fileName;
