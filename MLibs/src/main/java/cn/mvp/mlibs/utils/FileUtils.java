@@ -1029,4 +1029,29 @@ public class FileUtils {
 
         void onReadLine(String filePath, File file);
     }
+
+    /**
+     * 创建文件夹
+     *
+     * @param filePath 文件夹路径
+     * @return 创建文件夹是否成功
+     */
+    public static boolean createDir(String filePath) {
+        File dir = new File(filePath);
+        if (dir.exists()) {
+            System.out.println("创建目录" + filePath + " 失败，目标目录已经存在");
+            return false;
+        }
+        if (!filePath.endsWith(File.separator)) {
+            filePath = filePath + File.separator;
+        }
+        //创建目录
+        if (dir.mkdirs()) {
+            System.out.println("创建目录" + filePath + " 成功！");
+            return true;
+        } else {
+            System.out.println("创建目录" + filePath + " 失败！");
+            return false;
+        }
+    }
 }

@@ -26,6 +26,10 @@ public class GsonUtil {
         return new Gson().fromJson(json, listType);
     }
 
+    public static <T> String[] fromJsonToArr(String json, Class<T> elementClass) {
+        return new Gson().fromJson(json, TypeToken.getArray(elementClass).getType());
+    }
+
     public synchronized static <T> String toJson(T obj) {
         return new Gson().toJson(obj);
     }
@@ -52,7 +56,7 @@ public class GsonUtil {
     }
 
 
-    public static <T> Map<String, Object> toMap(Class<T> clazz, String key) {
+    public static <T> Map<String, Object> toMap(Class<T> clazz) {
         Type type = new TypeToken<Map<String, Object>>() {
         }.getType();
         Gson gson = new Gson();
@@ -90,15 +94,18 @@ public class GsonUtil {
     }
 
     public static void putJoStrToFile(String filePath, String joStr) {
+        if (FileUtils.isFileExist(filePath)) {
+            FileUtils.createDir(filePath);
+            FileUtils.createFile(filePath);
+        }
         FileUtils.writeFile(filePath, joStr);
     }
 
     public static <T> T getJoStrForFile(String filePath, Class<T> clazz) {
-        String content = null;
         try {
-            content = FileUtils.readFile(filePath, "utf-8");
-            return fromJson(content, clazz);
+            return fromJson(FileUtils.readFile(filePath, "utf-8"), clazz);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
