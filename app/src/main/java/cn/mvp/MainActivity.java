@@ -61,8 +61,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showConnServiceDialog() {
-        String ip = NetworkUtils.getIpAddressByWifi(this);
-        String str = ip.substring(0, ip.lastIndexOf(".") + 1) + ":8887";
+        CfgInfo cfgInfo = SpUtils.getCfgInfo();
+        List<String> connectIps = cfgInfo.getConnectIps();
+        String str;
+        if (connectIps.size() > 0) {
+            str = connectIps.get(0);
+        } else {
+//            str = ip.substring(0, ip.lastIndexOf(".") + 1) + ":8887";
+            str = NetworkUtils.getIpAddressByWifi(this) + ":8887";
+        }
         InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
         inputAlertDialog.setEditText(str);
         inputAlertDialog.setCancelBtnClickDismiss(false);
@@ -74,7 +81,6 @@ public class MainActivity extends BaseActivity {
 
         inputAlertDialog.setOkClick(inputStr -> {
 //            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
-            CfgInfo cfgInfo = SpUtils.getCfgInfo();
             cfgInfo.addConnectIp(inputStr);
             SpUtils.setCfgInfo(cfgInfo);
             connService(cfgInfo.getConnectIps());
@@ -237,10 +243,21 @@ public class MainActivity extends BaseActivity {
                     ToastUtils.show("已发送剪贴板");
                 } else if (receiveMsg.startsWith("cmd_pullFiles")) {
                     //服务端希望拉取客户端文件数据
-                    String[] list = new File(receiverPath).list();
-                    for (String s : list) {
-                        System.out.println("s = " + s);
-                        socketUtils.sendFileToService(receiverPath + s);
+                    String[] dirFiles = new File(receiverPath).list();
+                    if (receiveMsg.contains("_")) {
+                        String[] pullFiles = GsonUtil.fromJsonToStrArr(receiveMsg.replace("cmd_pullFiles_", "").trim());
+                        for (String pullFileName : pullFiles) {
+                            for (String fileName : dirFiles) {
+                                if (fileName.equals(pullFileName)) {
+                                    socketUtils.sendFileToService(receiverPath + fileName);
+                                }
+                            }
+                        }
+                        socketUtils.sendMsgToService("cmd_pullFiles_success");
+                        return;
+                    }
+                    for (String fileName : dirFiles) {
+                        socketUtils.sendFileToService(receiverPath + fileName);
                     }
                     socketUtils.sendMsgToService("cmd_pullFiles_success");
                 } else if (receiveMsg.startsWith("cmd_getFiles")) {
