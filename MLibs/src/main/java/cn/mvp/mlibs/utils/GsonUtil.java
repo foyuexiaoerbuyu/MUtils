@@ -17,17 +17,17 @@ public class GsonUtil {
         return new Gson().fromJson(json, clazz);
     }
 
-    public static <T> String[] fromJsonToStrArr(String json) {
-        return new Gson().fromJson(json, TypeToken.getArray(String.class).getType());
-    }
-
     public synchronized static <T> List<T> fromJsonToList(String json, Class<T> elementClass) {
         Type listType = TypeToken.getParameterized(List.class, elementClass).getType();
         return new Gson().fromJson(json, listType);
     }
 
-    public static <T> String[] fromJsonToArr(String json, Class<T> elementClass) {
+    public static <T> T[] fromJsonToArr(String json, Class<T> elementClass) {
         return new Gson().fromJson(json, TypeToken.getArray(elementClass).getType());
+    }
+
+    public static String[] fromJsonToStrArr(String json) {
+        return new Gson().fromJson(json, TypeToken.getArray(String.class).getType());
     }
 
     public synchronized static <T> String toJson(T obj) {
