@@ -9,6 +9,7 @@ public class ChatMsg {
     private long progress;
     private long fileSize;
     private String fileName;
+    private String savePath;
     private String md5;
     private String msgContent;
     private String extra;
@@ -111,6 +112,14 @@ public class ChatMsg {
 
     public void setExtraObj(Object extraObj) {
         this.extraObj = extraObj;
+    }
+
+    public String getSavePath() {
+        return savePath;
+    }
+
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
     }
 
     public String toJson() {
