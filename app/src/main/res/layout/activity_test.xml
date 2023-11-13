@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".test.TestActivity">
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/recycler_view"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:scrollbars="vertical" />-->
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/test_btn_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="all" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/test_btn_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="single" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/test_btn_single1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="单选" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/test_btn_all1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="多选" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/test_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <!--    <cn.mvp.test.Mrv-->
+    <!--        android:id="@+id/refresh"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent" />-->
+
+</LinearLayout>

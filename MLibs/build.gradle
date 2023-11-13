@@ -1,0 +1,126 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.foyuexiaoerbuyu'
+
+android {
+    compileSdkVersion 33
+    buildToolsVersion "29.0.3"
+
+    // 读取版本属性文件
+    def versionPropsFile = file('version.properties')
+    def versionProps = new Properties()
+    versionProps.load(new FileInputStream(versionPropsFile))
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+
+        buildConfigField("String", "buideTime", "\"" + String.valueOf(versionProps.getProperty('buildTime')) + "\"")
+        buildConfigField("String", "versionName", "\"" + String.valueOf(versionProps.getProperty('versionName')) + "\"")
+        buildConfigField("String", "versionCode", "\"" + String.valueOf(versionProps.getProperty('versionCode')) + "\"")
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    libraryVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "${project.name}-${variant.name}_${aarBuildTime}.aar"
+        }
+    }
+
+    tasks.whenTaskAdded { task ->
+        if (task.name == 'bundleReleaseAar') {
+            task.dependsOn updateVersionProperties
+        }
+    }
+    task updateVersionProperties {
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        // 获取当前的versionCode和versionName
+        def currentVersionCode = versionProps.getProperty('versionCode')
+        def currentVersionName = versionProps.getProperty('versionName')
+
+        // 将versionCode转换为整数并加1
+        def newVersionCode = Integer.parseInt(currentVersionCode) + 1
+
+        // 截取versionName前四位并追加到versionCode
+        def newVersionCodeWithSuffix = currentVersionName.substring(0, 4) + newVersionCode
+
+        ext.aarVersionCode = newVersionCode
+        ext.aarVersionName = newVersionCodeWithSuffix
+        ext.aarBuildTime = String.valueOf(new Date().format('MMddHHmmss'))
+
+
+        // 修改versionCode和versionName
+        versionProps.setProperty('versionName', newVersionCodeWithSuffix)
+        versionProps.setProperty('versionCode', String.valueOf(newVersionCode))
+        versionProps.setProperty('buildTime', String.valueOf(aarBuildTime))
+
+        // 保存修改后的version.properties文件
+        versionProps.store(versionPropsFile.newWriter(), null)
+        // 输出修改后的日志信息
+        println "Updated versionCode from $currentVersionCode to $newVersionCodeWithSuffix"
+        println "VersionName remains the same: $currentVersionName"
+    }
+
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+    }
+}
+
+/*//将源码打包  为了保证引入的aar  包可以查看源码
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+//包含文档和源码的aar
+artifacts {
+    archives androidSourcesJar
+}*/
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation 'com.hjq:toast:8.0'
+    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'com.google.code.gson:gson:2.8.0'
+//    implementation 'com.android.support:recyclerview-v7:28.0.0'
+//    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
+//    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'com.squareup.okio:okio:3.0.0-alpha.10'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    /*下拉刷新,上拉加载*/
+    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
+    implementation 'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
+    implementation 'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
+
+}

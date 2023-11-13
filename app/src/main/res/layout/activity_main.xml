@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap">
+
+            <Button
+                android:id="@+id/main_btn_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="扫描二维码" />
+
+            <Button
+                android:id="@+id/main_btn_creat_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="剪切板生成二维码" />
+
+            <Button
+                android:id="@+id/main_btn_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="局域网聊天" />
+
+            <Button
+                android:id="@+id/main_btn_test_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试页面" />
+
+            <Button
+                android:id="@+id/main_btn_ip_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ip生成二维码" />
+
+            <Button
+                android:id="@+id/main_btn_base_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="获取手机基本信息" />
+
+            <Button
+                android:id="@+id/main_btn_base_tv_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试按钮" />
+
+            <Button
+                android:id="@+id/main_btn_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="camera" />
+        </com.google.android.flexbox.FlexboxLayout>
+
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/main_btn_sw_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:text="复制到剪切板" />
+
+            <Button
+                android:id="@+id/btn1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="按钮1" />
+
+            <Button
+                android:id="@+id/btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="按钮2" />
+
+            <EditText
+                android:id="@+id/edt1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/main_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:src="@drawable/ic_launcher"
+                android:text="二维码数据" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

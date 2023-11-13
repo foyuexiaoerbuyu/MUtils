@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="pref_key_storage_settings"
+        android:title="选择铃声">
+        <Preference
+            android:key="pref_sms_ringtone"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:ringtoneType="notification"
+            android:summary="默认短信铃声"
+            android:title="选择短信铃声" />
+        <Preference
+            android:key="pref_phone_ringtone"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:ringtoneType="notification"
+            android:summary="默认手机铃声"
+            android:title="选择手机铃声" />
+        <Preference
+            android:key="pref_alarm_ringtone"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:ringtoneType="notification"
+            android:summary="默认闹钟铃声"
+            android:title="选择闹钟铃声" />
+        <Preference
+            android:key="pref_sdcard_ringtone"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:ringtoneType="notification"
+            android:summary="默认Sdcard铃声"
+            android:title="选择Sdcard中的铃声" />
+    </PreferenceCategory>
+</PreferenceScreen>
