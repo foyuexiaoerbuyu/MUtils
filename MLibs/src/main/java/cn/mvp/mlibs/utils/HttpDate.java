@@ -15,15 +15,19 @@
  */
 package cn.mvp.mlibs.utils;
 
-import static okhttp3.internal.Util.UTC;
-
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
+ * 同步服务器时间用 okhttp3.internal.Util.UTC在依赖
+ * implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
+ * 后,会UTC找不到 如果项目报错可以加上上面这个依赖试试
+ * ----------------------------------------------
+ * 修改 import static okhttp3.internal.Util.UTC;为TimeZone.getTimeZone("GMT")
  * Best-effort parser for HTTP dates.
  */
 public final class HttpDate {
@@ -41,7 +45,7 @@ public final class HttpDate {
                     // RFC 2616 specified: RFC 822, updated by RFC 1123 format with fixed GMT.
                     DateFormat rfc1123 = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
                     rfc1123.setLenient(false);
-                    rfc1123.setTimeZone(UTC);
+                    rfc1123.setTimeZone(TimeZone.getTimeZone("GMT"));
                     return rfc1123;
                 }
             };
@@ -95,7 +99,7 @@ public final class HttpDate {
                     format = new SimpleDateFormat(BROWSER_COMPATIBLE_DATE_FORMAT_STRINGS[i], Locale.US);
                     // Set the timezone to use when interpreting formats that don't have a timezone. GMT is
                     // specified by RFC 2616.
-                    format.setTimeZone(UTC);
+                    format.setTimeZone(TimeZone.getTimeZone("GMT"));
                     BROWSER_COMPATIBLE_DATE_FORMATS[i] = format;
                 }
                 position.setIndex(0);

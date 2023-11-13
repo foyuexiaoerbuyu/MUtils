@@ -17,4 +17,10 @@ maven{url'https://jitpack.io'}
 implementation 'com.github.foyuexiaoerbuyu:Mutils:0.36'
 ```
 
+如果依赖后崩溃报错什么的加上这个试试(应该不会了因为修改了,同步服务器时间里解析调用的那个类)
+
+```
+implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
+```
+
 .
