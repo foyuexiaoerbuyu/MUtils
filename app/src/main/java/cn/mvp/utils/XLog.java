@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import cn.mvp.BuildConfig;
 import cn.mvp.mlibs.utils.DateUtil;
@@ -410,6 +411,10 @@ public class XLog {
             }
         }
         Log.i(TAG, getStackTraceStr() + TAG + msg);
+    }
+
+    private static void isNull(Objects objects) {
+        Log.i("调试信息", "isNull:  " + objects);
     }
 
 }

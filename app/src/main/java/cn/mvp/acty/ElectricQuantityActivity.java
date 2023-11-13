@@ -1,27 +1,24 @@
 package cn.mvp.acty;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+
 import com.bumptech.glide.Glide;
 
+import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
 import cn.mvp.R;
 import cn.mvp.mlibs.other.TestUtils;
 import cn.mvp.mlibs.utils.DateUtil;
-import cn.mvp.mlibs.utils.StatusBarUtil;
-import cn.mvp.mlibs.utils.TimerUtils;
 import cn.mvp.mlibs.utils.UIUtils;
 
 /**
@@ -33,7 +30,7 @@ public class ElectricQuantityActivity extends BaseActivity {
     AppCompatImageView electric_quantity_iv_bg;
     @BindView(R.id.electric_quantity_tv_time)
     AppCompatTextView electric_quantity_tv_time;
-    private TimerUtils mTimerUtils;
+    private Timer mTimerUtils;
 
     public static void open(Context context) {
         Intent starter = new Intent(context, ElectricQuantityActivity.class);
@@ -52,7 +49,7 @@ public class ElectricQuantityActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        mTimerUtils = new TimerUtils();
+        mTimerUtils = new Timer();
         mTimerUtils.schedule(new TimerTask() {
             @Override
             public void run() {

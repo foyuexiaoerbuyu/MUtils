@@ -34,7 +34,7 @@ import java.util.TimerTask;
  * @Author:qubin
  * @Theme: 更新
  * @Data:2018/12/17
- * @Describe:
+ * @Describe: 使用Android默认的DownloadManager下载文件
  */
 public class DownLoadBuilder {
 

@@ -1,4 +1,4 @@
-# MUtils主分支
+# MUtils
 
 https://jitpack.io/#foyuexiaoerbuyu/Mutils/0.35
 
@@ -16,6 +16,4 @@ maven{url'https://jitpack.io'}
 ```
 implementation 'com.github.foyuexiaoerbuyu:Mutils:0.36'
 ```
-
-
 

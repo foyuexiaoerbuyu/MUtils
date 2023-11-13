@@ -45,8 +45,8 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.other.ICallBack;
@@ -937,4 +937,9 @@ public class XLogUtil {
 //            printLongLog(TAG, message);
         }
     }
+
+    private static void isNull(Objects objects) {
+        Log.i("调试信息", "isNull:  " + objects);
+    }
+
 }

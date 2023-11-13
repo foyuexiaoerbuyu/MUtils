@@ -4,7 +4,7 @@ plugins {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.github.dcendents.android-maven'//第一次编译可能需要注释这里,然后同步gradle才行
 group = 'com.github.foyuexiaoerbuyu'
 
 android {

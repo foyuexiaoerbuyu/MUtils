@@ -1,6 +1,5 @@
 package cn.mvp.mlibs.socket;
 
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,6 +15,7 @@ import java.util.List;
 
 import cn.mvp.mlibs.utils.FileUtils;
 import cn.mvp.mlibs.utils.GsonUtil;
+
 
 /**
  * https://www.runoob.com/java/net-serversocket-socket.html
@@ -74,7 +74,6 @@ public class SocketUtils {
      * @param iReceiverMsg 接收服务端消息
      */
     public void connService(List<String> ips, String receiverPath, IReceiverMsg iReceiverMsg) {
-        Log.i("调试信息", "connService:  " + ips);
         new Thread(() -> {
             try {
                 for (String ip : ips) {
@@ -116,14 +115,13 @@ public class SocketUtils {
         new Thread(() -> {
             try {
                 mClientSocket = new Socket(host, port);
+
                 BufferedReader clientReader = new BufferedReader(new InputStreamReader(mClientSocket.getInputStream()));
-                iReceiverMsg.connSuccess();
                 iReceiverMsg.log(IReceiverMsg.MSG_TYPE_COMM_LOG, "连接服务器成功");
                 sendMsgToService("客户端连接服务器成功");
                 receiverMsg(receiverPath, iReceiverMsg, clientReader);
             } catch (IOException e) {
                 iReceiverMsg.log(IReceiverMsg.MSG_TYPE_COMM_LOG, "连接服务器异常");
-                iReceiverMsg.connFailure(e);
                 iServiceNotifyMsg.errMsg(e, "连接服务器异常");
                 e.printStackTrace();
             }
@@ -131,11 +129,11 @@ public class SocketUtils {
     }
 
     /**
-     * 不推荐使用
      * 发送原始字符串数据给服务端(标记过期只是标识一下)
      *
      * @param str 客户端发消息给服务端(原始数据)
      */
+    @Deprecated
     private void sendMsgToServicePrimitive(String str) {
         try {
             BufferedWriter clientWriter = new BufferedWriter(new OutputStreamWriter(mClientSocket.getOutputStream()));
@@ -149,11 +147,11 @@ public class SocketUtils {
     }
 
     /**
-     * 不推荐使用
      * 发送原始字符串数据给客户端(标记过期只是标识一下)
      *
      * @param str 服务端发消息给客户端
      */
+    @Deprecated
     private void sendMsgToClientPrimitive(String str) {
         try {
             BufferedWriter serviceWriter = new BufferedWriter(new OutputStreamWriter(mServiceSocket.getOutputStream()));
@@ -238,14 +236,6 @@ public class SocketUtils {
         }
 
         default void log(int type, String msg) {
-
-        }
-
-        default void connSuccess() {
-
-        }
-
-        default void connFailure(Exception e) {
 
         }
     }

@@ -2,10 +2,6 @@ package cn.mvp.utils;
 
 import com.tencent.mmkv.MMKV;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
-
 import cn.mvp.global.CfgInfo;
 import cn.mvp.mlibs.utils.GsonUtil;
 
@@ -39,8 +35,15 @@ public class SpUtils {
      */
     public static CfgInfo getCfgInfo() {
         String str = getStr(SpUtils.KEY_CFG_CONFIG, null);
-        if (str == null) return null;
+        if (str == null) return new CfgInfo();
         return GsonUtil.fromJson(str, CfgInfo.class);
+    }
+
+    /**
+     * @return 提示音效开关
+     */
+    public static void setCfgInfo(CfgInfo cfgInfo) {
+        putStr(SpUtils.KEY_CFG_CONFIG, GsonUtil.toJson(cfgInfo));
     }
 
 
