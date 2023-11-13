@@ -1,0 +1,5 @@
+include ':MLibs'
+//include ':refresh-layout'
+//include ':refresh-layout-kernel'
+include ':app'
+rootProject.name = "MUtilsCompat"
