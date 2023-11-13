@@ -17,3 +17,4 @@ maven{url'https://jitpack.io'}
 implementation 'com.github.foyuexiaoerbuyu:Mutils:0.36'
 ```
 
+.
