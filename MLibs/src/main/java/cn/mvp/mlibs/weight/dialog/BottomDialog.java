@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import androidx.annotation.ColorRes;
 
 import cn.mvp.mlibs.R;
+import cn.mvp.mlibs.utils.UIUtils;
 
 /**
  * 底部弹出对话框
@@ -30,7 +31,7 @@ public class BottomDialog {
     public BottomDialog(Context context, int layoutResId) {
         this.context = context;
         mLayoutResId = layoutResId;
-        mRootView = View.inflate(context, mLayoutResId, null);
+        mRootView = UIUtils.inflate(mLayoutResId);
     }
 
     public void showDialog(IClickCallBack iClickCallBack, int... clickIds) {

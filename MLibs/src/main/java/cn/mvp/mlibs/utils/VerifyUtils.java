@@ -3,6 +3,8 @@ package cn.mvp.mlibs.utils;
 
 import android.text.TextUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -353,7 +355,7 @@ public class VerifyUtils {
     }
 
     public static boolean isMatch(Pattern pattern, String str) {
-        return StringUtil.isNotEmpty(str) && pattern.matcher(str).matches();
+        return StringUtils.isNotEmpty(str) && pattern.matcher(str).matches();
     }
 
     /**
@@ -368,10 +370,5 @@ public class VerifyUtils {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
-    }
-
-    /** 验证输入是否为浮点数 */
-    public static boolean isValidFloat(String input) {
-        return input.matches("^\\d*(\\.\\d+)?$");
     }
 }

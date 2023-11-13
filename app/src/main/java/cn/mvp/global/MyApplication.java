@@ -3,7 +3,6 @@ package cn.mvp.global;
 import android.app.Application;
 import android.content.Context;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.hjq.toast.ToastUtils;
 import com.tencent.mmkv.MMKV;
 
@@ -26,7 +25,6 @@ public class MyApplication extends Application {
         super.onCreate();
         MLibs.init(this);
         MMKV.initialize(this);
-        LogUtils.getConfig().setGlobalTag("调试信息");
         context = getApplicationContext();
         ToastUtils.init(this);
         CrashHandlerUtil.getInstance().init(this);
