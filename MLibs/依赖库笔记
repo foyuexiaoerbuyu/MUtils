@@ -1,0 +1,793 @@
+https://github.com/Blizzard-liu/AndroidUtils#%E5%AE%8C%E6%95%B4%E9%A1%B9%E7%9B%AE
+
+安卓安装apk需要适配7.0的路径路径问题,8.0的安装权限问题
+
+
+
+
+
+Android 常用开源库总结-2020年
+一 、基本控件
+TextView
+HTextView 一款支持TextView文字动画效果的Android组件库。
+
+ScrollNumber 滚动数字控件
+
+ticker 滚动数字控件
+
+ReadMoreTextView 阅读更多，折叠文本
+
+ExpandableTextView 折叠文本
+
+android-autofittextview 自动调整文字大小
+
+html-textview 展示html标签
+
+BabushkaText 自定义文本样式
+
+Android-TextView-LinkBuilder 文本链接
+
+TextJustify-Android 自动调整文字间隔
+
+SlantedTextView 一个倾斜的TextView,适用于标签效果。
+
+RichText Android平台下的富文本解析器
+
+MixtureTextView Android图文混排、文字环绕图片
+
+VerticalTextView 垂直的Textview
+
+JumpingBeans 文字像 Mexican beans 一样跳动
+
+EditText
+MaterialEditText 智能提醒输入框
+
+android-edittext-validator 输入效验、提醒
+
+ClearEditText 带删除的输入框
+
+PasswordEditText 显示/隐藏密码
+
+MaterialSearchView 一个基于Material design 规范的Android 搜索控件。MaterialSearchView显示在Toolbar 或者 ActionBar 上面，并为用户显示一个最近搜索或者搜索提示的列表。
+
+ImageView
+CircleImageView 圆形图片
+
+android-gif-drawable 展示gif
+
+android-shape-imageview 自定义形状的ImageView
+
+android-combination-avatar 组合头像
+
+PaletteImageView 懂得智能配色的ImageView,还能给自己设置多彩的阴影哦。
+
+PhotoView 支持双击或双指缩放的 ImageView
+
+subsampling-scale-image-view 支持放大、缩小
+
+Button
+android-floating-action-button FloatingActionButton
+
+FloatingActionButton
+
+SwitchButton 开关按钮
+
+ShineButton 点赞效果
+
+LikeButton 点赞效果
+
+RapidFloatingActionButton 展开菜单
+
+android-flat-button 自定义按钮，支持圆角等
+
+android-process-button 带进度条的botton
+
+circular-progress-button 带完成动画的botton
+
+FABProgressCircle 带进度条的fabotton
+
+ProgressRoundButton 带进度条的botton
+
+Spinner
+nice-spinner 美化的spinner
+
+MaterialSpinner
+
+BetterSpinner
+
+Material-Spinner
+
+SearchableSpinner 带搜索的spinner
+
+CheckBox
+SmoothCheckBox 带动画的checkbox
+
+AnimateCheckBox 带动画的checkbox
+
+ProgressBar（包含loading动画）
+SmoothProgressBar
+
+NumberProgressBar 带数字的进度条
+
+android-square-progressbar 加载图片的进度条
+
+MaterialLoadingProgressBar
+
+circular-music-progressbar 播放音乐进度条
+
+materialish-progress
+
+Android-RoundCornerProgressBar 圆角进度条
+
+GoogleProgressBar 仿谷歌的进度条
+
+DownloadProgressBar 带下载动画的进度条
+
+ACProgressLite 仿IOS 进度条
+
+Android-SVProgressHUD 仿IOS 进度条
+
+MaterialProgressBar
+
+CircularProgressBar 圆环进度条
+
+Android-ProgressBarWidthNumber 带进度的进度条
+
+LoadingView 加载进度条
+
+LoadingDrawable 酷炫的android加载动画
+
+Android-SpinKit Android加载动画库
+
+AVLoadingIndicatorView 漂亮的加载动画
+
+Seekbar
+RangeSeekBar 双向SeekBar
+
+IndicatorSeekBar 带进度的seekbar
+
+DragChooseView 仿微信设置字体
+
+FontSliderBar 仿微信设置字体
+
+DoubleSeekBar 带进度的seekbar
+
+CircleSeekbar 一个环形Seekbar组件,支持叠加复合使用
+
+RatingBar
+MaterialRatingBar 与 Google 系应用设计相同、支持拉伸、修正原生实现诸多问题的星级评分条
+Toast
+SuperToasts 丰富样式的 toast
+
+Crouton
+
+Android-AppMsg
+
+UndoBar 带按钮的toast
+
+Alerter Dropdown 风格的弹窗
+
+Toasty
+
+Sneaker
+
+RecyclerView
+BaseRecyclerViewAdapterHelper 万能adapter
+
+MultiChoiceAdapter 多选adapter
+
+SwipeRecyclerView 基于RecyclerView的封装，提供了Item侧滑菜单、Item滑动删除、Item长按拖拽、添加HeaderView/FooterView、加载更多、Item点击监听等基本功能。
+
+EasyRecyclerView 封装RecyclerView
+
+StickyItemDecoration 悬浮头部
+
+PinnedSectionItemDecoration 悬浮头部
+
+recyclerview-animators RecycleView的项目动画的Android组件库
+
+UltimateRecyclerView 能强大的Recyclerview，包括了下拉刷新，加载更多，多种动画，空数据提示，拖动排序，视差处理，工具栏渐变，滑动删除，自定义floating button，多种刷新效果，scrollbar等等元素，而且使用起来跟recyclerview一样的方便。
+
+epoxy Epoxy采用可组合的方式来创建列表。列表中的每个item由一个model代表，model定义了item的布局，id以及span。model还负责处理数据到视图的绑定，在视图被回收的时候释放资源。如果要显示这些model则把它们添加到Epoxy的adapter中，adapter为你处理复杂的显示问题。
+
+XRecyclerView XRecyclerView实现了下拉刷新，滚动到底部加载更多以及添加header功能的的RecyclerView。使用方式和RecyclerView完全一致，不需要额外的layout，不需要写特殊的adater。 加载效果内置了AVLoadingIndicatorView上的所有效果，可以根据需要指定。
+
+RecyclerViewPager RecyclerViewPager基于 RecyclerView 实现的 ViewPager，可自定义 Page 切换敏感度，支持垂直 ViewPager，支持类 Gallary 效果，支持无限循环。
+
+SuperRecyclerView SuperRecyclerView主要特性包括：1、当adapter没有设置的时候使用ProgressBar（进度条）；2、当adapter时空的时候使用EmptyView；3、SwipeRefreshLayout (Google's one)；4、Swipe To Dismiss；5、Sticky headers；6、无限滚动，当到达最后一项时，加载更多数据；
+
+LRecyclerView 下拉刷新，自动加载更多；仿IOS侧滑Item删除菜单
+
+LayoutManagerGroup 自定义RecyclerView 的LayoutManager实现几种炫酷的效果。
+
+android-advancedrecyclerview 自定义RecyclerView （2019-03-29 新增）
+
+日历、时钟
+CalendarView 一个优雅、万能自定义UI、支持周视图、自定义周起始、性能高效的日历控件
+
+material-calendarview
+
+Caldroid
+
+android-times-square
+
+Android-Week-View 周视图
+
+android-calendar-view 显示阳历，农历，节假日和二十四节气 实现对某月日期的单选或者多选的andorid 日历控件库
+
+Simple-Calendar
+
+CountdownView 倒计时
+
+android-calendar-card 日历
+
+CosmoCalendar 高度自定义的日历库，UI精美，支持多种模式。
+
+CalendarExaple 高仿钉钉和小米的日历控件，支持快速滑动，界面缓存
+
+Webview
+AgentWeb
+
+VasSonic 首屏加载速度快
+
+JsBridge
+
+chromeview 利用 Chromium 实现的 WebView
+
+ScrollView
+Android-ObservableScrollView
+
+DiscreteScrollView 基于RecyclerView 实现的一个横向滑动列表
+
+ViewPager
+VerticalViewPager 垂直的viewpager
+
+InfiniteCycleViewPager 3D的viewpager
+
+DiscreteScrollView
+
+ExpandingPager
+
+RecyclerViewSnap
+
+AndroidImageSlider
+
+ViewPagerIndicator
+
+RecyclerViewCardGallery RecyclerView实现Card Gallery效果，替代ViewPager方案
+
+JazzyViewPager 支持 Fragment 切换动画的 ViewPager，动画包括转盘、淡入淡出、翻页、层叠、旋转、方块、翻转、放大缩小等
+
+FlipViewPager.Draco Flip 翻转效果的 ViewPager
+
+UltraViewPager 封装多种特性的ViewPager，主要是为多页面切换场景提供统一解决方案。
+
+MaterialViewPager Material风格的viewpager
+
+WoWoViewPager 结合viewpager和动画，实现了一个漂亮的欢迎页
+
+WheelPicker
+Android-PickerView iOS的PickerView控件，有时间选择和选项选择，并支持一二三级联动，支持自定义样式。
+
+androidWheelView
+
+WheelPicker
+
+AndroidPicker
+
+HorizontalWheelView 水平的wheelview
+
+WheelView-Android 带刻度的wheelview
+
+导航栏
+PagerBottomTabStrip一个第三方导航库，app中的底部导航就是基于这个库，挺好用，自带小红点管理（2020.05.09 新增）
+
+BottomBar 一个Material Design风格的底部导航的Android视图组件
+
+NavigationTabBar 一个具有丰富的动画效果的Android导航Tab工具栏组件。
+
+ahbottomnavigation material风格的底部导航
+
+Material-BottomNavigation
+
+SmartTabLayout 自定义的viewpager标题栏，在滚动时向用户提供连续反馈
+
+material-menu 带动画的导航栏
+
+二、功能相关
+图片选择
+MultiImageSelector 仿微信实现多图选择
+
+GalleryFinal 拍照、图片选择（单选/多选）、 裁剪（单/多裁剪）、旋转、ImageLoader无绑定任由开发者选择、功能可配置、主题样式可配置
+
+Matisse 图片选择
+
+{停止维护} ImagePicker 图片选择
+
+TakePhoto 拍照或从相册、文件中选择、裁剪图片、压缩图片的开源工具库
+
+PictureSelector 图片选择
+
+android-crop 图片裁剪
+
+ImageEditor-Android 图片编辑
+
+boxing 基于MVP模式的Android多媒体选择器
+
+cropper 图片裁剪
+
+uCrop Yalantis 出品的强大的图片裁剪库 ，支持缩放，旋转图片，支持各种比例的裁剪框
+
+android-crop 图片裁剪
+
+cropiwa 图片裁剪
+
+SmartCropper 智能图片裁剪框架。自动识别边框，手动调节选区，使用透视变换裁剪并矫正选区；适用于身份证，名片，文档等照片的裁剪。
+
+Android-Image-Cropper 图片裁剪
+
+android-gpuimage 图片滤镜框架
+
+Blurry 图片模糊
+
+Horizon 简单的Android视觉均衡器
+
+GestureViews 大图预览
+
+图片加载
+glide
+
+glide-transformations 基于glide 的图片变化库
+
+fresco
+
+picasso
+
+LargeImage 加载大图 可以高清显示10000*10000像素的图片，轻松实现微博长图功能
+
+音视频
+ExoPlayer 谷歌出品的视频播放器
+
+JiaoZiVideoPlayer 饺子视频播放器
+
+ijkplayer ijk 播放器
+
+GSYVideoPlayer一个第三方视频播放库，基于bilibili 开源的 ijkplayer，可自定义性也还不错，
+主要使用这个库实现类似微博等视频列表根据滚动判断自动播放，
+
+VitamioBundle 多媒体播放器
+
+VideoPlayerManager 帮助实现VideoPlayer控制，使得它更容易使用ListView和recyclerview。
+
+PlayerBase 专注于播放视图组件的高复用性和组件间的低耦合，轻松处理复杂业务。
+
+DanmakuFlameMaster 弹幕
+
+AndroidVideoCache 视频缓存
+
+TicktockMusic 一款 material design 风格的音乐播放器，可以播放本地和网络音乐，并且提供歌词显示。
+
+Timber 一个完整的音乐播放器
+
+NiceVieoPlayer 支持列表，完美切换全屏、小窗口的Android视频播放器（2019-03-27 新增）
+
+刷新控件
+SmartRefreshLayout Android智能下拉刷新框架
+
+android-Ultra-Pull-To-Refresh
+
+Android-PullToRefresh
+
+SpringView
+
+Phoenix
+
+动画
+Material-Animations
+
+Loop3DRotation-master 3D旋转动画
+
+lottie-android 加载ae做的动画
+
+AndroidViewAnimations 动画合集
+
+ParticleTextView 粒子动画
+
+ExpectAnim 一个漂亮的动画效果
+
+android-pathview 路径动画
+
+ViewAnimator 动画合集
+
+TextSurface 炫酷的文字展示动画
+
+CircularAnim 水波纹动画
+
+AndroidCarrouselLayout 3D旋转动画（2019-03-27 新增）
+
+轮播图
+BannerViewPager
+一个第三方轮播图的库，这个库比较新，所以start数比较少，但是挺好用，推荐（2020.05.09）
+
+banner
+
+Android-ConvenientBanner
+
+MZBannerView 仿魅族BannerView,图片轮播控件,支持多种模式切换
+
+权限
+RxPermissions支持RxJava与新的Android M版本权限模型一起使用（2020.05.09 新增）
+
+PermissionsDispatcher
+
+RxPermissions
+
+easypermissions
+
+Dexter
+
+AndPermission
+
+PermissionHelper
+
+PermissionGen
+
+HiPermission
+
+TedPermission
+
+permissions4m 国产手机5.0、6.0权限适配框架
+
+二维码
+zxing
+
+BGAQRCode-Android 扫描二维码、扫描条形码、
+
+QrCodeScan 二维码扫描
+
+android-zxingLibrary 几行代码快速集成二维码扫描功能
+
+新手引导
+NewbieGuide Android 快速实现新手引导层的库，通过简洁链式调用，一行代码实现引导层的显示
+
+GuideView 能够快速为任何一个View创建一个遮罩层，支持单个页面，多个引导提示，支持为高亮区域设置不同的图形，支持引导动画，方便扩展,良好支持fragment
+
+轻存储
+MMKV一款比sharepreferences稍重，远远小于数据库量级，但性能卓越的存储框架，由腾讯旗下的微信开发。（2020.05.09 新增）
+
+数据库
+greenDAO
+
+ActiveAndroid Android Sqlite orm 的 db 工具类
+
+realm-java 移动端的数据库，适用于 Phone、Tablet、Wearable，支持 ORM，线程安全、支持连表及数据库加密，比 SQLite 性能更好
+
+DBFlow Android SQLite ORM 工具库。综合了 Active Android, Schematic, Ollie,Sprinkles 等库的优点；通过注解实现，性能好；能生成 ContentProvider。
+
+SnappyDB key-value数据库，非常流行的NoSQL数据库
+
+LitePal 不编写SQL语句的情况下完成大多数数据库操作，包括创建或升级表、CRUD操作、聚合函数等
+
+objectbox-java ObjectBox是一个超高速的面向对象的数据库，具有很强的关系支持。ObjectBox嵌入到Android、Linux、MacOS或Windows应用程序中。
+
+wcdb 一个高效、完整、易用的移动数据库框架，基于(https://github.com/sqlcipher/sqlcipher)[SQLCipher][SQLCipher])，支持iOS, macOS和Android。
+
+Android-Debug-Database 数据库调试工具
+
+图表
+MPAndroidChart
+
+XCL-Charts
+
+hellocharts-android
+
+DashboardView 仪表盘
+
+FinancialCustomerView 金融类的自定义View
+
+WilliamChart 双向图表
+
+EazeGraph
+
+android-DecoView-charting
+
+GraphView 绘制图表和曲线图的 View，可用于 Android 上的曲形图、柱状图、波浪图展示
+
+PieChartView 饼状图
+
+SpeedView Android的动态车速表
+
+KalmanRx kalman 滤波（2019-03-29 新增）
+
+ikvStockChart K线图 （2019-03-29 新增）
+
+菜单
+BoomMenu 爆炸菜单效果
+
+Side-Menu.Android 侧滑菜单
+
+Context-Menu.Android 可以方便快速集成漂亮带有动画效果的上下文菜单，(https://links.jianshu.com/go?to=http%3A//yalantis.com/)[Yalantis][Yalantis])出品。
+
+FlowingDrawer 带手势的侧滑菜单
+
+SlidingMenu 侧滑菜单
+
+android-menudrawer 滑出式菜单，通过拖动屏幕边缘滑出菜单，支持屏幕上下左右划出，支持当前 View 处于上下层，支持 Windows 边缘、ListView 边缘、ViewPager 变化划出菜单等。
+
+AndroidResideMenu 仿 Dribbble 的边栏菜单
+
+MaterialDrawer Material Design 风格的导航抽屉，提供简便且强大的定制功能
+
+bottomsheet 底部菜单（2019-03-27 新增）
+
+手势关闭
+SwipeBackLayout
+
+SwipeBackHelper
+
+事件处理
+otto
+
+EventBus
+
+AndroidEventBus
+
+换肤
+QSkinLoader
+
+Android-Skin-Loader 支持多种场景的Android换肤框架
+
+MultipleTheme 夜间模式的Android框架
+
+Colorful 基于Theme的Android动态换肤库，无需重启Activity、无需自定义View，方便的实现日间、夜间模式。
+
+MaterialDesignDemo
+
+Android-skin-support
+
+状态栏
+StatusBarUtil
+
+ImmersionBar实现沉浸式状态栏的一个第三方库，也是非常常用
+
+颜色选择器
+HoloColorPicker
+
+android-ColorPickerPreference
+
+布局相关
+flexbox-layout 柔性布局
+
+overscroll-decor 仿IOS回弹效果
+
+ChipsLayoutManager TAG 布局
+
+vlayout VirtualLayout是一个针对RecyclerView的LayoutManager扩展, 主要提供一整套布局方案和布局间的组件复用的问题。
+
+ArcLayout 弧形布局
+
+FlowLayout Android流式布局，支持单选、多选等，适合用于产品标签等。
+
+MaterialDesignLibrary 包含android l组件的库，供您在低版本中使用。
+
+material 包含android l组件的库，供您在低版本中使用。
+
+QMUI_Android 快速搭建一个具备基本设计还原效果的 Android 项目
+
+Android-Bootstrap Android 上的bootstrap 效果
+
+ScalingLayout 缩放布局
+
+android-ConstraintLayoutExamples ConstraintLayout 布局的官方demo （2019-03-27 新增）
+
+ViewSpreadTranslationController 视图扩散切换控制器（2019-03-27 新增）
+
+加载反馈
+LoadSir扩展性良好的加载反馈页管理框架（2020-05-09 新增）
+屏幕适配
+AndroidAutoSize 今日头条屏幕适配方案终极版
+其他
+AndroidPdfViewer pdf 加载
+
+android-job 用于后台运行延迟的作业
+
+三、网络相关
+http
+RxEasyHttp基于RxJava2+Retrofit2实现简单易用的网络请求框架
+
+retrofit
+
+okhttp
+
+okhttp-OkGo 封装了 OkHttp 的网络请求框架
+
+{停止维护} okhttputils okhttp的辅助类
+
+NoHttp 实现Http标准协议框架，支持多种缓存模式，底层可动态切换OkHttp、URLConnection。
+
+xUtils3 xUtils 包含了orm, http(s), image, view注解
+
+afinal Afinal是一个android的ioc，orm框架，内置了四大模块功能：FinalAcitivity,FinalBitmap,FinalDb,FinalHttp
+
+Fast-Android-Networking 支持http2的网络库（2019-03-29 新增）
+
+json
+gson
+
+fastjson
+
+下载、上传
+MultiThreadDownloader 多线程下载
+
+android-upload-service 文件上传
+
+Aria 下载
+
+FileDownloader 文件下载引擎，稳定、高效、灵活、简单易用
+
+rx
+RxAndroid 对RxJava在Android上的扩展，使得Android上也很容易实现reactive components，简化线程操作，从而写出很漂亮的代码。
+
+RxJava
+
+RxCache 专门为Retrifit打造的缓存库
+
+ReactiveNetwork 检测网络状态
+
+RxLifecycle 管理rx的生命周期
+
+AutoDispose rx 工具类
+
+四、自定义View
+蛛网图
+SpiderPlotView
+
+RadarChartView
+
+翻书效果
+android-PageFlip
+
+android-flip 类似 Flipboard 翻转动画
+
+图案解锁
+PatternLockView
+望远镜效果（部分高亮）
+ShowcaseView
+
+Spotlight
+
+其他
+SeatTable 电影选座效果
+
+FlightSeat 飞机票选座效果
+
+GoodView 点赞效果
+
+Android-PullLayout 仿uc下拉效果
+
+AlphaIndicatorView 仿微信底部TAB 滑动效果
+
+RadarView 高仿360检测评分动画
+
+CardStackView 三种炫酷的列表卡片滑动动画
+
+TapTargetView 难于描述，还是自己看效果图吧
+
+CoordinatorTabLayout 可快速实现TabLayout与CoordinatorLayout相结合的样式
+
+ShimmerLayout 扫光效果
+
+PhotoMovie 仿抖音照片电影
+
+MyCardView 一个支持自定义阴影颜色的 CardView （2019-03-27 新增）
+
+五、其他
+工具类
+utilcodex一个android 工具库，里面有非常多的工具类，当然实际项目用不到这么多，所以可以根据需求copy代码就好，不用集成(2020.05.09 新增)
+
+AndroidUtilCode 强大易用的安卓工具类库
+
+RxTools Android开发人员不得不收集的工具类集合
+
+butterknife 利用 annotation 帮你快速完成 View 的初始化，减少代码
+
+热修复
+tinker 它支持dex、库和资源更新，无需重新安装apk
+
+Bugly Android热更新它封装了tinker是腾讯团队维护的，完全免费！
+
+Nuwa
+
+AndFix 阿里的方案
+
+VirtualXposed
+
+插件化
+RePlugin RePlugin是一套完整的、稳定的、适合全面使用的，占坑类插件化方案，由360手机卫士的RePlugin Team研发，也是业内首个提出”全面插件化“（全面特性、全面兼容、全面使用）的方案。（2019-03-27 新增）
+签名打包
+walle Android Signature V2 Scheme签名下的新一代渠道包打包神器
+
+packer-ng-plugin 100个渠道包只需要10秒钟
+
+反编译
+Apktool 反编译工具
+依赖注入
+dagger 依赖注入，适用于 Android 和 Java
+日志
+logger
+容器
+Atlas一个运行于Android系统上的一个容器化框架
+路由
+ARouter 帮助 Android App 进行组件化改造的路由框架
+内存泄漏检测
+leakcanary
+布局优化
+X2C 在编译生成APK期间，将需要翻译的layout翻译生成对应的java文件，这样对于开发人员来说写布局还是写原来的xml，但对于程序来说，运行时加载的是对应的java文件。 （2019-03-27 新增）
+画图
+JustWeTools
+图片压缩
+Luban Android图片压缩工具
+
+Compressor
+
+AiYaCompressHelper
+
+摄像头
+cameraview 轻松集成camera
+
+camerakit-android
+
+富文本编辑器
+richeditor-android
+
+Android-Rich-text-Editor （2019-03-27 新增）
+
+指示器
+MagicIndicator 强大、可定制、易扩展的 ViewPager 指示器框架。
+
+dotsindicator 视图页导航点指示器（2019-03-27 新增）
+
+自定义字体加载
+Calligraphy
+文件加密
+conceal
+表情包
+XhsEmoticonsKeyboard
+相机滤镜
+android-gpuimage-plus
+车牌识别
+EasyPR4Android
+键盘冲突
+JKeyboardPanelSwitch
+蓝牙
+Android-BLE AndroidBLE蓝牙框架，包括扫描、连接、设置通知、发送数据、读取、接收数据和OTA升级以及各种直观的回调，近乎一行代码植入项目，可扩展配置蓝牙相关操作。
+测试
+Matrix 通过各种性能监控方案，对性能监控项的异常数据进行采集和分析，输出相应的问题分析、定位与优化建议，从而帮助开发者开发出更高质量的应用。
+
+pandora 一款无需ROOT、可以直接在应用内查看和修改包括网络、数据库、UI等的工具箱，适合开发和测试阶段的各种问题的快速定位。
+
+ArgusAPM 。ArgusAPM是360移动端产品使用的可视化性能监控平台，为移动端APP提供性能监控与管理，可以迅速发现和定位各类APP性能和使用问题，帮助APP不断的提升用户体验。（2019-03-27 新增）
+
+AndroidPerformanceMonitor 非侵入式的性能监控组件
+
+UETool 一个各方人员（设计师、程序员、测试）都可以使用的调试工具。它可以作用于任何显示在屏幕上的 view，比如 Activity/Fragment/Dialog/PopupWindow 等等。（2019-03-27 新增）
+
+robolectric 单元测试 （2019-03-29 新增）
+
+其他
+WeChatLuckyMoney 微信抢红包插件
+
+BookReader 完整的小说阅读器
+
+CloudReader 小说阅读器
+
+Android-Iconics 图标
+
+smartTable 自动生成表格框架（2019-03-27 新增）
+
+k-9 邮箱（2019-03-29 新增）
+
+作者：Perston
+链接：https://www.jianshu.com/p/1c40d3aacc2f
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。

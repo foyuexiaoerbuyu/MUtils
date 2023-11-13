@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="AlignTextView">
+        <attr name="align">
+            <enum name="hortal" value="1" />
+            <enum name="vercal" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <!--支持圆角的TextView-->
+    <declare-styleable name="RoundTextView">
+        <attr name="rtvBgColor" format="color" />
+        <attr name="rtvBorderWidth" format="dimension" />
+        <attr name="rtvBorderColor" format="dimension" />
+        <attr name="rtvRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="RequiredTextView">
+        <attr name="android:text" />
+        <attr name="prefix" format="string|reference" />
+        <attr name="prefix_color" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RefreshLayout">
+        <attr name="layout_refresh_empty" format="reference" />
+        <attr name="layout_refresh_error" format="reference" />
+        <attr name="layout_refresh_loading" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CommonTopBar">
+        <attr name="mid_text" format="string" />
+        <attr name="mid_text_size" format="dimension" />
+        <attr name="mid_text_color" format="color" />
+
+        <attr name="left_text" format="string" />
+        <attr name="left_text_size" format="dimension" />
+        <attr name="left_text_color" format="color" />
+
+        <attr name="right_text" format="string" />
+        <attr name="right_text_size" format="dimension" />
+        <attr name="right_text_color" format="color" />
+
+        <attr name="left_img" format="reference" />
+        <attr name="right_img" format="reference" />
+
+        <attr name="leftIsBack" format="boolean" />
+
+    </declare-styleable>
+
+    <declare-styleable name="MiSelImg">
+        <attr name="sel_src" format="reference" />
+        <attr name="un_sel_src" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomLinearLayout">
+        <attr name="borderWidth" format="dimension" />
+        <attr name="borderColor" format="color" />
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="topLeftRadius" format="dimension" />
+        <attr name="topRightRadius" format="dimension" />
+        <attr name="bottomLeftRadius" format="dimension" />
+        <attr name="bottomRightRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="BadgeTextView">
+        <attr name="badgeBackgroundColor" format="color" />
+        <attr name="badgeTextColor" format="color" />
+        <attr name="badgeText" format="string" />
+        <attr name="badgeTextSize" format="dimension" />
+        <attr name="badgePadding" format="dimension" />
+    </declare-styleable>
+</resources>
