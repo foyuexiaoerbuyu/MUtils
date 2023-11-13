@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity {
         CfgInfo cfgInfo = SpUtils.getCfgInfo();
         List<String> connectIps = cfgInfo.getConnectIps();
         String str;
-        if (connectIps.size() > 0) {
+        if (connectIps != null && connectIps.size() > 0) {
             str = connectIps.get(0);
         } else {
 //            str = ip.substring(0, ip.lastIndexOf(".") + 1) + ":8887";
