@@ -1,11 +1,16 @@
 package cn.mvp.mlibs.other;
 
+import android.widget.EditText;
+
+import androidx.appcompat.app.AlertDialog;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.R;
 
 public class TestUtils {
@@ -559,5 +564,32 @@ public class TestUtils {
         }
     }
 
+    public static void inputForClick(EditText editText, String... items) {
+        if (!MLibs.isDebug()) return;
+        editText.setOnClickListener(v -> {
+            String trim = editText.getText().toString().trim();
+            for (int i = 0; i < items.length; i++) {
+                if (trim.equals(items[i])) {
+                    editText.setText(items[i == items.length - 1 ? 0 : i + 1]);
+                    break;
+                } else {
+                    editText.setText(items[0]);
+                }
+            }
+            editText.setSelection(editText.getText().toString().length());
+        });
+    }
+
+    public void inputForDialog(EditText editText, String... items) {
+        if (!MLibs.isDebug()) return;
+        editText.setOnLongClickListener(v -> {
+            new AlertDialog.Builder(editText.getContext())
+                    .setItems(items, (dialogInterface, pos) -> {
+                        editText.setText(items[pos]);
+                        editText.setSelection(items[pos].length());
+                    }).create().show();
+            return false;
+        });
+    }
 
 }
