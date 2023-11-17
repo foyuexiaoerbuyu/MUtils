@@ -580,6 +580,27 @@ public class TestUtils {
         });
     }
 
+    private static int mInputForClick = -1;
+
+    /**
+     * @param maxClickNum   最大点击数(超过或等于就开始循环),不包含这个数,比如最大时3 循环就是 0 1 2
+     * @param inputForClick 点击回调
+     */
+    public static void inputForClick(EditText editText, int maxClickNum, InputForClick inputForClick) {
+        if (!MLibs.isDebug()) return;
+        editText.setOnClickListener(v -> {
+            int clickNum = ++mInputForClick;
+            if (clickNum >= maxClickNum) {
+                mInputForClick = 0;
+            }
+            inputForClick.click(mInputForClick);
+        });
+    }
+
+    public interface InputForClick {
+        void click(int inputForClick);
+    }
+
     public void inputForDialog(EditText editText, String... items) {
         if (!MLibs.isDebug()) return;
         editText.setOnLongClickListener(v -> {
