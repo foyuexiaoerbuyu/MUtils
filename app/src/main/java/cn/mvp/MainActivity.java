@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity {
             SpUtils.setCfgInfo(cfgInfo);
             connService(cfgInfo.getConnectIps());
         });
-        inputAlertDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
+        inputAlertDialog.setInputType(InputType.TYPE_CLASS_TEXT);
         inputAlertDialog.show();
 
         inputAlertDialog.showInputDialog(str.indexOf(":"));
@@ -115,6 +115,10 @@ public class MainActivity extends BaseActivity {
             mTv.setText(content);
         });
         mTv = findViewById(R.id.main_tv);
+        mTv.setOnClickListener(v -> {
+            ClipboardUtils.copyText(MainActivity.this, mTv.getText());
+            toast("已复制内容");
+        });
         findViewById(R.id.main_btn_ip_qr_code).setOnClickListener(v -> showIp());
         findViewById(R.id.main_btn_chat).setOnClickListener(v -> {
             Chat1Activity.open(MainActivity.this);//WebSocketClient实现
@@ -127,6 +131,9 @@ public class MainActivity extends BaseActivity {
         });
         findViewById(R.id.main_btn_base_tv_test).setOnClickListener(v -> {
 //            TestActivity.open(MainActivity.this);//测试按钮
+//            FloatingBtnForActy dragViewLayout = new FloatingBtnForActy(this, R.mipmap.ic_launcher);
+//            dragViewLayout.show(this);
+//            floatView.setOnClickListener(v1 -> Log.i("调试信息", "onClick:  "));
         });
 
         findViewById(R.id.main_btn_test_page).setOnClickListener(v -> {
