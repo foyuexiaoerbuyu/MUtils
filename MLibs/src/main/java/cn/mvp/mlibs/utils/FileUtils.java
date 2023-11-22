@@ -468,6 +468,10 @@ public class FileUtils {
         return (dire.exists() && dire.isDirectory());
     }
 
+    public static boolean isDirExist(String directoryPath) {
+        return isFolderExist(directoryPath);
+    }
+
     /**
      * 删除文件或文件夹
      *

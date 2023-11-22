@@ -151,7 +151,12 @@ public class InputAlertDialog extends AlertDialog {
         return this;
     }
 
-    public void showInputDialog(int seleIndex) {
+    /**
+     * 显示键盘
+     *
+     * @param seleIndex 光标索引
+     */
+    public void showSoftKeyboard(int seleIndex) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

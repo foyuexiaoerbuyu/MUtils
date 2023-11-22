@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -444,13 +443,13 @@ public class SDCardUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // 先判断有没有权限
             if (Environment.isExternalStorageManager()) {
-                Toast.makeText(context, "Android R或以上版本，已授予MANAGE_EXTERNAL_STORAGE权限!", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(context, "Android版本R或更高，不允许使用MANAGE_EXTERNAL_STORAGE!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                intent.setData(Uri.parse("package:" + context.getPackageName()));
-                ((Activity) context).startActivityForResult(intent, requestCode);
+//                Toast.makeText(context, "Android R或以上版本，已授予MANAGE_EXTERNAL_STORAGE权限!", Toast.LENGTH_LONG).show();
+                return;
             }
+//            Toast.makeText(context, "Android版本R或更高，不允许使用MANAGE_EXTERNAL_STORAGE,请授予权限!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            ((Activity) context).startActivityForResult(intent, requestCode);
         }
     }
 

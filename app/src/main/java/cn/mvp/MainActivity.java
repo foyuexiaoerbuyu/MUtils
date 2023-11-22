@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.InputType;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -27,7 +28,6 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import cn.mvp.acty.BaseActivity;
 import cn.mvp.acty.ElectricQuantityActivity;
@@ -61,15 +61,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showConnServiceDialog() {
-        CfgInfo cfgInfo = SpUtils.getCfgInfo();
-        List<String> connectIps = cfgInfo.getConnectIps();
-        String str;
-        if (connectIps != null && connectIps.size() > 0) {
-            str = connectIps.get(0);
-        } else {
-//            str = ip.substring(0, ip.lastIndexOf(".") + 1) + ":8887";
-            str = NetworkUtils.getIpAddressByWifi(this) + ":8887";
-        }
+        String str = StringUtil.defaultIfBlank(SpUtils.getCfgInfo().getLastConnIp(), NetworkUtils.getIpAddressByWifi(this) + ":8887");
         InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
         inputAlertDialog.setEditText(str);
         inputAlertDialog.setCancelBtnClickDismiss(false);
@@ -78,17 +70,12 @@ public class MainActivity extends BaseActivity {
                 editText.setSelection(inputStr.indexOf(":") + 1, inputStr.length());
             }
         });
-
-        inputAlertDialog.setOkClick(inputStr -> {
-//            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
-            cfgInfo.addConnectIp(inputStr);
-            SpUtils.setCfgInfo(cfgInfo);
-            connService(cfgInfo.getConnectIps());
-        });
+        //            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
+        inputAlertDialog.setOkClick(this::connService);
         inputAlertDialog.setInputType(InputType.TYPE_CLASS_TEXT);
         inputAlertDialog.show();
 
-        inputAlertDialog.showInputDialog(str.indexOf(":"));
+        inputAlertDialog.showSoftKeyboard(str.indexOf(":"));
 
     }
 
@@ -123,8 +110,24 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.main_btn_chat).setOnClickListener(v -> {
             Chat1Activity.open(MainActivity.this);//WebSocketClient实现
         });
-        findViewById(R.id.main_btn_conn_service).setOnClickListener(v -> {
+        Button connBtn = findViewById(R.id.main_btn_conn_service);
+        connBtn.setOnClickListener(v -> {
+            String[] items = SpUtils.getCfgInfo().getConnectIpsArr();
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setItems(items, (dialogInterface, pos) -> {
+                        toast("开始连接：" + items[pos]);
+                        connService(items[pos]);
+                    }).create();
+            dialog.show();
+            dialog.getListView().setOnItemLongClickListener((parent, view, pos, id) -> {
+                SpUtils.delIp(items[pos]);
+                toast("删除成功");
+                return true;
+            });
+        });
+        connBtn.setOnLongClickListener(v -> {
             showConnServiceDialog();
+            return false;
         });
         findViewById(R.id.main_btn_base_info).setOnClickListener(v -> {
             mTv.setText(DeviceUtils.getDeviceInfo());//获取手机基本信息
@@ -161,29 +164,11 @@ public class MainActivity extends BaseActivity {
         });
 
         showIp();
-//        String[] items3 = new String[]{"连接socket", "按钮1", "按钮2", "按钮3", "按钮4", "按钮5", "按钮6"};//创建item
-//        //添加列表
-//        new AlertDialog.Builder(this)
-//                .setItems(items3, (dialogInterface, pos) -> {
-//                    Toast.makeText(MainActivity.this, "点的是：" + items3[pos], Toast.LENGTH_SHORT).show();
-//                    if (pos == 0) {
-//
-//                    } else if (pos == 1) {
-//                    } else if (pos == 2) {
-//                    } else if (pos == 3) {
-//                    } else if (pos == 4) {
-//                    } else if (pos == 5) {
-//                    } else {
-//                    }
-//                }).create().show();
         CfgInfo cfgInfo = SpUtils.getCfgInfo();
-        if (cfgInfo.getConnectIps() == null || cfgInfo.getConnectIps().size() == 0) {
-            showConnServiceDialog();
-            return;
+        if (cfgInfo.getLastConnIp() != null) {
+            connService(cfgInfo.getLastConnIp());
         }
-        List<String> ips = cfgInfo.getConnectIps();
-        Log.i("调试信息", "initView:  " + ips);
-        connService(ips);
+        SDCardUtils.openAllFileAccessPermissions(MainActivity.this, 1);
     }
 
     private SocketUtils socketUtils = new SocketUtils((e, errMsg) -> {
@@ -235,11 +220,18 @@ public class MainActivity extends BaseActivity {
         mTv.setText(msg);
     }
 
-    private void connService(List<String> ips) {
+    private void connService(String ip) {
         String receiverPath = SDCardUtils.getExternalPublicStorageDirectory() + "/01tmp/";
-        socketUtils.connService(ips, receiverPath, new SocketUtils.IReceiverMsg() {
+        socketUtils.connService(ip.split(":")[0], Integer.parseInt(ip.split(":")[1]), receiverPath, new SocketUtils.IReceiverMsg() {
+            @Override
+            public void connSuccess() {
+                SpUtils.saveNewIp(ip);
+                SpUtils.setLastConnIp(ip);
+            }
+
             @Override
             public void receiverMsg(String receiveMsg) {
+                Log.i("调试信息", "接收到服务端信息: " + receiveMsg);
                 if (receiveMsg.startsWith("cmd_setClipboardText_")) {
                     //设置客户端剪切板
                     ClipboardUtils.copyText(MainActivity.this, receiveMsg.replace("cmd_setClipboardText_", ""));
@@ -269,19 +261,20 @@ public class MainActivity extends BaseActivity {
                     socketUtils.sendMsgToService("cmd_pullFiles_success");
                 } else if (receiveMsg.startsWith("cmd_getFiles")) {
                     //服务端希望获取客户端文件数据
-                    String[] list = new File(receiverPath).list();
-                    socketUtils.sendMsgToService("cmd_setFiles" + new Gson().toJson(list));
+                    Log.i("调试信息", "receiverMsg:  " + receiverPath + " " + FileUtils.isFileExist(receiverPath) + " " + FileUtils.isFolderExist(receiverPath));
+                    String msg = "cmd_setFiles" + new Gson().toJson(new File(receiverPath).list());
+                    socketUtils.sendMsgToService(msg);
+                    Log.i("调试信息", "发送遍历到的文件夹列表:  " + msg);
                 } else if (receiveMsg.startsWith("cmd_delFiles")) {
                     //服务端希望删除客户端文件数据
                     String[] delFiles = GsonUtil.fromJsonToStrArr(receiveMsg.replace("cmd_delFiles", ""));
-                    System.out.println("delFiles = " + Arrays.toString(delFiles));
+                    Log.i("调试信息", "delFiles = " + Arrays.toString(delFiles));
                     for (String file : delFiles) {
-                        System.out.println("file = " + file);
+                        Log.i("调试信息", "file = " + file);
                         FileUtils.deleteFile(receiverPath + file);
                     }
                     socketUtils.sendMsgToService("cmd_delFiles_success");
                 }
-                System.out.println("接收到服务端信息: " + receiveMsg);
             }
 
             @Override

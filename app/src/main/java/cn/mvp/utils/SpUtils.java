@@ -42,9 +42,26 @@ public class SpUtils {
     /**
      * @return 提示音效开关
      */
-    public static void setCfgInfo(CfgInfo cfgInfo) {
+    private static void saveCfgInfo(CfgInfo cfgInfo) {
         putStr(SpUtils.KEY_CFG_CONFIG, GsonUtil.toJson(cfgInfo));
     }
 
 
+    public static void saveNewIp(String newIp) {
+        CfgInfo cfgInfo = getCfgInfo();
+        cfgInfo.addConnectIp(newIp);
+        saveCfgInfo(cfgInfo);
+    }
+
+    public static void setLastConnIp(String newIp) {
+        CfgInfo cfgInfo = getCfgInfo();
+        cfgInfo.setLastConnIp(newIp);
+        saveCfgInfo(cfgInfo);
+    }
+
+    public static void delIp(String ip) {
+        CfgInfo cfgInfo = getCfgInfo();
+        cfgInfo.getConnectIps().remove(ip);
+        saveCfgInfo(cfgInfo);
+    }
 }

@@ -88,7 +88,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
         inputAlertDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
         inputAlertDialog.show();
 
-        inputAlertDialog.showInputDialog(str.indexOf(":"));
+        inputAlertDialog.showSoftKeyboard(str.indexOf(":"));
 
     }
 
