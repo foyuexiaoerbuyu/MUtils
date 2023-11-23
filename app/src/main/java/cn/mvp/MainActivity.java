@@ -175,7 +175,6 @@ public class MainActivity extends BaseActivity {
         e.printStackTrace();
         if (e instanceof ConnectException) {
             ToastUtils.show("连接服务器异常...");
-            showConnServiceDialog();
             return;
         }
         ToastUtils.show(errMsg);
@@ -313,7 +312,6 @@ public class MainActivity extends BaseActivity {
         BitmapDrawable drawbale = new BitmapDrawable(MainActivity.this.getResources(), qrCode);
         mTv.setCompoundDrawablesWithIntrinsicBounds(null, drawbale, null, null);
         mTv.setText(content);
-        ClipboardUtils.copyToClipboard(MainActivity.this, content);
     }
 
     @Override
