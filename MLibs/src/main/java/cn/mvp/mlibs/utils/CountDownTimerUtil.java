@@ -5,7 +5,7 @@ import android.os.CountDownTimer;
 /**
  * 倒计时工具类
  */
-public class CountdownUtil {
+public class CountDownTimerUtil {
     /* 倒计时的间隔时间 */
     private int mIntervalTime;
     /* 倒计时的总时间 */
@@ -17,15 +17,15 @@ public class CountdownUtil {
     /* 倒计时监听器 */
     private OnCountdownListener mCountdownListener;
 
-    private CountdownUtil() {
+    private CountDownTimerUtil() {
         super();
         this.mIntervalTime = 0;
         this.mTotalTime = 0;
         this.isRunning = false;
     }
 
-    public static CountdownUtil newInstance() {
-        return new CountdownUtil();
+    public static CountDownTimerUtil newInstance() {
+        return new CountDownTimerUtil();
     }
 
     private void init() {
@@ -51,9 +51,9 @@ public class CountdownUtil {
      * 设置倒计时的间隔时间
      *
      * @param intervalTime 间隔时间
-     * @return {@link CountdownUtil}
+     * @return {@link CountDownTimerUtil}
      */
-    public CountdownUtil intervalTime(int intervalTime) {
+    public CountDownTimerUtil intervalTime(int intervalTime) {
         this.mIntervalTime = intervalTime;
         return this;
     }
@@ -62,9 +62,9 @@ public class CountdownUtil {
      * 设置倒计时的总时间
      *
      * @param totalTime 总时间
-     * @return {@link CountdownUtil}
+     * @return {@link CountDownTimerUtil}
      */
-    public CountdownUtil totalTime(int totalTime) {
+    public CountDownTimerUtil totalTime(int totalTime) {
         this.mTotalTime = totalTime;
         return this;
     }
@@ -73,9 +73,9 @@ public class CountdownUtil {
      * 设置倒计时监听器
      *
      * @param listener 倒计时监听器
-     * @return {@link CountdownUtil}
+     * @return {@link CountDownTimerUtil}
      */
-    public CountdownUtil callback(OnCountdownListener listener) {
+    public CountDownTimerUtil callback(OnCountdownListener listener) {
         this.mCountdownListener = listener;
         return this;
     }

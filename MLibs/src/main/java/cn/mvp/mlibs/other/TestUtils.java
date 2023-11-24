@@ -564,6 +564,12 @@ public class TestUtils {
         }
     }
 
+    /**
+     * 根据点击次数,依次输入既定内容
+     *
+     * @param editText 要点击的编辑框
+     * @param items    依次填充的编辑框内容
+     */
     public static void inputForClick(EditText editText, String... items) {
         if (!MLibs.isDebug()) return;
         editText.setOnClickListener(v -> {
@@ -583,6 +589,8 @@ public class TestUtils {
     private static int mInputForClick = -1;
 
     /**
+     * 根据点击编辑框次数判断输入内容
+     *
      * @param maxClickNum   最大点击数(超过或等于就开始循环),不包含这个数,比如最大时3 循环就是 0 1 2
      * @param inputForClick 点击回调
      */
@@ -601,6 +609,9 @@ public class TestUtils {
         void click(int inputForClick);
     }
 
+    /**
+     * 点击编辑框弹框输入
+     */
     public void inputForDialog(EditText editText, String... items) {
         if (!MLibs.isDebug()) return;
         editText.setOnLongClickListener(v -> {

@@ -3,8 +3,10 @@ package cn.mvp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
@@ -159,8 +161,10 @@ public class MainActivity extends BaseActivity {
 //            String host = "192.168.10.9";
 //            List<String> ips = Arrays.asList("192.168.10.9:9090", "192.168.10.9:9090");
         });
+
         findViewById(R.id.btn2).setOnClickListener(v -> {
             // TODO: 2023/9/12 按钮2
+//            TestActivity.open(MainActivity.this);
         });
 
         showIp();
@@ -168,7 +172,15 @@ public class MainActivity extends BaseActivity {
         if (cfgInfo.getLastConnIp() != null) {
             connService(cfgInfo.getLastConnIp());
         }
+        initPermissions();
+    }
+
+    private void initPermissions() {
         SDCardUtils.openAllFileAccessPermissions(MainActivity.this, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {//悬浮窗权限
+            Intent intent1 = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent1, 2);
+        }
     }
 
     private SocketUtils socketUtils = new SocketUtils((e, errMsg) -> {
