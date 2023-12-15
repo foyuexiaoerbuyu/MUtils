@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -121,11 +122,14 @@ public class MainActivity extends BaseActivity {
                         connService(items[pos]);
                     }).create();
             dialog.show();
-            dialog.getListView().setOnItemLongClickListener((parent, view, pos, id) -> {
-                SpUtils.delIp(items[pos]);
-                toast("删除成功");
-                return true;
-            });
+            ListView listView = dialog.getListView();
+            if (listView != null) {
+                listView.setOnItemLongClickListener((parent, view, pos, id) -> {
+                    SpUtils.delIp(items[pos]);
+                    toast("删除成功");
+                    return true;
+                });
+            }
         });
         connBtn.setOnLongClickListener(v -> {
             showConnServiceDialog();
