@@ -19,8 +19,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
-import com.hjq.toast.ToastUtils;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -276,9 +274,9 @@ public class UIUtils {
 
     /*----------------提示消息start-----------------------*/
     //需引入jar包:implementation 'com.hjq:toast:8.0'
-    public static void tipToast(final String msg) {
-        ToastUtils.show(msg);
-    }
+//    public static void tipToast(final String msg) {
+//        ToastUtils.show(msg);
+//    }
 
     public static void tipToast(final Context context, final String msg) {
         runOnUIThread(new Runnable() {

@@ -357,4 +357,51 @@ public class DateUtil {
     public static String currentDate() {
         return formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL);
     }
+
+    /** 根据日期的相对关系（今天、昨天、前天）进行格式化。 */
+    public static String formatRelativeDate(String regex, long dateTime) {
+        Date date = new Date(dateTime);
+        if (isToday(date)) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return calendar.get(Calendar.AM_PM) == Calendar.AM ? "上午" : "下午";
+        } else if (isYesterday(date)) {
+            return "昨天";
+        } else if (isBeforeYesterday(date)) {
+            return "前天";
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat(regex, Locale.getDefault());
+            return formatter.format(date);
+        }
+    }
+
+    private static boolean isToday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        Calendar today = Calendar.getInstance();
+        today.setTime(new Date());
+        int todayYear = today.get(Calendar.YEAR);
+        int todayMonth = today.get(Calendar.MONTH);
+        int todayDay = today.get(Calendar.DAY_OF_MONTH);
+
+        return year == todayYear && month == todayMonth && day == todayDay;
+    }
+
+    private static boolean isYesterday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        return isToday(calendar.getTime());
+    }
+
+    private static boolean isBeforeYesterday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, 2);
+        return isToday(calendar.getTime());
+    }
 }
