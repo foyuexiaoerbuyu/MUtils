@@ -66,6 +66,12 @@
                 android:text="测试按钮" />
 
             <Button
+                android:id="@+id/main_btn_common_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="常用信息" />
+
+            <Button
                 android:id="@+id/main_btn_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

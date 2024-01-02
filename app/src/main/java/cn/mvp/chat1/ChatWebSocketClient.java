@@ -192,7 +192,7 @@ public class ChatWebSocketClient {
 
     public boolean sendMsg(String msg) {
         if (reconnection()) return false;
-        webSocketClient.send(new WebSocketChatMsg(msg).toJson());
+        webSocketClient.send(msg);
         return true;
     }
 

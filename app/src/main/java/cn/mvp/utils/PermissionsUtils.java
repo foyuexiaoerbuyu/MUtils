@@ -31,14 +31,14 @@ public class PermissionsUtils {
             @Override
             public void hasPermission(List<String> granted, boolean all) {
                 if (all) {
-                    UIUtils.tipToast("权限全部通过");
+                    UIUtils.tipToast(activity, "权限全部通过");
                 }
             }
 
             @Override
             public void noPermission(List<String> denied, boolean quick) {
                 if (quick) {
-                    UIUtils.tipToast("部分权限未通过" + denied);
+                    UIUtils.tipToast(activity, "部分权限未通过" + denied);
                     Log.i("调试信息", "noPermission:  " + denied);
                 }
             }
@@ -55,7 +55,7 @@ public class PermissionsUtils {
             @Override
             public void noPermission(List<String> denied, boolean quick) {
                 if (quick) {
-                    UIUtils.tipToast("部分权限未通过 " + denied);
+                    UIUtils.tipToast(activity, "部分权限未通过 " + denied);
                     Log.i("调试信息", "noPermission:  " + denied);
                 }
             }

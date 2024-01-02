@@ -95,7 +95,7 @@ public class XLog {
      */
     public static void tipDialog(Context context, String msg) {
         if (isConsoleLog && BuildConfig.DEBUG) {
-            UIUtils.tipToast(msg);
+            UIUtils.tipToast(context, msg);
         }
     }
 
