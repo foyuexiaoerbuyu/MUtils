@@ -5,8 +5,6 @@ import android.text.Html;
 
 import androidx.annotation.Nullable;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -125,7 +123,7 @@ public class StringUtil {
      */
     public static boolean isContainChineseSimple(String str) throws CheckException {
 
-        if (StringUtils.isEmpty(str)) {
+        if (isEmpty(str)) {
             throw new CheckException("字符串不能为空");
         }
         Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
@@ -141,7 +139,7 @@ public class StringUtil {
      */
     public static boolean isContainChinese2symbol(String str) throws CheckException {
 
-        if (StringUtils.isEmpty(str)) {
+        if (isEmpty(str)) {
             throw new CheckException("字符串不能为空");
         }
         Pattern p = Pattern.compile("[\u4E00-\u9FA5|\\！|\\，|\\。|\\（|\\）|\\《|\\》|\\“|\\”|\\？|\\：|\\；|\\【|\\】]");

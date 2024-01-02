@@ -3,8 +3,6 @@ package cn.mvp.mlibs.utils;
 
 import android.text.TextUtils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -355,7 +353,7 @@ public class VerifyUtils {
     }
 
     public static boolean isMatch(Pattern pattern, String str) {
-        return StringUtils.isNotEmpty(str) && pattern.matcher(str).matches();
+        return StringUtil.isNotEmpty(str) && pattern.matcher(str).matches();
     }
 
     /**
