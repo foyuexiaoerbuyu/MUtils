@@ -340,6 +340,13 @@ public class StringUtil {
         return isBlank(str) ? defVal : str;
     }
 
+    public static int parseInt(String str) {
+        if (str == null || str.trim().length() == 0) {
+            return 0;
+        }
+        return parseInt(str, 0);
+    }
+
     public static int parseInt(String str, int defVal) {
         try {
             return Integer.parseInt(str);
