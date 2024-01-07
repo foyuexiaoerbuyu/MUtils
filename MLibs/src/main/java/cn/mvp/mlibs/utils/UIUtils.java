@@ -301,4 +301,26 @@ public class UIUtils {
     }
     /*----------------提示消息end-----------------------*/
 
+    /**
+     * px转sp
+     */
+    public static int pxToSp(Context context, float px) {
+        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (px / scaledDensity + 0.5f);
+    }
+
+//    /**
+//     * view显示隐藏取反
+//     */
+//    public static void setVisibility(View view) {
+//        view.setVisibility(view.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+//    }
+
+    /**
+     * 设置view显示隐藏
+     */
+    public static void setVisibility(View view, boolean isShow) {
+        view.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    }
+
 }

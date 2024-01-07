@@ -624,4 +624,26 @@ public class TestUtils {
         });
     }
 
+    private static final String SPECIAL_CHARACTERS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String NUMBERS = "0123456789";
+    private static final String ALPHANUMERIC = ALPHABET + NUMBERS;
+    private static final String ALL_CHARACTERS = ALPHANUMERIC + SPECIAL_CHARACTERS;
+
+    /**
+     * @param length                   指定长度
+     * @param includeSpecialCharacters 是否包含特殊符号
+     * @return 随机指定长度的密码
+     */
+    public static String getRandomPassword(int length, boolean includeSpecialCharacters) {
+        StringBuilder sb = new StringBuilder(length);
+        String characterSet = includeSpecialCharacters ? ALL_CHARACTERS : ALPHANUMERIC;
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characterSet.length());
+            char randomChar = characterSet.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+        return sb.toString();
+    }
 }
