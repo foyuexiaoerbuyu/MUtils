@@ -528,6 +528,13 @@ public class XLogUtil {
     }
 
     /**
+     * 打印步骤
+     */
+    public static void showStepLogInfo(String msg) {
+        android.util.Log.e(TAG + ":", getScope() + "  " + "步骤   " + stepNumber++ + "  " + msg);
+    }
+
+    /**
      * 打印错误信息
      */
     public static void showArgsInfo(Object... args) {

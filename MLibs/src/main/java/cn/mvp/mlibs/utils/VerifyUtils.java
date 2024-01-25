@@ -369,4 +369,9 @@ public class VerifyUtils {
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
     }
+
+    /** 验证输入是否为浮点数 */
+    public static boolean isValidFloat(String input) {
+        return input.matches("^\\d*(\\.\\d+)?$");
+    }
 }

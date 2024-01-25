@@ -646,4 +646,30 @@ public class TestUtils {
         }
         return sb.toString();
     }
+
+
+    private static boolean testBool = false;
+    private static int accIndex = 0;
+
+    /**
+     * @return 取反
+     */
+    public static boolean getBoolan() {
+        return testBool = !testBool;
+    }
+
+    /**
+     * 挨个获取累加值 从0开始 比如最大值为3  依次返回 0 1 2 不包含最大值本身
+     *
+     * @param max 最大值(不包含)
+     * @return 累加值
+     */
+    public static int getAccumulationNum(int max) {
+        accIndex++;
+        if (accIndex > max) {
+            accIndex = 0;
+        }
+        return accIndex;
+    }
+
 }
