@@ -64,6 +64,25 @@ public class InputFilterUtil {
         editText.setFilters(new InputFilter[]{getOnlyFilterEnglishAndNumber()});
     }
 
+    /**
+     * 根据字符串限制
+     *
+     * @param digits "0123456789.-"
+     */
+    public static void setDigitsInputFilter(EditText editText, String digits) {
+        InputFilter[] filters = {(source, start, end, dest, dstart, dend) -> {
+            StringBuilder builder = new StringBuilder();
+            for (int i = start; i < end; i++) {
+                char c = source.charAt(i);
+                if (Character.isDigit(c) && (digits == null || digits.indexOf(c) != -1)) {
+                    builder.append(c);
+                }
+            }
+            return builder.toString();
+        }};
+        editText.setFilters(filters);
+    }
+
     private static InputFilter getChineseInputLengthFilter(final int maxLength) {
         return new InputFilter() {
             @Override

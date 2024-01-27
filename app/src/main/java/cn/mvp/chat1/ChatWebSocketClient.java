@@ -37,6 +37,7 @@ import cn.mvp.mlibs.utils.SDCardUtils;
  * </dependency>
  */
 public class ChatWebSocketClient {
+    private static final int BUFFER_SIZE = 1024 * 1024; // 1 MB
     private static ChatWebSocketClient instance;
     private WebSocketClient webSocketClient;
     private IReceiver iReceiver;
@@ -56,8 +57,6 @@ public class ChatWebSocketClient {
         return instance;
     }
 
-    private static final int BUFFER_SIZE = 1024 * 1024; // 1 MB
-
     public WebSocketClient getWebSocketClient() {
         return webSocketClient;
     }
@@ -68,10 +67,14 @@ public class ChatWebSocketClient {
         }
     }
 
+    /**
+     * @param ip        192.144.219.245:8885
+     * @param iReceiver 接收消息
+     */
     public void connService(String ip, IReceiver iReceiver) {
         close();
         this.iReceiver = iReceiver;
-        URI serverURI = URI.create("ws://" + ip);//"ws://172.31.254.234:8887"
+        URI serverURI = URI.create("ws://" + ip);//"ws://IP地址:端口号"
         Map<String, String> headers = new HashMap<>();
 
         headers.put("client_name", DeviceUtils.getDeviceModel() + "_" + DeviceUtils.getManufacturer());//连接名
@@ -90,6 +93,7 @@ public class ChatWebSocketClient {
 
             @Override
             public void onMessage(String message) {
+                Log.i("调试信息", "onMessage:  " + message);
                 // 接收到消息的处理逻辑
                 WebSocketChatMsg msg = GsonUtil.fromJson(message, WebSocketChatMsg.class);
                 if (msg.getMsgType() == WebSocketChatMsg.MSG_TYPE_MSG) {
@@ -100,9 +104,8 @@ public class ChatWebSocketClient {
                         sendMsg("cmd_clipboard_get" + ClipboardUtils.getText().toString());
                         ToastUtils.show("已设置pc剪贴板");
                     } else {
-                        String sb = "服务端消息: " + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
-                                "\n   " + msg.getMsgContent() + "\n";
-                        iReceiver.onReceiverMsg(sb);
+                        Log.i("调试信息", "onMessage:  " + msg.getMsgContent());
+                        iReceiver.onReceiverMsg(msg.getMsgContent());
                     }
                 } else if (msg.getMsgType() == WebSocketChatMsg.MSG_TYPE_CMD) {
                     if (msg.getMsgContent().equals("cm_pull_files")) {

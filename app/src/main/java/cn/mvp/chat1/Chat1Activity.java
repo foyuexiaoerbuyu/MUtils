@@ -3,7 +3,6 @@ package cn.mvp.chat1;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
-import com.king.zxing.Intents;
 import com.tencent.mmkv.MMKV;
 
 import java.net.ConnectException;
@@ -85,7 +83,6 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
             connService(inputStr);
         });
-        inputAlertDialog.setInputType(InputType.TYPE_CLASS_NUMBER);
         inputAlertDialog.show();
 
         inputAlertDialog.showSoftKeyboard(str.indexOf(":"));
@@ -136,13 +133,13 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
 //        }
     }
 
-    private void connService(String host) {
-        Log.i("调试信息", "connService:  " + host);
-        if (StringUtil.isEmpty(host)) {
+    private void connService(String ip) {
+        Log.i("调试信息", "connService:  " + ip);
+        if (StringUtil.isEmpty(ip)) {
             ToastUtils.show("请在输入框输入服务器地址");
             return;
         }
-        ChatWebSocketClient.getInstance().connService(host, new ChatWebSocketClient.IReceiver() {
+        ChatWebSocketClient.getInstance().connService(ip, new ChatWebSocketClient.IReceiver() {
 
             @Override
             public void onOpen() {
@@ -155,7 +152,8 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onReceiverMsg(String msg) {
-                print(msg);
+                print("服务端消息: " + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
+                        "\n   " + msg + "\n");
             }
 
             @Override
@@ -186,11 +184,11 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constant.REQUEST_CODE_SCAN_QRCODE && data != null) {
-            String result = data.getStringExtra(Intents.Scan.RESULT);
-            Log.i("调试信息", "onActivityResult: " + result);
-            editText.setText(result);
-            ToastUtils.show("result: " + result);
-            connService(result);
+//            String result = data.getStringExtra(Intents.Scan.RESULT);
+//            Log.i("调试信息", "onActivityResult: " + result);
+//            editText.setText(result);
+//            ToastUtils.show("result: " + result);
+//            connService(result);
         }
     }
 }
