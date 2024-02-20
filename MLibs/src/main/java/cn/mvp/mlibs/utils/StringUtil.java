@@ -502,7 +502,13 @@ public class StringUtil {
         return str.substring(0, index);
     }
 
-//---------------------------Android独有 start----------------------------------------
+    /** 是否纯数字 */
+    public static boolean isNumeric(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return false;
+        }
+        return str.matches("\\d+"); // 使用正则表达式匹配纯数字
+    }
 
     public interface IReadLin {
         void readLin(String lin);
@@ -515,6 +521,9 @@ public class StringUtil {
 
         }
     }
+
+
+//---------------------------Android独有 start----------------------------------------
 //---------------------------Android独有 end----------------------------------------
 
 }
