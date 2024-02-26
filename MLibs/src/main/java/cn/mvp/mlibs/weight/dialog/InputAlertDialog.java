@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import cn.mvp.mlibs.R;
-import cn.mvp.mlibs.utils.UIUtils;
 
 /**
  * Created by AaronPasi on 2017/9/16.
@@ -77,7 +76,7 @@ public class InputAlertDialog extends AlertDialog {
 
     @Override
     public void setTitle(int titleId) {
-        mTitle = UIUtils.getString(titleId);
+        mTitle = mContext.getResources().getString(titleId);
     }
 
     @Override

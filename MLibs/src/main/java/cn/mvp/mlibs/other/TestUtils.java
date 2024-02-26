@@ -415,7 +415,7 @@ public class TestUtils {
         return val1;
     }
 
-    public static ArrayList<DataTestUser> getDataUsers(int size) {
+    public static ArrayList<DataTestUser> getDataTestUsers(int size) {
         ArrayList<DataTestUser> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             list.add(new DataTestUser(

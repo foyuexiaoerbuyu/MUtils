@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import cn.mvp.mlibs.R;
-import cn.mvp.mlibs.utils.UIUtils;
 
 /**
  * Created by AaronPasi on 2017/9/16.
@@ -60,7 +59,7 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
 
     @Override
     public void setTitle(int titleId) {
-        setTitleStr(UIUtils.getString(titleId));
+        mTitle = mContext.getResources().getString(titleId);
     }
 
     private void setTitleStr(String title) {
