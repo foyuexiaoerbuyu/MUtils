@@ -16,22 +16,22 @@ public class ClickTimesUtil {
 
 
     /***
-     * 规定时间内连续点多次(类似开发者模式)
+     * 规定时间内连续点多次(类似开发者模式) 快速连续点击
      *
      * @param view        要设置点击效果的View
      * @param timeBetween 规定时间内(点击完成规定次数的时间范围)
-     * @param times       点击的次数
+     * @param clickNum    连续点击的次数
      */
-    public static void setClickForTimes(View view, final long timeBetween, final int times, final IClick click) {
-        final long[] mHits = new long[times];//存储多次点击的时间戳
+    public static void setClickForTimes(View view, final long timeBetween, final int clickNum, final IClick click) {
+        final long[] mHits = new long[clickNum];//存储多次点击的时间戳
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.arraycopy(mHits, 1, mHits, 0, times - 1);//自己拷贝自己，只不过错位拷贝【第二个元素拷贝到第一个元素，第一个元素拷贝到第零个元素】
-                mHits[times - 1] = SystemClock.uptimeMillis();//给数组的最后一个元素赋值
+                System.arraycopy(mHits, 1, mHits, 0, clickNum - 1);//自己拷贝自己，只不过错位拷贝【第二个元素拷贝到第一个元素，第一个元素拷贝到第零个元素】
+                mHits[clickNum - 1] = SystemClock.uptimeMillis();//给数组的最后一个元素赋值
 
-                if (mHits[times - 1] - mHits[0] <= timeBetween) {//当第mHits[lengt-1]点击的时间戳减去mHits[0]的时间戳小于指定时间则该多击事件生效
-                    Log.e("TAG", timeBetween + "毫秒内点击" + times + "次");
+                if (mHits[clickNum - 1] - mHits[0] <= timeBetween) {//当第mHits[lengt-1]点击的时间戳减去mHits[0]的时间戳小于指定时间则该多击事件生效
+                    Log.e("TAG", timeBetween + "毫秒内点击" + clickNum + "次");
                     Arrays.fill(mHits, 0);   //数据全部置零
 
                     if (click != null) {
