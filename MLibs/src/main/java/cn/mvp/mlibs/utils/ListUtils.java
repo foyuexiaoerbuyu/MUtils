@@ -20,6 +20,22 @@ public class ListUtils {
         boolean matches(T item);
     }
 
+
+    /** 过滤元素 */
+    public static <T> List<T> filterElements(List<T> list, Condition<T> iRemove) {
+        if (list == null || list.size() == 0) return null;
+        Iterator<T> iterator = list.iterator();
+        ArrayList<T> newlist = new ArrayList<>();
+        while (iterator.hasNext()) {
+            T current = iterator.next();
+            if (iRemove.matches(current)) {
+                // 使用迭代器的remove方法安全地删除元素
+                newlist.add(current);
+            }
+        }
+        return newlist;
+    }
+
     /**
      * @param array 传一个空数组就行
      */

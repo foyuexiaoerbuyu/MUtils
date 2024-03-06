@@ -19,10 +19,10 @@ public class ClickTimesUtil {
      * 规定时间内连续点多次(类似开发者模式) 快速连续点击
      *
      * @param view        要设置点击效果的View
-     * @param timeBetween 规定时间内(点击完成规定次数的时间范围)
+     * @param timeBetween 规定时间内(点击完成规定次数的时间范围) 单位毫秒
      * @param clickNum    连续点击的次数
      */
-    public static void setClickForTimes(View view, final long timeBetween, final int clickNum, final IClick click) {
+    public static void setClickForTimes(View view, final long timeBetween, final int clickNum, final IClickListen iClickListen) {
         final long[] mHits = new long[clickNum];//存储多次点击的时间戳
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,8 +34,8 @@ public class ClickTimesUtil {
                     Log.e("TAG", timeBetween + "毫秒内点击" + clickNum + "次");
                     Arrays.fill(mHits, 0);   //数据全部置零
 
-                    if (click != null) {
-                        click.onClickListen();    //设置事件的回调
+                    if (iClickListen != null) {
+                        iClickListen.onClickListen();    //设置事件的回调
                     }
 
 
@@ -45,7 +45,7 @@ public class ClickTimesUtil {
         });
     }
 
-    interface IClick {
+    public interface IClickListen {
         void onClickListen();
     }
 
