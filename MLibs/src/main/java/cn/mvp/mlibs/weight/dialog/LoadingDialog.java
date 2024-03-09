@@ -16,6 +16,7 @@ public class LoadingDialog {
     private DialogInterface.OnCancelListener mCancelListener;
     private DialogInterface.OnDismissListener mDismissListener;
     private DialogInterface.OnKeyListener mKeyListener;
+    private TextView mMsgTv;
 
 
     public void showProgress(Context context, boolean isCancelable, String msg) {
@@ -30,13 +31,13 @@ public class LoadingDialog {
                     window.setBackgroundDrawableResource(android.R.color.transparent);
                 // 设置自己编写的布局文件，即刚才有 ProgressBar 和 TextView 的那个布局文件
                 mDialog.setContentView(R.layout.loading_dialog_progress);
-                ((TextView) mDialog.findViewById(R.id.loading_dialog_progress_msg)).setText(msg);
+                mMsgTv = mDialog.findViewById(R.id.loading_dialog_progress_msg);
+                mMsgTv.setText(msg);
                 // 设置不可点击或点按返回键取消对话框，这样相当于禁止了用户与界面的交互
                 // 实际情况根据需求而定
                 mDialog.setCancelable(isCancelable);
 //        sDialog.setCanceledOnTouchOutside(false);
             }
-            ;
             mDialog.show();
         });
     }
@@ -51,10 +52,6 @@ public class LoadingDialog {
 
     public void dismissProgress() {
         if (mDialog.isShowing()) mDialog.dismiss();
-    }
-
-    private void init(Context context, boolean isCancelable, String msg) {
-
     }
 
     public void setOnCancelListener(DialogInterface.OnCancelListener listener) {
@@ -78,4 +75,9 @@ public class LoadingDialog {
         }
     }
 
+    public void updateMsg(String msg) {
+        mHandler.post(() -> {
+            if (mMsgTv != null) mMsgTv.setText(msg);
+        });
+    }
 }
