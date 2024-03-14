@@ -10,6 +10,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -520,6 +522,41 @@ public class StringUtil {
         default void end() {
 
         }
+    }
+
+    /** 匹配字符串中的url */
+    public static String matchLink(String str, String def) {
+        Pattern pattern = Pattern.compile("(?i)\\b((?:https?|ftp)://|www\\.)[-a-z0-9+&@#/%?=~_|!:,.;]*[-a-z0-9+&@#/%=~_|]");
+        Matcher matcher = pattern.matcher(str);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return def;
+    }
+
+    /**
+     * 批量 匹配字符串中的url
+     * List<Share> allItems = shareService.getAllItems();
+     * <p>
+     * StringUtil.extractURLs(allItems, Share::getContent, url -> {
+     * System.out.println("URL matched: " + url);
+     * });
+     */
+    public static <T> void matchLink(List<T> dataList, Function<T, String> getContentFn, URLMatchCallback callback) {
+        for (T data : dataList) {
+            String content = getContentFn.apply(data);
+            Pattern pattern = Pattern.compile("(?i)\\b((?:https?|ftp)://|www\\.)[-a-z0-9+&@#/%?=~_|!:,.;]*[-a-z0-9+&@#/%=~_|]");
+            Matcher matcher = pattern.matcher(content);
+
+            while (matcher.find()) {
+                String url = matcher.group();
+                callback.onURLMatched(url);
+            }
+        }
+    }
+
+    public interface URLMatchCallback {
+        void onURLMatched(String url);
     }
 
 
