@@ -17,6 +17,13 @@ public class GsonUtil {
         return new Gson().fromJson(json, clazz);
     }
 
+    /**
+     * GsonUtil.fromJsonToList(json, Pos.class);
+     *
+     * @param json         列表字符串
+     * @param elementClass 目标对象.class
+     * @return List<目标对象.class>
+     */
     public synchronized static <T> List<T> fromJsonToList(String json, Class<T> elementClass) {
         Type listType = TypeToken.getParameterized(List.class, elementClass).getType();
         return new Gson().fromJson(json, listType);
