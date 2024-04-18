@@ -32,7 +32,6 @@ import java.text.DecimalFormat;
 
 import cn.mvp.mlibs.log.XLogUtil;
 import cn.mvp.mlibs.utils.ents.FileInfos;
-import kotlin.Deprecated;
 
 /**
  * @author： wlj
@@ -888,9 +887,9 @@ public class FileUtils {
     }
 
     /**
+     * 不推荐使用  推荐使用 insertAtBeginning 方法
      * 插入文件第一行 推荐使用 insertAtBeginning
      */
-    @Deprecated(message = "推荐使用 insertAtBeginning 方法")
     public static void writeFileToFirstLine(String filePath, String content) {
         File file = new File(filePath);
         RandomAccessFile accessFile = null;

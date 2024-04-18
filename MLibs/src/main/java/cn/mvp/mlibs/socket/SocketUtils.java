@@ -131,11 +131,11 @@ public class SocketUtils {
     }
 
     /**
+     * 不推荐使用
      * 发送原始字符串数据给服务端(标记过期只是标识一下)
      *
      * @param str 客户端发消息给服务端(原始数据)
      */
-    @Deprecated
     private void sendMsgToServicePrimitive(String str) {
         try {
             BufferedWriter clientWriter = new BufferedWriter(new OutputStreamWriter(mClientSocket.getOutputStream()));
@@ -149,11 +149,11 @@ public class SocketUtils {
     }
 
     /**
+     * 不推荐使用
      * 发送原始字符串数据给客户端(标记过期只是标识一下)
      *
      * @param str 服务端发消息给客户端
      */
-    @Deprecated
     private void sendMsgToClientPrimitive(String str) {
         try {
             BufferedWriter serviceWriter = new BufferedWriter(new OutputStreamWriter(mServiceSocket.getOutputStream()));

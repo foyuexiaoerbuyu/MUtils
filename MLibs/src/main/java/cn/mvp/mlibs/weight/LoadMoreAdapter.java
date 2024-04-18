@@ -40,9 +40,8 @@ public class LoadMoreAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     /**
-     * 逐步废弃
+     * 逐步废弃  不推荐使用 不推荐使用 不推荐使用 不推荐使用
      */
-    @Deprecated
     public LoadMoreAdapter(int itemView, List<T> dataList, BindViewByData<T> bindViewByData) {
         mItemView = itemView;
         mDataList = dataList;

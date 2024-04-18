@@ -89,7 +89,6 @@ public class SDCardUtils {
      *
      * @return /storage/sdcard0/Android/data/package/files
      */
-    @Deprecated
     public static File getExternalFilesDir(Context context, String directoryType) {
         return context.getExternalFilesDir(directoryType);
     }
@@ -100,7 +99,6 @@ public class SDCardUtils {
      *
      * @return /storage/sdcard0
      */
-    @Deprecated
     public static File getExternalPublicStorageDirectory() {
         return Environment.getExternalStorageDirectory();
     }
@@ -117,7 +115,6 @@ public class SDCardUtils {
      * Environment.DIRECTORY_PODCASTS 	/storage/sdcard0/Podcasts
      * Environment.DIRECTORY_RINGTONES 	/storage/sdcard0/Ringtones
      */
-    @Deprecated
     public static File getExternalStoragePublicDirectory(String Environment_DIRECTORY) {
         return Environment.getExternalStoragePublicDirectory(Environment_DIRECTORY);
     }
