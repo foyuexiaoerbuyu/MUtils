@@ -57,9 +57,11 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
     }
 
     public static class Builder {
-        private Context context;
+        private final Context context;
         private String title;
         private String content;
+        private String okBtnName;
+        private String cancelBtnName;
         private OnOkClickListener onOkClickListener;
         private OnCancelClickListener onCancelClickListener;
         private boolean cancelable;
@@ -105,6 +107,18 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
             return this;
         }
 
+        public Builder setOnOkClickListener(String okBtnName, OnOkClickListener onOkClickListener) {
+            this.onOkClickListener = onOkClickListener;
+            this.okBtnName = okBtnName;
+            return this;
+        }
+
+        public Builder setOnCancelClickListener(String cancelBtnName, OnCancelClickListener onCancelClickListener) {
+            this.onCancelClickListener = onCancelClickListener;
+            this.cancelBtnName = cancelBtnName;
+            return this;
+        }
+
         public MsgAlertDialog build() {
             MsgAlertDialog dialog = new MsgAlertDialog(context);
             dialog.mTitle = this.title;
@@ -112,6 +126,15 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
             dialog.mOnOkClickListener = this.onOkClickListener;
             dialog.mOnCancelClickListener = this.onCancelClickListener;
             dialog.setCancelable(cancelable);
+
+            if (okBtnName != null) {
+                dialog.mBtnOk.setText(okBtnName);
+            }
+
+            if (cancelBtnName != null) {
+                dialog.mBtnCancel.setText(cancelBtnName);
+            }
+
             dialog.mBtnOk.setVisibility(isBtnOk ? View.VISIBLE : View.GONE);
             dialog.mBtnCancel.setVisibility(isBtnCancel ? View.VISIBLE : View.GONE);
             return dialog;

@@ -185,7 +185,7 @@ public class StringUtil {
     /**
      * 检查是不是null  是不是空串  是不是"null"
      *
-     * @param checkStr
+     * @param checkStr .
      * @return 非null "null" 值
      */
     public static boolean checkStringIsNull(String checkStr) {
