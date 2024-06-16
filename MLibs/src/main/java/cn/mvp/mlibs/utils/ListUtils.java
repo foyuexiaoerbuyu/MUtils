@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 public class ListUtils {
     public static <T> void removeItems(List<T> list, Condition<T> condition) {
@@ -82,5 +83,27 @@ public class ListUtils {
     public static <T> boolean isNotEmpty(List<T> list) {
         return !isEmpty(list);
     }
+
+
+    /**分组*/
+    public static <T> List<List<T>> partitionList(List<T> list, int groupSize) {
+        List<List<T>> partitions = new ArrayList<>();
+        for (int i = 0; i < list.size(); i += groupSize) {
+            int end = Math.min(list.size(), i + groupSize);
+            partitions.add(new ArrayList<>(list.subList(i, end)));
+        }
+        return partitions;
+    }
+
+    /**随机获取一个元素*/
+    public static <T> T pickRandomElement(List<T> list) {
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+        Random random = new Random();
+        int randomIndex = random.nextInt(list.size());
+        return list.get(randomIndex);
+    }
+
 
 }
