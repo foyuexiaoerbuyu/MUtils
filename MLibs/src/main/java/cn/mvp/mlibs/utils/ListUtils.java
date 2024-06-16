@@ -56,7 +56,7 @@ public class ListUtils {
             list.addAll(defaultValue);
             return list;
         }
-        return defaultValue == null ? new ArrayList<>() : defaultValue;
+        return defaultValue == null ? new ArrayList<T>() : defaultValue;
     }
 
     public static <T> List<T> getList(List<T> list, T defaultValue) {
