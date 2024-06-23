@@ -49,7 +49,6 @@ public class XLog {
      *
      * @param msg 错误信息
      */
-    @Deprecated
     public static void showLogInfo(Object msg) {
         if (isConsoleLog) {
             showLogs("", isEmpty(msg));

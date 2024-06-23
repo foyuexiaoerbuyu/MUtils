@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,7 +19,6 @@ import androidx.appcompat.app.AlertDialog;
 import com.google.gson.Gson;
 import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
-import com.king.zxing.Intents;
 import com.king.zxing.util.CodeUtils;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
@@ -43,11 +43,10 @@ import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DeviceUtils;
 import cn.mvp.mlibs.utils.FileUtils;
 import cn.mvp.mlibs.utils.GsonUtil;
-import cn.mvp.mlibs.utils.IntentUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
+import cn.mvp.mlibs.utils.OkHttpUtil;
 import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.StringUtil;
-import cn.mvp.mlibs.utils.VerifyUtils;
 import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
 import cn.mvp.utils.SpUtils;
 
@@ -105,6 +104,7 @@ public class MainActivity extends BaseActivity {
             mTv.setText(content);
         });
         mTv = findViewById(R.id.main_tv);
+        EditText editText = findViewById(R.id.edt1);
         mTv.setOnClickListener(v -> {
             ClipboardUtils.copyText(MainActivity.this, mTv.getText());
             toast("已复制内容");
@@ -116,11 +116,10 @@ public class MainActivity extends BaseActivity {
         Button connBtn = findViewById(R.id.main_btn_conn_service);
         connBtn.setOnClickListener(v -> {
             String[] items = SpUtils.getCfgInfo().getConnectIpsArr();
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setItems(items, (dialogInterface, pos) -> {
-                        toast("开始连接：" + items[pos]);
-                        connService(items[pos]);
-                    }).create();
+            AlertDialog dialog = new AlertDialog.Builder(this).setItems(items, (dialogInterface, pos) -> {
+                toast("开始连接：" + items[pos]);
+                connService(items[pos]);
+            }).create();
             dialog.show();
             ListView listView = dialog.getListView();
             if (listView != null) {
@@ -138,33 +137,50 @@ public class MainActivity extends BaseActivity {
         findViewById(R.id.main_btn_base_info).setOnClickListener(v -> {
             mTv.setText(DeviceUtils.getDeviceInfo());//获取手机基本信息
         });
-        findViewById(R.id.main_btn_base_tv_test).setOnClickListener(v -> {
-//            TestActivity.open(MainActivity.this);//测试按钮
-//            FloatingBtnForActy dragViewLayout = new FloatingBtnForActy(this, R.mipmap.ic_launcher);
-//            dragViewLayout.show(this);
-//            floatView.setOnClickListener(v1 -> Log.i("调试信息", "onClick:  "));
+        findViewById(R.id.main_btn_base_tv_tools).setOnClickListener(v -> {
+            final String[] items3 = new String[]{"上传剪贴板文件"};
+            new AlertDialog.Builder(this).setTitle("选择工具").setItems(items3, (dialogInterface, pos) -> {
+                if (pos == 0) {
+                    new Thread(() -> {
+                        String url = "http://192.144.219.245:8088/shareFile/upload";
+                        String filePath = SDCardUtils.getInternalCacheDir(MainActivity.this) + "/tmp_剪贴板文件.txt";
+                        String text = ClipboardUtils.getText(MainActivity.this);
+                        Log.i("调试信息", filePath + "\n" + text);
+                        FileUtils.writeFile(filePath, text);
+                        OkHttpUtil.UploadFile file = new OkHttpUtil.UploadFile(filePath);
+                        try {
+                            String s = OkHttpUtil.uploadFile(url, file, null);
+                            Log.i("调试信息", "s = " + s);
+                            ToastUtils.show(s);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            ToastUtils.show(e.getMessage());
+                            Log.e("调试信息", "上传失败!!!", e);
+                        }
+                    }).start();
+                } else if (pos == 1) {
+                }
+            }).create().show();
         });
 
         findViewById(R.id.main_btn_test_page).setOnClickListener(v -> {
             final String[] items3 = new String[]{"支付宝花呗", "剩余电量"};
-            new AlertDialog.Builder(this)
-                    .setTitle("选择跳转页面")
-                    .setItems(items3, (dialogInterface, pos) -> {
-                        if (pos == 0) {
-                            ZfbActivity.open(MainActivity.this);
-                        } else if (pos == 1) {
-                            ElectricQuantityActivity.open(MainActivity.this);
-                        }
-                    }).create().show();
+            new AlertDialog.Builder(this).setTitle("选择跳转页面").setItems(items3, (dialogInterface, pos) -> {
+                if (pos == 0) {
+                    ZfbActivity.open(MainActivity.this);
+                } else if (pos == 1) {
+                    ElectricQuantityActivity.open(MainActivity.this);
+                }
+            }).create().show();
         });
         findViewById(R.id.main_btn_camera).setOnClickListener(v -> {
             takePicture();
         });
         findViewById(R.id.btn1).setOnClickListener(v -> {
             // TODO: 2023/9/12 按钮1
-//            String host = "192.168.10.9";
-//            List<String> ips = Arrays.asList("192.168.10.9:9090", "192.168.10.9:9090");
+
         });
+
 
         findViewById(R.id.btn2).setOnClickListener(v -> {
             // TODO: 2023/9/12 按钮2
@@ -177,6 +193,7 @@ public class MainActivity extends BaseActivity {
             connService(cfgInfo.getLastConnIp());
         }
         initPermissions();
+//        TestActivity1.open(this);
     }
 
     private void initPermissions() {
@@ -212,7 +229,7 @@ public class MainActivity extends BaseActivity {
             }
         }
         if (requestCode == Constant.REQUEST_CODE_SCAN_QRCODE) {
-            try {
+            /*try {
                 VerifyUtils.checkTrue(StringUtil.isBlank(data), "二维码数据为空");
                 String result = data.getStringExtra(Intents.Scan.RESULT);
                 ClipboardUtils.copyToClipboard(MainActivity.this, result);
@@ -226,7 +243,7 @@ public class MainActivity extends BaseActivity {
                 }
             } catch (IOException e) {
                 ToastUtils.show(e.getLocalizedMessage());
-            }
+            }*/
         }
     }
 
@@ -301,25 +318,24 @@ public class MainActivity extends BaseActivity {
 
 
     private void takePicture() {
-        PictureSelector.create(MainActivity.this).openCamera(SelectMimeType.ofImage())
-                .forResult(new OnResultCallbackListener<LocalMedia>() {
-                    @Override
-                    public void onResult(ArrayList<LocalMedia> result) {
-                        for (LocalMedia localMedia : result) {
-                            try {
-                                FileUtils.moveFile(localMedia.getRealPath(), SDCardUtils.getPublicDownDir() + "." + FileUtils.getFileName(localMedia.getRealPath()));
-                            } catch (FileNotFoundException e) {
-                                Log.e("调试信息", "onR1esult:  --", e);
-                            }
-                        }
-                        Log.i("调试信息", "onResult:  " + GsonUtil.toJson(result));
+        PictureSelector.create(MainActivity.this).openCamera(SelectMimeType.ofImage()).forResult(new OnResultCallbackListener<LocalMedia>() {
+            @Override
+            public void onResult(ArrayList<LocalMedia> result) {
+                for (LocalMedia localMedia : result) {
+                    try {
+                        FileUtils.moveFile(localMedia.getRealPath(), SDCardUtils.getPublicDownDir() + "." + FileUtils.getFileName(localMedia.getRealPath()));
+                    } catch (FileNotFoundException e) {
+                        Log.e("调试信息", "onR1esult:  --", e);
                     }
+                }
+                Log.i("调试信息", "onResult:  " + GsonUtil.toJson(result));
+            }
 
-                    @Override
-                    public void onCancel() {
+            @Override
+            public void onCancel() {
 
-                    }
-                });
+            }
+        });
     }
 
     private void showIp() {
@@ -332,7 +348,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+//        ClipboardActivity.open(this);
+//        TestActivity1.open(this);
     }
 
     @Override

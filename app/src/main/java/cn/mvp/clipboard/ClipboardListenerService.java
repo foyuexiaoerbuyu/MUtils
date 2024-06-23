@@ -5,17 +5,23 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+
+import com.blankj.utilcode.util.LogUtils;
+
 import cn.mvp.R;
+import cn.mvp.chat1.ChatWebSocketClient;
+import cn.mvp.chat1.WebSocketChatMsg;
 import cn.mvp.mlibs.utils.ClipboardUtils;
 
 public class ClipboardListenerService extends Service {
@@ -37,6 +43,31 @@ public class ClipboardListenerService extends Service {
             }
         };
         clipboardManager.addPrimaryClipChangedListener(clipChangedListener);
+        new Thread(() -> ChatWebSocketClient.getInstance().connService("192.144.219.245:8885", new ChatWebSocketClient.IReceiver() {
+            @Override
+            public void onReceiverMsg(String msg) {
+                LogUtils.i("  msg = " + msg);
+//                ClipboardUtils.copyToClipboard(ClipboardListenerService.this, msg);
+                ClipboardManager mClipboardManager = (ClipboardManager) ClipboardListenerService.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                //‘Label’这是任意文字标签
+                mClipboardManager.setPrimaryClip(ClipData.newPlainText("Label", msg));
+            }
+
+            @Override
+            public void onErr(Exception e) {
+                Log.e("调试信息", "onErr:  ", e);
+            }
+
+            @Override
+            public void log(String log) {
+                LogUtils.i("  log = " + log);
+            }
+
+            @Override
+            public void progress(String msg, int currPrs, WebSocketChatMsg fileInfo) {
+
+            }
+        })).start();
     }
 
     @Override

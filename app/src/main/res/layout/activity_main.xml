@@ -60,10 +60,10 @@
                 android:text="获取手机基本信息" />
 
             <Button
-                android:id="@+id/main_btn_base_tv_test"
+                android:id="@+id/main_btn_base_tv_tools"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="测试按钮" />
+                android:text="一些工具" />
 
             <Button
                 android:id="@+id/main_btn_common_use"
