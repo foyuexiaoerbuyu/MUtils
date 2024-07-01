@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +128,30 @@ public class GsonUtil {
 
     public static JsonArray getJsonArray(String json, String key) {
         return fromJson(json).getAsJsonObject().get(key).getAsJsonArray();
+    }
+
+
+    public static <T> T fromJson(String json, Type type) {
+        return new Gson().fromJson(json, type);
+    }
+
+    public static <T> Type getTypeToken(Class<T> clazz) {
+        return new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[]{clazz};
+            }
+
+            @Override
+            public Type getRawType() {
+                return TypeToken.class;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
     }
 
 }
