@@ -71,6 +71,21 @@ public class CommUtils {
         }
     }
 
+
+    /**
+     * 获取剪贴板的文本
+     *
+     * @return 剪贴板的文本
+     */
+    public static String getText(Context context) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = clipboard.getPrimaryClip();
+        if (clip != null && clip.getItemCount() > 0) {
+            return String.valueOf(clip.getItemAt(0).coerceToText(context));
+        }
+        return null;
+    }
+
     public static void log(String msg) {
         if (msg.length() > 3000) {
             Log.d("调试信息", msg.substring(0, 3000));

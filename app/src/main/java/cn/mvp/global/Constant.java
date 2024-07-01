@@ -10,4 +10,5 @@ public class Constant {
     public static final String SP_KEY_WEBSOCKET_ADDRESS = "websocket_address";
     /*二维码快捷方式id*/
     public static final String SHORTCUT_ID_EWM = "1122";
+    public static final String WS_URL = "192.144.219.245:8088/websocket/";
 }

@@ -7,16 +7,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.google.gson.Gson;
 import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
 import com.king.zxing.util.CodeUtils;
@@ -25,20 +22,15 @@ import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import cn.mvp.acty.BaseActivity;
 import cn.mvp.acty.ElectricQuantityActivity;
 import cn.mvp.acty.zfb.ZfbActivity;
 import cn.mvp.chat1.Chat1Activity;
-import cn.mvp.global.CfgInfo;
 import cn.mvp.global.Constant;
-import cn.mvp.mlibs.socket.SocketUtils;
 import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DeviceUtils;
 import cn.mvp.mlibs.utils.FileUtils;
@@ -47,8 +39,6 @@ import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.OkHttpUtil;
 import cn.mvp.mlibs.utils.SDCardUtils;
 import cn.mvp.mlibs.utils.StringUtil;
-import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
-import cn.mvp.utils.SpUtils;
 
 public class MainActivity extends BaseActivity {
 
@@ -60,25 +50,6 @@ public class MainActivity extends BaseActivity {
         if (sharedText != null) {
             mTv.setText(sharedText);
         }
-    }
-
-    private void showConnServiceDialog() {
-        String str = StringUtil.defaultIfBlank(SpUtils.getCfgInfo().getLastConnIp(), NetworkUtils.getIpAddressByWifi(this) + ":8887");
-        InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
-        inputAlertDialog.setEditText(str);
-        inputAlertDialog.setCancelBtnClickDismiss(false);
-        inputAlertDialog.setCancelClick("端口", (editText, inputStr) -> {
-            if (inputStr.contains(":")) {
-                editText.setSelection(inputStr.indexOf(":") + 1, inputStr.length());
-            }
-        });
-        //            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
-        inputAlertDialog.setOkClick(this::connService);
-        inputAlertDialog.setInputType(InputType.TYPE_CLASS_TEXT);
-        inputAlertDialog.show();
-
-        inputAlertDialog.showSoftKeyboard(str.indexOf(":"));
-
     }
 
     @Override
@@ -115,24 +86,7 @@ public class MainActivity extends BaseActivity {
         });
         Button connBtn = findViewById(R.id.main_btn_conn_service);
         connBtn.setOnClickListener(v -> {
-            String[] items = SpUtils.getCfgInfo().getConnectIpsArr();
-            AlertDialog dialog = new AlertDialog.Builder(this).setItems(items, (dialogInterface, pos) -> {
-                toast("开始连接：" + items[pos]);
-                connService(items[pos]);
-            }).create();
-            dialog.show();
-            ListView listView = dialog.getListView();
-            if (listView != null) {
-                listView.setOnItemLongClickListener((parent, view, pos, id) -> {
-                    SpUtils.delIp(items[pos]);
-                    toast("删除成功");
-                    return true;
-                });
-            }
-        });
-        connBtn.setOnLongClickListener(v -> {
-            showConnServiceDialog();
-            return false;
+            ToastUtils.show("待实现功能...");
         });
         findViewById(R.id.main_btn_base_info).setOnClickListener(v -> {
             mTv.setText(DeviceUtils.getDeviceInfo());//获取手机基本信息
@@ -145,6 +99,10 @@ public class MainActivity extends BaseActivity {
                         String url = "http://192.144.219.245:8088/shareFile/upload";
                         String filePath = SDCardUtils.getInternalCacheDir(MainActivity.this) + "/tmp_剪贴板文件.txt";
                         String text = ClipboardUtils.getText(MainActivity.this);
+                        if (StringUtil.isBlank(text)) {
+                            ToastUtils.show("剪贴板内容为空");
+                            return;
+                        }
                         Log.i("调试信息", filePath + "\n" + text);
                         FileUtils.writeFile(filePath, text);
                         OkHttpUtil.UploadFile file = new OkHttpUtil.UploadFile(filePath);
@@ -188,10 +146,6 @@ public class MainActivity extends BaseActivity {
         });
 
         showIp();
-        CfgInfo cfgInfo = SpUtils.getCfgInfo();
-        if (cfgInfo.getLastConnIp() != null) {
-            connService(cfgInfo.getLastConnIp());
-        }
         initPermissions();
 //        TestActivity1.open(this);
     }
@@ -203,15 +157,6 @@ public class MainActivity extends BaseActivity {
             startActivityForResult(intent1, 2);
         }
     }
-
-    private SocketUtils socketUtils = new SocketUtils((e, errMsg) -> {
-        e.printStackTrace();
-        if (e instanceof ConnectException) {
-            ToastUtils.show("连接服务器异常...");
-            return;
-        }
-        ToastUtils.show(errMsg);
-    });
 
 
     // 带回授权结果
@@ -250,70 +195,6 @@ public class MainActivity extends BaseActivity {
 
     public void print(String msg) {
         mTv.setText(msg);
-    }
-
-    private void connService(String ip) {
-        String receiverPath = SDCardUtils.getExternalPublicStorageDirectory() + "/01tmp/";
-        socketUtils.connService(ip.split(":")[0], Integer.parseInt(ip.split(":")[1]), receiverPath, new SocketUtils.IReceiverMsg() {
-            @Override
-            public void connSuccess() {
-                SpUtils.saveNewIp(ip);
-                SpUtils.setLastConnIp(ip);
-            }
-
-            @Override
-            public void receiverMsg(String receiveMsg) {
-                Log.i("调试信息", "接收到服务端信息: " + receiveMsg);
-                if (receiveMsg.startsWith("cmd_setClipboardText_")) {
-                    //设置客户端剪切板
-                    ClipboardUtils.copyText(MainActivity.this, receiveMsg.replace("cmd_setClipboardText_", ""));
-                    ToastUtils.show("已复制剪贴板");
-                } else if (receiveMsg.startsWith("cmd_getClipboardText")) {
-                    //发送客户端剪切板给服务端
-                    socketUtils.sendMsgToService("cmd_setClipboardText_" + ClipboardUtils.getText(MainActivity.this));
-                    ToastUtils.show("已发送剪贴板");
-                } else if (receiveMsg.startsWith("cmd_pullFiles")) {
-                    //服务端希望拉取客户端文件数据
-                    String[] dirFiles = new File(receiverPath).list();
-                    if (receiveMsg.contains("_")) {
-                        String[] pullFiles = GsonUtil.fromJsonToStrArr(receiveMsg.replace("cmd_pullFiles_", "").trim());
-                        for (String pullFileName : pullFiles) {
-                            for (String fileName : dirFiles) {
-                                if (fileName.equals(pullFileName)) {
-                                    socketUtils.sendFileToService(receiverPath + fileName);
-                                }
-                            }
-                        }
-                        socketUtils.sendMsgToService("cmd_pullFiles_success");
-                        return;
-                    }
-                    for (String fileName : dirFiles) {
-                        socketUtils.sendFileToService(receiverPath + fileName);
-                    }
-                    socketUtils.sendMsgToService("cmd_pullFiles_success");
-                } else if (receiveMsg.startsWith("cmd_getFiles")) {
-                    //服务端希望获取客户端文件数据
-                    Log.i("调试信息", "receiverMsg:  " + receiverPath + " " + FileUtils.isFileExist(receiverPath) + " " + FileUtils.isFolderExist(receiverPath));
-                    String msg = "cmd_setFiles" + new Gson().toJson(new File(receiverPath).list());
-                    socketUtils.sendMsgToService(msg);
-                    Log.i("调试信息", "发送遍历到的文件夹列表:  " + msg);
-                } else if (receiveMsg.startsWith("cmd_delFiles")) {
-                    //服务端希望删除客户端文件数据
-                    String[] delFiles = GsonUtil.fromJsonToStrArr(receiveMsg.replace("cmd_delFiles", ""));
-                    Log.i("调试信息", "delFiles = " + Arrays.toString(delFiles));
-                    for (String file : delFiles) {
-                        Log.i("调试信息", "file = " + file);
-                        FileUtils.deleteFile(receiverPath + file);
-                    }
-                    socketUtils.sendMsgToService("cmd_delFiles_success");
-                }
-            }
-
-            @Override
-            public void log(int type, String msg) {
-                ToastUtils.show(msg);
-            }
-        });
     }
 
 

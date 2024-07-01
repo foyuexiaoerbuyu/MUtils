@@ -11,11 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.blankj.utilcode.util.DeviceUtils;
 import com.hjq.toast.ToastUtils;
 import com.king.zxing.CaptureActivity;
 import com.tencent.mmkv.MMKV;
-
-import java.net.ConnectException;
 
 import cn.mvp.R;
 import cn.mvp.global.Constant;
@@ -23,8 +22,6 @@ import cn.mvp.mlibs.utils.ClipboardUtils;
 import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.NetworkUtils;
 import cn.mvp.mlibs.utils.StringUtil;
-import cn.mvp.mlibs.utils.UIUtils;
-import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
 
 /**
  * https://blog.huangyuanlove.com/2017/12/25/Android%E4%B8%AD%E4%BD%BF%E7%94%A8WebSocket/
@@ -66,28 +63,28 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
         StringBuilder sb = new StringBuilder(NetworkUtils.getIpAddressByWifi(this) + ":8887");
         mDefConnIp = sb.replace(sb.lastIndexOf(".") + 1, sb.indexOf(":"), "").toString();
         Log.i("调试信息", "m12:  " + sb);
-        connService(sb.replace(sb.lastIndexOf(".") + 1, sb.indexOf(":"), num).toString());
+        connService(Constant.WS_URL + DeviceUtils.getManufacturer() + "_" + DeviceUtils.getModel());
     }
 
-    private void showConnServiceDialog(String str) {
-        InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
-        inputAlertDialog.setEditText(str);
-        inputAlertDialog.setCancelBtnClickDismiss(false);
-        inputAlertDialog.setCancelClick("端口", (editText, inputStr) -> {
-            if (inputStr.contains(":")) {
-                editText.setSelection(inputStr.indexOf(":") + 1, inputStr.length());
-            }
-        });
-
-        inputAlertDialog.setOkClick(inputStr -> {
-            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
-            connService(inputStr);
-        });
-        inputAlertDialog.show();
-
-        inputAlertDialog.showSoftKeyboard(str.indexOf(":"));
-
-    }
+//    private void showConnServiceDialog(String str) {
+//        InputAlertDialog inputAlertDialog = new InputAlertDialog(this);
+//        inputAlertDialog.setEditText(str);
+//        inputAlertDialog.setCancelBtnClickDismiss(false);
+//        inputAlertDialog.setCancelClick("端口", (editText, inputStr) -> {
+//            if (inputStr.contains(":")) {
+//                editText.setSelection(inputStr.indexOf(":") + 1, inputStr.length());
+//            }
+//        });
+//
+//        inputAlertDialog.setOkClick(inputStr -> {
+//            MMKV.defaultMMKV().encode("chat_ip", inputStr.substring(inputStr.lastIndexOf(".") + 1, inputStr.indexOf(":")));
+//            connService(inputStr);
+//        });
+//        inputAlertDialog.show();
+//
+//        inputAlertDialog.showSoftKeyboard(str.indexOf(":"));
+//
+//    }
 
     private void print(String contetn) {
         runOnUiThread(() -> showMessage.append(contetn));
@@ -100,13 +97,15 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
                 sendMsg(editText.getText().toString().trim());
                 break;
             case R.id.chat1_btn_conn:
-                showConnServiceDialog(mDefConnIp);
+                ToastUtils.show("待实现...");
+//                showConnServiceDialog(mDefConnIp);
                 break;
             case R.id.chat1_btn_qr_scan:
                 startActivityForResult(new Intent(this, CaptureActivity.class), Constant.REQUEST_CODE_SCAN_QRCODE);
                 break;
             case R.id.chat1_btn_reconnection:
-                ChatWebSocketClient.getInstance().reconnection();
+                ToastUtils.show("待实现...");
+//                ClipboardWebSocketClient.getInstance().reconnection();
                 break;
             default:
                 break;
@@ -118,7 +117,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             ToastUtils.show("消息不能为空");
             return;
         }
-        if (ChatWebSocketClient.getInstance().sendMsg(msg)) {
+        if (ClipboardWebSocketClient.getInstance().sendMsg(msg)) {
             showMessage.append("客户端消息：" + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) + "\n   " + msg + "\n");
             editText.setText("");
         }
@@ -127,10 +126,10 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
-//        if ( ChatWebSocketClient.getInstance().getWebSocketClient() != null) {
-//            //通常在1000到4999之间，不包括保留的代码
-//            ChatWebSocketClient.getInstance().getWebSocketClient().close(1002, "app断开连接服务");
-//        }
+        if (ClipboardWebSocketClient.getInstance().getWebSocketClient() != null) {
+            //通常在1000到4999之间，不包括保留的代码
+            ClipboardWebSocketClient.getInstance().getWebSocketClient().close(1002, "app断开连接服务");
+        }
     }
 
     private void connService(String ip) {
@@ -139,7 +138,7 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             ToastUtils.show("请在输入框输入服务器地址");
             return;
         }
-        ChatWebSocketClient.getInstance().connService(ip, new ChatWebSocketClient.IReceiver() {
+        ClipboardWebSocketClient.getInstance().connService(ip, new ClipboardWebSocketClient.IReceiver() {
 
             @Override
             public void onOpen() {
@@ -160,9 +159,9 @@ public class Chat1Activity extends AppCompatActivity implements View.OnClickList
             public void onErr(Exception e) {
                 e.printStackTrace();
                 print(e.getMessage());
-                if (e instanceof ConnectException) {
-                    UIUtils.runOnUIThread(() -> showConnServiceDialog(mDefConnIp));
-                }
+//                if (e instanceof ConnectException) {
+//                    UIUtils.runOnUIThread(() -> showConnServiceDialog(mDefConnIp));
+//                }
             }
 
             @Override
