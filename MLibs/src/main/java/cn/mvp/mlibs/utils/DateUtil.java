@@ -404,4 +404,40 @@ public class DateUtil {
         calendar.add(Calendar.DAY_OF_YEAR, 2);
         return isToday(calendar.getTime());
     }
+
+    /** 秒转分钟 */
+    public static String format(int ms) {
+        int s = ms / 1000; // 总秒数
+        int m = s / 60; // 分钟数
+        int ss = s % 60;// 除分钟数的秒数
+
+        String res;
+        if (m < 10)
+            res = "0" + m + ":";
+        else
+            res = m + ":";
+        if (ss < 10)
+            res += ("0" + ss);
+        else
+            res += ss;
+
+        return res;
+    }
+
+    private static long lastCallTime = 0;
+
+    /**
+     * 执行某个操作，并打印距离上次调用的耗时信息
+     */
+    public static void performOperation() {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - lastCallTime;
+        Log.i("打印耗时", "当前时间：" + getFormatter(REGEX_DATE_ISO_8601).format(new Date()));
+
+        if (lastCallTime != 0) {
+            Log.i("打印耗时", "距离上次调用耗时：" + elapsedTime + " 毫秒");
+        }
+        lastCallTime = System.currentTimeMillis();
+    }
+
 }
