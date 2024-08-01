@@ -4,7 +4,7 @@ plugins {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.github.dcendents.android-maven'//第一次编译可能需要注释这里,然后同步gradle才行
 group = 'com.github.foyuexiaoerbuyu'
 
 android {
@@ -103,24 +103,25 @@ artifacts {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'//暂时不要升级
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    implementation 'com.hjq:toast:8.0'
-    implementation 'org.apache.commons:commons-lang3:3.10'
-    implementation 'com.google.code.gson:gson:2.8.0'
+//    implementation 'com.hjq:toast:8.0'
+//    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'com.google.code.gson:gson:2.10.1'
 //    implementation 'com.android.support:recyclerview-v7:28.0.0'
 //    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
 //    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
-    implementation 'com.squareup.okio:okio:3.0.0-alpha.10'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okio:okio:3.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     /*下拉刷新,上拉加载*/
-    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
-    implementation 'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
-    implementation 'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
+//    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
+//    implementation 'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
+//    implementation 'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
 
 }

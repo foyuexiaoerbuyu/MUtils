@@ -3,15 +3,15 @@ package cn.mvp.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.hjq.toast.ToastUtils;
-import com.king.zxing.Intents;
 
 import java.io.IOException;
 
@@ -114,10 +114,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constant.REQUEST_CODE_SCAN_QRCODE && data != null) {
-            String result = data.getStringExtra(Intents.Scan.RESULT);
-            Log.i("调试信息", "onActivityResult:  " + "result = " + result);
-            initConnent(result);
-            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+//            String result = data.getStringExtra(Intents.Scan.RESULT);
+//            Log.i("调试信息", "onActivityResult:  " + "result = " + result);
+//            initConnent(result);
+//            Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         }
     }
 }

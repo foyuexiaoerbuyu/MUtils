@@ -12,9 +12,12 @@ import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +37,7 @@ import cn.mvp.mlibs.utils.SDCardUtils;
  * </dependency>
  */
 public class ChatWebSocketClient {
+    private static final int BUFFER_SIZE = 1024 * 1024; // 1 MB
     private static ChatWebSocketClient instance;
     private WebSocketClient webSocketClient;
     private IReceiver iReceiver;
@@ -53,10 +57,24 @@ public class ChatWebSocketClient {
         return instance;
     }
 
+    public WebSocketClient getWebSocketClient() {
+        return webSocketClient;
+    }
+
+    public void close() {
+        if (webSocketClient != null) {
+            webSocketClient.close();
+        }
+    }
+
+    /**
+     * @param ip        192.144.219.245:8885
+     * @param iReceiver 接收消息
+     */
     public void connService(String ip, IReceiver iReceiver) {
         close();
         this.iReceiver = iReceiver;
-        URI serverURI = URI.create("ws://" + ip);//"ws://172.31.254.234:8887"
+        URI serverURI = URI.create("ws://" + ip);//"ws://IP地址:端口号"
         Map<String, String> headers = new HashMap<>();
 
         headers.put("client_name", DeviceUtils.getDeviceModel() + "_" + DeviceUtils.getManufacturer());//连接名
@@ -75,9 +93,10 @@ public class ChatWebSocketClient {
 
             @Override
             public void onMessage(String message) {
+                Log.i("调试信息", "onMessage:  " + message);
                 // 接收到消息的处理逻辑
-                ChatMsg msg = GsonUtil.fromJson(message, ChatMsg.class);
-                if (msg.getMsgType() == msg.MSG_TYPE_MSG) {
+                WebSocketChatMsg msg = GsonUtil.fromJson(message, WebSocketChatMsg.class);
+                if (msg.getMsgType() == WebSocketChatMsg.MSG_TYPE_MSG) {
                     if (msg.getMsgContent().startsWith("cmd_clipboard_set")) {//pc给手机设置剪切板
                         ClipboardUtils.copyText(msg.getMsgContent().replace("cmd_clipboard_set", ""));
                         ToastUtils.show("已复制pc剪贴板");
@@ -85,9 +104,18 @@ public class ChatWebSocketClient {
                         sendMsg("cmd_clipboard_get" + ClipboardUtils.getText().toString());
                         ToastUtils.show("已设置pc剪贴板");
                     } else {
-                        String sb = "服务端消息: " + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL) +
-                                "\n   " + msg.getMsgContent() + "\n";
-                        iReceiver.onReceiverMsg(sb);
+                        Log.i("调试信息", "onMessage:  " + msg.getMsgContent());
+                        iReceiver.onReceiverMsg(msg.getMsgContent());
+                    }
+                } else if (msg.getMsgType() == WebSocketChatMsg.MSG_TYPE_CMD) {
+                    if (msg.getMsgContent().equals("cm_pull_files")) {
+                        String path = SDCardUtils.getExternalPublicStorageDirectory().getPath() + File.separator + "01tmp" + File.separator;
+                        FileUtils.readFileNames(path, (filePath, file) -> {
+                            // TODO: 2023/10/8 推文件到服务器
+                            Log.i("调试信息", "开始发送文件:  " + filePath);
+                            instance.sendFileToService(filePath);
+                            Log.i("调试信息", "发送文件完毕:  " + filePath);
+                        });
                     }
                 } else {
                     File directory = SDCardUtils.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
@@ -165,21 +193,9 @@ public class ChatWebSocketClient {
         webSocketClient.connect();
     }
 
-    public WebSocketClient getWebSocketClient() {
-        return webSocketClient;
-    }
-
-    public void close() {
-        if (webSocketClient != null) {
-            webSocketClient.close();
-        }
-    }
-
     public boolean sendMsg(String msg) {
         if (reconnection()) return false;
-
         webSocketClient.send(msg);
-
         return true;
     }
 
@@ -202,6 +218,34 @@ public class ChatWebSocketClient {
         return false;
     }
 
+    public boolean sendMsg(WebSocketChatMsg msg) {
+        if (reconnection()) return false;
+        webSocketClient.send(msg.toJson());
+        return true;
+    }
+
+    public void sendFileToService(String filePath) {
+        File file = new File(filePath);
+        String md5 = FileUtils.getFileMD5(file);
+        sendMsg("开始接收文件: " + file.getName());
+        try (FileInputStream fis = new FileInputStream(file)) {
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int bytesRead;
+
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                byte[] dataToSend = Arrays.copyOf(buffer, bytesRead);
+                WebSocketChatMsg fileMsg = new WebSocketChatMsg(file.getName(), md5, file.length(), dataToSend);
+                sendMsg(fileMsg);
+            }
+            sendMsg("接收完毕: " + file.getName());
+
+            System.out.println("File send: " + filePath);
+        } catch (IOException e) {
+            sendMsg("接收文件异常: " + e.getMessage());
+            System.err.println("Error sending file: " + e.getMessage());
+        }
+    }
+
     public interface IReceiver {
         default void onOpen() {
 
@@ -217,7 +261,7 @@ public class ChatWebSocketClient {
 
         void log(String log);
 
-        void progress(String msg, int currPrs, ChatMsg fileInfo);
+        void progress(String msg, int currPrs, WebSocketChatMsg fileInfo);
     }
 
 

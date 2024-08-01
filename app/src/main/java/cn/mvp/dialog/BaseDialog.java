@@ -9,16 +9,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import androidx.annotation.ColorRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatDialog;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.Gravity;
@@ -32,6 +22,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
+import androidx.appcompat.app.AppCompatDialog;
+import androidx.core.content.ContextCompat;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -209,9 +210,9 @@ public class BaseDialog extends AppCompatDialog implements
      * 设置一个显示监听器
      *
      * @param listener 显示监听器对象
+     *  不推荐使用 不推荐使用 不推荐使用
      * @deprecated 请使用 {@link #addOnShowListener(BaseDialog.OnShowListener)}}
      */
-    @Deprecated
     @Override
     public void setOnShowListener(@Nullable DialogInterface.OnShowListener listener) {
         if (listener == null) {
@@ -224,9 +225,9 @@ public class BaseDialog extends AppCompatDialog implements
      * 设置一个取消监听器
      *
      * @param listener 取消监听器对象
+     *  不推荐使用 不推荐使用 不推荐使用
      * @deprecated 请使用 {@link #addOnCancelListener(BaseDialog.OnCancelListener)}
      */
-    @Deprecated
     @Override
     public void setOnCancelListener(@Nullable DialogInterface.OnCancelListener listener) {
         if (listener == null) {
@@ -239,9 +240,9 @@ public class BaseDialog extends AppCompatDialog implements
      * 设置一个销毁监听器
      *
      * @param listener 销毁监听器对象
+     *  不推荐使用 不推荐使用 不推荐使用
      * @deprecated 请使用 {@link #addOnDismissListener(BaseDialog.OnDismissListener)}
      */
-    @Deprecated
     @Override
     public void setOnDismissListener(@Nullable DialogInterface.OnDismissListener listener) {
         if (listener == null) {
@@ -254,9 +255,9 @@ public class BaseDialog extends AppCompatDialog implements
      * 设置一个按键监听器
      *
      * @param listener 按键监听器对象
+     *  不推荐使用 不推荐使用 不推荐使用
      * @deprecated 请使用 {@link #setOnKeyListener(BaseDialog.OnKeyListener)}
      */
-    @Deprecated
     @Override
     public void setOnKeyListener(@Nullable DialogInterface.OnKeyListener listener) {
         super.setOnKeyListener(listener);

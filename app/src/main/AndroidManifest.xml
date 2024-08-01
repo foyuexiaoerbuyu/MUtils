@@ -44,6 +44,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_CLIPBOARD_FOR_INPUT" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission
+        android:name="android.permission.READ_CLIPBOARD_IN_BACKGROUND"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.READ_CLIPBOARD" />
 
     <application
         android:name=".global.MyApplication"
@@ -54,6 +58,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
+        <service
+            android:name=".test.MyForegroundService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".test.TestActivity1"
+            android:exported="false" />
         <activity
             android:name=".acty.ElectricQuantityActivity"
             android:exported="false" />

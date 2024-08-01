@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 /**
+ * 蓝牙工具类
  * https://juejin.cn/post/7195792730572259384
  */
 public class BluetoothUtil {

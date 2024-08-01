@@ -3,7 +3,7 @@ apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     buildToolsVersion "29.0.3"
 
     defaultConfig {
@@ -18,6 +18,8 @@ android {
             abiFilters 'armeabi-v7a'
         }
 //        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        Log.d("Tag", "Build time: " + BuildConfig.BUILD_TIME);
+        buildConfigField "String", "BUILD_TIME", "\"" + new Date().format("yyyy年MM月dd日 HH:mm:ss") + "\""
     }
 
     signingConfigs {
@@ -132,6 +134,8 @@ dependencies {
 
 //    implementation 'com.blankj:utilcode:1.30.7'
     implementation 'com.king.zxing:zxing-lite:1.1.9'
+    //AndroidX 版本
+//    implementation 'com.king.zxing:zxing-lite:2.0.2'
     //谷歌流布局
     implementation 'com.google.android:flexbox:2.0.1'
 
@@ -149,10 +153,13 @@ dependencies {
 
     implementation 'io.github.lucksiege:pictureselector:v3.11.1'
 
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 //    implementation 'com.github.liangjingkanji:BRV:1.4.3'
 //
 //    implementation 'io.github.scwang90:refresh-layout-kernel:2.0.6'      //核心必须依赖
 //    implementation 'io.github.scwang90:refresh-header-classics:2.0.6'    //经典刷新头
 //    implementation 'io.github.scwang90:refresh-footer-classics:2.0.6'    //经典加载
 
+//    implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
 }

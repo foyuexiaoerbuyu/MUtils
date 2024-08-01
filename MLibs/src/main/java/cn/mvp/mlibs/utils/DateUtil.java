@@ -357,4 +357,87 @@ public class DateUtil {
     public static String currentDate() {
         return formatCurrentDate(DateUtil.REGEX_DATE_TIME_MILL);
     }
+
+    /** 根据日期的相对关系（今天、昨天、前天）进行格式化。 */
+    public static String formatRelativeDate(String regex, long dateTime) {
+        Date date = new Date(dateTime);
+        if (isToday(date)) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return calendar.get(Calendar.AM_PM) == Calendar.AM ? "上午" : "下午";
+        } else if (isYesterday(date)) {
+            return "昨天";
+        } else if (isBeforeYesterday(date)) {
+            return "前天";
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat(regex, Locale.getDefault());
+            return formatter.format(date);
+        }
+    }
+
+    private static boolean isToday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        Calendar today = Calendar.getInstance();
+        today.setTime(new Date());
+        int todayYear = today.get(Calendar.YEAR);
+        int todayMonth = today.get(Calendar.MONTH);
+        int todayDay = today.get(Calendar.DAY_OF_MONTH);
+
+        return year == todayYear && month == todayMonth && day == todayDay;
+    }
+
+    private static boolean isYesterday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        return isToday(calendar.getTime());
+    }
+
+    private static boolean isBeforeYesterday(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, 2);
+        return isToday(calendar.getTime());
+    }
+
+    /** 秒转分钟 */
+    public static String format(int ms) {
+        int s = ms / 1000; // 总秒数
+        int m = s / 60; // 分钟数
+        int ss = s % 60;// 除分钟数的秒数
+
+        String res;
+        if (m < 10)
+            res = "0" + m + ":";
+        else
+            res = m + ":";
+        if (ss < 10)
+            res += ("0" + ss);
+        else
+            res += ss;
+
+        return res;
+    }
+
+    private static long lastCallTime = 0;
+
+    /**
+     * 执行某个操作，并打印距离上次调用的耗时信息
+     */
+    public static void performOperation() {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - lastCallTime;
+        Log.i("打印耗时", "当前时间：" + getFormatter(REGEX_DATE_ISO_8601).format(new Date()));
+
+        if (lastCallTime != 0) {
+            Log.i("打印耗时", "距离上次调用耗时：" + elapsedTime + " 毫秒");
+        }
+        lastCallTime = System.currentTimeMillis();
+    }
+
 }

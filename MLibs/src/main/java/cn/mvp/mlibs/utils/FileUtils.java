@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -31,7 +32,6 @@ import java.text.DecimalFormat;
 
 import cn.mvp.mlibs.log.XLogUtil;
 import cn.mvp.mlibs.utils.ents.FileInfos;
-import kotlin.Deprecated;
 
 /**
  * @author： wlj
@@ -431,6 +431,7 @@ public class FileUtils {
      * @return
      */
     public static boolean makeDirs(String filePath) {
+        filePath = filePath.replace("\\", File.separator).replace("/", File.separator);
         String folderName = getFolderName(filePath);
         if (TextUtils.isEmpty(folderName)) {
             return false;
@@ -465,6 +466,10 @@ public class FileUtils {
         }
         File dire = new File(directoryPath);
         return (dire.exists() && dire.isDirectory());
+    }
+
+    public static boolean isDirExist(String directoryPath) {
+        return isFolderExist(directoryPath);
     }
 
     /**
@@ -882,33 +887,33 @@ public class FileUtils {
     }
 
     /**
+     * 不推荐使用  推荐使用 insertAtBeginning 方法
      * 插入文件第一行 推荐使用 insertAtBeginning
      */
-    @Deprecated(message = "推荐使用 insertAtBeginning 方法")
     public static void writeFileToFirstLine(String filePath, String content) {
         File file = new File(filePath);
-        RandomAccessFile randomAccessFile = null;
+        RandomAccessFile accessFile = null;
         try {
             // 读取原始文件内容
             byte[] originalContent = new byte[(int) file.length()];
-            randomAccessFile = new RandomAccessFile(file, "rw");
-            randomAccessFile.readFully(originalContent);
+            accessFile = new RandomAccessFile(file, "rw");
+            accessFile.readFully(originalContent);
 
             // 将文件指针移到开头
-            randomAccessFile.seek(0);
+            accessFile.seek(0);
 
             // 写入新内容
-            randomAccessFile.write(content.getBytes());
+            accessFile.write(content.getBytes());
 
             // 写入原始内容
-            randomAccessFile.write(originalContent);
+            accessFile.write(originalContent);
 
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (randomAccessFile != null) {
+            if (accessFile != null) {
                 try {
-                    randomAccessFile.close();
+                    accessFile.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -968,4 +973,143 @@ public class FileUtils {
     interface IReadByte {
         void read(byte[] buffer);
     }
+
+    /**
+     * 递归读取文件路径
+     */
+    public static void readDirFiles(String path, ReadFileNames readLines) {
+        readFileNames(path, readLines);
+    }
+
+
+    /**
+     * 递归读取文件路径
+     */
+    public static void readFileNames(String path, ReadFileNames readLines) {
+        File file = new File(path);
+        if (file.exists() && file.isFile()) {
+            readLines.onReadLine(file.getPath(), file);
+        } else if (file.exists() && file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                readFileNames(files[i].getPath(), readLines);
+            }
+        }
+    }
+
+    public static void createFile(String filePath) {
+        // 创建文件对象
+        File file = new File(filePath);
+        if (file.exists()) {
+            return;
+        }
+        try {
+            // 获取文件所在目录
+            File parentDir = file.getParentFile();
+
+            if (!parentDir.exists()) {
+                // 如果父目录不存在，则创建父目录
+                boolean created = parentDir.mkdirs();
+                if (created) {
+                    System.out.println("父目录创建成功");
+                } else {
+                    System.out.println("父目录创建失败");
+                }
+            }
+
+            // 创建文件
+            boolean created = file.createNewFile();
+            if (created) {
+                System.out.println("文件创建成功");
+            } else {
+                System.out.println("文件创建失败");
+            }
+        } catch (IOException e) {
+            System.out.println("文件创建失败：" + e.getMessage());
+        }
+    }
+
+    public interface ReadFileNames {
+
+        void onReadLine(String filePath, File file);
+    }
+
+    /**
+     * 创建文件夹
+     *
+     * @param filePath 文件夹路径
+     * @return 创建文件夹是否成功
+     */
+    public static boolean createDir(String filePath) {
+        File dir = new File(filePath);
+        if (dir.exists()) {
+            System.out.println("创建目录" + filePath + " 失败，目标目录已经存在");
+            return false;
+        }
+        if (!filePath.endsWith(File.separator)) {
+            filePath = filePath + File.separator;
+        }
+        //创建目录
+        if (dir.mkdirs()) {
+            System.out.println("创建目录" + filePath + " 成功！");
+            return true;
+        } else {
+            System.out.println("创建目录" + filePath + " 失败！");
+            return false;
+        }
+    }
+
+    public static void readBigFile(String filePath, int bufSize, Callback callback) throws IOException {
+        readBigFile(filePath, "UTF-8", bufSize, callback);
+    }
+
+    /**
+     * 读取大文件并回调处理函数
+     *
+     * @param filePath    文件路径
+     * @param charsetName 字符编码
+     * @param bufSize     缓冲区大小，单位为字节
+     * @param callback    回调函数，每次读取到数据后会调用该函数进行处理
+     * @throws IOException 如果读取文件失败，则抛出IOException异常
+     */
+    public static void readBigFile(String filePath, String charsetName, int bufSize, Callback callback) throws IOException {
+        try (RandomAccessFile raf = new RandomAccessFile(filePath, "r")) {
+            byte[] buffer = new byte[bufSize];
+            int len;
+            while ((len = raf.read(buffer)) != -1) {
+                String data = new String(buffer, 0, len, Charset.forName(charsetName));
+                callback.onDataRead(data);
+            }
+        }
+    }
+
+    /**
+     * 读取指定位置和指定长度的内容，并通过回调函数处理读取到的数据
+     *
+     * @param filePath 文件路径
+     * @param position 读取的起始位置
+     * @param length   读取的长度
+     * @param callback 数据回调接口
+     */
+    public static void readBjgFile(String filePath, long position, int length, DataCallback callback) {
+        try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+            file.seek(position);
+            byte[] data = new byte[length];
+            int bytesRead = file.read(data);
+            if (bytesRead != -1) {
+                callback.onDataRead(data, new String(data, 0, bytesRead), bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface Callback {
+        void onDataRead(String data) throws IOException;
+    }
+
+    public interface DataCallback {
+        void onDataRead(byte[] data, String str, int bytesRead);
+    }
+
 }

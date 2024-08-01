@@ -17,6 +17,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 import cn.mvp.BuildConfig;
 import cn.mvp.mlibs.utils.DateUtil;
@@ -48,7 +52,6 @@ public class XLog {
      *
      * @param msg 错误信息
      */
-    @Deprecated
     public static void showLogInfo(Object msg) {
         if (isConsoleLog) {
             showLogs("", isEmpty(msg));
@@ -94,7 +97,7 @@ public class XLog {
      */
     public static void tipDialog(Context context, String msg) {
         if (isConsoleLog && BuildConfig.DEBUG) {
-            UIUtils.tipToast(msg);
+            UIUtils.tipToast(context, msg);
         }
     }
 
@@ -412,4 +415,38 @@ public class XLog {
         Log.i(TAG, getStackTraceStr() + TAG + msg);
     }
 
+    private static void isNull(Objects objects) {
+        Log.i("调试信息", "isNull:  " + objects);
+    }
+
+    private static String getScope() {
+        StackTraceElement trace = Thread.currentThread().getStackTrace()[4];
+        return "(" + trace.getFileName() + ":" + trace.getLineNumber() + ")#" + trace.getMethodName() + "   ";
+    }
+
+    private static long lastCallTime = 0;
+
+    /**
+     * 执行某个操作，并打印距离上次调用的耗时信息
+     */
+    public static void performOperation(String msg) {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - lastCallTime;
+        if (lastCallTime != 0) {
+            Log.i("打印耗时", getScope() + "  " + msg + " 距离上次调用耗时：" + elapsedTime + " 毫秒" + "  当前时间：" + new SimpleDateFormat("yyyy-MM-dd kk:mm:ss:SSS", Locale.getDefault()).format(new Date()));
+        }
+        lastCallTime = System.currentTimeMillis();
+    }
+
+    /**
+     * 执行某个操作，并打印距离上次调用的耗时信息
+     */
+    public static void performOperation() {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - lastCallTime;
+        if (lastCallTime != 0) {
+            Log.i("打印耗时", getScope() + " 距离上次调用耗时：" + elapsedTime + " 毫秒" + "  当前时间：" + new SimpleDateFormat("yyyy-MM-dd kk:mm:ss:SSS", Locale.getDefault()).format(new Date()));
+        }
+        lastCallTime = System.currentTimeMillis();
+    }
 }

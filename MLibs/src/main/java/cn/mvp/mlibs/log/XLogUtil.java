@@ -45,8 +45,8 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.other.ICallBack;
@@ -528,6 +528,13 @@ public class XLogUtil {
     }
 
     /**
+     * 打印步骤
+     */
+    public static void showStepLogInfo(String msg) {
+        android.util.Log.e(TAG + ":", getScope() + "  " + "步骤   " + stepNumber++ + "  " + msg);
+    }
+
+    /**
      * 打印错误信息
      */
     public static void showArgsInfo(Object... args) {
@@ -937,4 +944,9 @@ public class XLogUtil {
 //            printLongLog(TAG, message);
         }
     }
+
+    private static void isNull(Objects objects) {
+        Log.i("调试信息", "isNull:  " + objects);
+    }
+
 }

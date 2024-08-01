@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
@@ -114,8 +115,8 @@ public class SDCardUtils {
      * Environment.DIRECTORY_PODCASTS 	/storage/sdcard0/Podcasts
      * Environment.DIRECTORY_RINGTONES 	/storage/sdcard0/Ringtones
      */
-    public static File getExternalStoragePublicDirectory(String directoryType) {
-        return Environment.getExternalStoragePublicDirectory(directoryType);
+    public static File getExternalStoragePublicDirectory(String Environment_DIRECTORY) {
+        return Environment.getExternalStoragePublicDirectory(Environment_DIRECTORY);
     }
 
     /**
@@ -320,8 +321,11 @@ public class SDCardUtils {
 
     }
 
-    public static String getExPubDownDir() {
-        return getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + File.separator;
+    /**
+     * @return 公共下载路径
+     */
+    public static String getPublicDownDir() {
+        return getPublicDir(Environment.DIRECTORY_DOWNLOADS).getPath() + File.separator;
     }
 
     /**
@@ -367,5 +371,84 @@ public class SDCardUtils {
         file.createNewFile();
         file.wait();
     }
+
+
+    /**
+     * 获取SD卡的根目录
+     *
+     * @return /storage/emulated/0/
+     */
+    public static String getPublicDir() {
+        return Environment.getExternalStorageDirectory().getPath() + File.separator;
+    }
+
+    /**
+     * @return /storage/emulated/0/Download
+     */
+    public static File getPublicDir(String Environment_DIRECTORY) {
+        return Environment.getExternalStoragePublicDirectory(Environment_DIRECTORY);
+    }
+
+    /**
+     * @return /storage/emulated/0/Android/data/cn.mvp/files
+     */
+    public static File getInnerDir(Context context) {
+        return getInnerDir(context, "");
+    }
+
+
+    /**
+     * @return /storage/emulated/0/Android/data/cn.mvp/files/Download
+     */
+    public static File getInnerDir(Context context, String Environment_DIRECTORY) {
+        return context.getExternalFilesDir(Environment_DIRECTORY);
+    }
+
+    /**
+     * 获取应用的私有存储目录路径
+     *
+     * @return 应用的私有存储目录路径，类似 "/data/user/0/cn.mvp/app_/"
+     */
+    public static String getPrivateDir(Context context) {
+        return getPrivateDir(context, "");
+    }
+
+    /**
+     * 获取应用的私有存储目录路径
+     *
+     * @param context               Context 对象
+     * @param Environment_DIRECTORY 目录名称
+     * @return 应用的私有存储目录路径，类似 "/data/user/0/cn.mvp/app_Download/"
+     */
+    public static String getPrivateDir(Context context, String Environment_DIRECTORY) {
+        return context.getDir(Environment_DIRECTORY, Context.MODE_PRIVATE).getAbsolutePath() + File.separator;
+    }
+
+    /**
+     * Android13
+     * https://juejin.cn/post/7283152332622610492?utm_source=gold_browser_extension
+     * <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+     */
+    public static void openAllFileAccessPermissions(Context context, int requestCode) {
+        // 方案一：跳转到系统文件访问页面，手动赋予
+//        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+//        intent.setData(Uri.parse("package:" + context.getPackageName()));
+//        ((Activity)context).startActivityForResult(intent,requestCode);
+        // 方案二：跳转到系统所有需要文件访问页面，选择你的APP，手动赋予权限
+//        Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+//        context.startActivity(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // 先判断有没有权限
+            if (Environment.isExternalStorageManager()) {
+//                Toast.makeText(context, "Android R或以上版本，已授予MANAGE_EXTERNAL_STORAGE权限!", Toast.LENGTH_LONG).show();
+                return;
+            }
+//            Toast.makeText(context, "Android版本R或更高，不允许使用MANAGE_EXTERNAL_STORAGE,请授予权限!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+            intent.setData(Uri.parse("package:" + context.getPackageName()));
+            ((Activity) context).startActivityForResult(intent, requestCode);
+        }
+    }
+
 
 }

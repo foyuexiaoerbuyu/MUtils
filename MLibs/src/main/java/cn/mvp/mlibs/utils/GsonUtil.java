@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,24 @@ public class GsonUtil {
         return new Gson().fromJson(json, clazz);
     }
 
+    /**
+     * GsonUtil.fromJsonToList(json, Pos.class);
+     *
+     * @param json         列表字符串
+     * @param elementClass 目标对象.class
+     * @return List<目标对象.class>
+     */
     public synchronized static <T> List<T> fromJsonToList(String json, Class<T> elementClass) {
         Type listType = TypeToken.getParameterized(List.class, elementClass).getType();
         return new Gson().fromJson(json, listType);
+    }
+
+    public static <T> T[] fromJsonToArr(String json, Class<T> elementClass) {
+        return new Gson().fromJson(json, TypeToken.getArray(elementClass).getType());
+    }
+
+    public static String[] fromJsonToStrArr(String json) {
+        return new Gson().fromJson(json, TypeToken.getArray(String.class).getType());
     }
 
     public synchronized static <T> String toJson(T obj) {
@@ -48,7 +64,7 @@ public class GsonUtil {
     }
 
 
-    public static <T> Map<String, Object> toMap(Class<T> clazz, String key) {
+    public static <T> Map<String, Object> toMap(Class<T> clazz) {
         Type type = new TypeToken<Map<String, Object>>() {
         }.getType();
         Gson gson = new Gson();
@@ -86,15 +102,18 @@ public class GsonUtil {
     }
 
     public static void putJoStrToFile(String filePath, String joStr) {
+        if (FileUtils.isFileExist(filePath)) {
+            FileUtils.createDir(filePath);
+            FileUtils.createFile(filePath);
+        }
         FileUtils.writeFile(filePath, joStr);
     }
 
     public static <T> T getJoStrForFile(String filePath, Class<T> clazz) {
-        String content = null;
         try {
-            content = FileUtils.readFile(filePath, "utf-8");
-            return fromJson(content, clazz);
+            return fromJson(FileUtils.readFile(filePath, "utf-8"), clazz);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -109,6 +128,30 @@ public class GsonUtil {
 
     public static JsonArray getJsonArray(String json, String key) {
         return fromJson(json).getAsJsonObject().get(key).getAsJsonArray();
+    }
+
+
+    public static <T> T fromJson(String json, Type type) {
+        return new Gson().fromJson(json, type);
+    }
+
+    public static <T> Type getTypeToken(Class<T> clazz) {
+        return new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[]{clazz};
+            }
+
+            @Override
+            public Type getRawType() {
+                return TypeToken.class;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
     }
 
 }

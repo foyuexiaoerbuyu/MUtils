@@ -2,10 +2,6 @@ package cn.mvp.utils;
 
 import com.tencent.mmkv.MMKV;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
-
 import cn.mvp.global.CfgInfo;
 import cn.mvp.mlibs.utils.GsonUtil;
 
@@ -39,9 +35,33 @@ public class SpUtils {
      */
     public static CfgInfo getCfgInfo() {
         String str = getStr(SpUtils.KEY_CFG_CONFIG, null);
-        if (str == null) return null;
+        if (str == null) return new CfgInfo();
         return GsonUtil.fromJson(str, CfgInfo.class);
     }
 
+    /**
+     * @return 提示音效开关
+     */
+    private static void saveCfgInfo(CfgInfo cfgInfo) {
+        putStr(SpUtils.KEY_CFG_CONFIG, GsonUtil.toJson(cfgInfo));
+    }
 
+
+    public static void saveNewIp(String newIp) {
+        CfgInfo cfgInfo = getCfgInfo();
+        cfgInfo.addConnectIp(newIp);
+        saveCfgInfo(cfgInfo);
+    }
+
+    public static void setLastConnIp(String newIp) {
+        CfgInfo cfgInfo = getCfgInfo();
+        cfgInfo.setLastConnIp(newIp);
+        saveCfgInfo(cfgInfo);
+    }
+
+    public static void delIp(String ip) {
+        CfgInfo cfgInfo = getCfgInfo();
+        cfgInfo.getConnectIps().remove(ip);
+        saveCfgInfo(cfgInfo);
+    }
 }

@@ -18,6 +18,18 @@
             app:flexWrap="wrap">
 
             <Button
+                android:id="@+id/main_btn_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="局域网聊天" />
+
+            <Button
+                android:id="@+id/main_btn_conn_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="连接服务器" />
+
+            <Button
                 android:id="@+id/main_btn_qr_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,12 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="剪切板生成二维码" />
-
-            <Button
-                android:id="@+id/main_btn_chat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="局域网聊天" />
 
             <Button
                 android:id="@+id/main_btn_test_page"
@@ -54,10 +60,16 @@
                 android:text="获取手机基本信息" />
 
             <Button
-                android:id="@+id/main_btn_base_tv_test"
+                android:id="@+id/main_btn_base_tv_tools"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="测试按钮" />
+                android:text="一些工具" />
+
+            <Button
+                android:id="@+id/main_btn_common_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="常用信息" />
 
             <Button
                 android:id="@+id/main_btn_camera"

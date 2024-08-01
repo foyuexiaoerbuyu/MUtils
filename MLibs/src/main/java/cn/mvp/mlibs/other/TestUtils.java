@@ -1,11 +1,16 @@
 package cn.mvp.mlibs.other;
 
+import android.widget.EditText;
+
+import androidx.appcompat.app.AlertDialog;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import cn.mvp.mlibs.MLibs;
 import cn.mvp.mlibs.R;
 
 public class TestUtils {
@@ -410,7 +415,7 @@ public class TestUtils {
         return val1;
     }
 
-    public static ArrayList<DataTestUser> getDataUsers(int size) {
+    public static ArrayList<DataTestUser> getDataTestUsers(int size) {
         ArrayList<DataTestUser> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             list.add(new DataTestUser(
@@ -559,5 +564,112 @@ public class TestUtils {
         }
     }
 
+    /**
+     * 根据点击次数,依次输入既定内容
+     *
+     * @param editText 要点击的编辑框
+     * @param items    依次填充的编辑框内容
+     */
+    public static void inputForClick(EditText editText, String... items) {
+        if (!MLibs.isDebug()) return;
+        editText.setOnClickListener(v -> {
+            String trim = editText.getText().toString().trim();
+            for (int i = 0; i < items.length; i++) {
+                if (trim.equals(items[i])) {
+                    editText.setText(items[i == items.length - 1 ? 0 : i + 1]);
+                    break;
+                } else {
+                    editText.setText(items[0]);
+                }
+            }
+            editText.setSelection(editText.getText().toString().length());
+        });
+    }
+
+    private static int mInputForClick = -1;
+
+    /**
+     * 根据点击编辑框次数判断输入内容
+     *
+     * @param maxClickNum   最大点击数(超过或等于就开始循环),不包含这个数,比如最大时3 循环就是 0 1 2
+     * @param inputForClick 点击回调
+     */
+    public static void inputForClick(EditText editText, int maxClickNum, InputForClick inputForClick) {
+        if (!MLibs.isDebug()) return;
+        editText.setOnClickListener(v -> {
+            int clickNum = ++mInputForClick;
+            if (clickNum >= maxClickNum) {
+                mInputForClick = 0;
+            }
+            inputForClick.click(mInputForClick);
+        });
+    }
+
+    public interface InputForClick {
+        void click(int inputForClick);
+    }
+
+    /**
+     * 点击编辑框弹框输入
+     */
+    public void inputForDialog(EditText editText, String... items) {
+        if (!MLibs.isDebug()) return;
+        editText.setOnLongClickListener(v -> {
+            new AlertDialog.Builder(editText.getContext())
+                    .setItems(items, (dialogInterface, pos) -> {
+                        editText.setText(items[pos]);
+                        editText.setSelection(items[pos].length());
+                    }).create().show();
+            return false;
+        });
+    }
+
+    private static final String SPECIAL_CHARACTERS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String NUMBERS = "0123456789";
+    private static final String ALPHANUMERIC = ALPHABET + NUMBERS;
+    private static final String ALL_CHARACTERS = ALPHANUMERIC + SPECIAL_CHARACTERS;
+
+    /**
+     * @param length                   指定长度
+     * @param includeSpecialCharacters 是否包含特殊符号
+     * @return 随机指定长度的密码
+     */
+    public static String getRandomPassword(int length, boolean includeSpecialCharacters) {
+        StringBuilder sb = new StringBuilder(length);
+        String characterSet = includeSpecialCharacters ? ALL_CHARACTERS : ALPHANUMERIC;
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characterSet.length());
+            char randomChar = characterSet.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+        return sb.toString();
+    }
+
+
+    private static boolean testBool = false;
+    private static int accIndex = 0;
+
+    /**
+     * @return 取反
+     */
+    public static boolean getBoolan() {
+        return testBool = !testBool;
+    }
+
+    /**
+     * 挨个获取累加值 从0开始 比如最大值为3  依次返回 0 1 2 不包含最大值本身
+     *
+     * @param max 最大值(不包含)
+     * @return 累加值
+     */
+    public static int getAccumulationNum(int max) {
+        accIndex++;
+        if (accIndex > max) {
+            accIndex = 0;
+        }
+        return accIndex;
+    }
 
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
+import android.text.method.DigitsKeyListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -12,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import cn.mvp.mlibs.R;
-import cn.mvp.mlibs.utils.UIUtils;
 
 /**
  * Created by AaronPasi on 2017/9/16.
@@ -30,7 +30,10 @@ public class InputAlertDialog extends AlertDialog {
     private String mText;
     private String mHintText;
     private int mInputType = InputType.TYPE_CLASS_TEXT;
+    /** 点击取消按钮是否关闭 */
     private boolean mCancelBtnClickDismiss = true;
+    /** 限制输入内容 */
+    private String mDigits;
 
     public InputAlertDialog(Context context) {
         super(context);
@@ -64,12 +67,16 @@ public class InputAlertDialog extends AlertDialog {
         if (mTitle != null) mTvTitle.setText(mTitle);
         if (mText != null) mEditText.setText(mText);
         if (mHintText != null) mEditText.setHint(mHintText);
+        if (mDigits != null && mDigits.length() > 0) {
+            mEditText.setKeyListener(DigitsKeyListener.getInstance(mDigits));
+            return;
+        }
         mEditText.setInputType(mInputType);
     }
 
     @Override
     public void setTitle(int titleId) {
-        mTitle = UIUtils.getString(titleId);
+        mTitle = mContext.getResources().getString(titleId);
     }
 
     @Override
@@ -143,7 +150,12 @@ public class InputAlertDialog extends AlertDialog {
         return this;
     }
 
-    public void showInputDialog(int seleIndex) {
+    /**
+     * 显示键盘
+     *
+     * @param seleIndex 光标索引
+     */
+    public void showSoftKeyboard(int seleIndex) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -162,6 +174,22 @@ public class InputAlertDialog extends AlertDialog {
         return this;
     }
 
+    /**
+     * // 设置只允许输入数字
+     * mEditText.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
+     * // 设置只允许输入小写字母和数字
+     * // editText.setKeyListener(DigitsKeyListener.getInstance("abcdefghijklmnopqrstuvwxyz0123456789"));
+     * // 设置只允许输入自定义字符集合
+     * // editText.setKeyListener(DigitsKeyListener.getInstance("abcXYZ123"));
+     *
+     * @param digits 限制输入内容
+     */
+    public InputAlertDialog setDigits(String digits) {
+        mDigits = digits;
+        return this;
+    }
+
+    /** 点击取消按钮是否关闭 */
     public void setCancelBtnClickDismiss(boolean cancelBtnClickDismiss) {
         mCancelBtnClickDismiss = cancelBtnClickDismiss;
     }

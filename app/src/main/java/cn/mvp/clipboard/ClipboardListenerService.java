@@ -11,13 +11,32 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+
+import com.blankj.utilcode.util.DeviceUtils;
+import com.blankj.utilcode.util.LogUtils;
+
 import cn.mvp.R;
+import cn.mvp.chat1.ClipboardWebSocketClient;
+import cn.mvp.chat1.WebSocketChatMsg;
+import cn.mvp.global.Constant;
 import cn.mvp.mlibs.utils.ClipboardUtils;
 
+
+/**
+ * Android如何监控App使用剪切板权限的行为?
+ * <p>
+ * startService(new Intent(this, ClipboardListenerService.class).setAction("START"));
+ * startService(new Intent(this, ClipboardListenerService.class).setAction("STOP"));
+ * // 启动剪贴板监控服务
+ * Intent serviceIntent = new Intent(this, ClipboardListenerService.class);
+ * startService(serviceIntent);
+ * <p>
+ * https://blog.csdn.net/u010231454/article/details/131457953
+ */
 public class ClipboardListenerService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private ClipboardManager clipboardManager;
@@ -33,10 +52,31 @@ public class ClipboardListenerService extends Service {
             public void onPrimaryClipChanged() {
                 // 处理剪切板变化的逻辑
                 CharSequence text = ClipboardUtils.getText(ClipboardListenerService.this);
-                Log.i("调试信息", "剪切板修改了:  " + text);
+                Log.i("调试信息", "剪切板进行了修改:  " + text);
             }
         };
         clipboardManager.addPrimaryClipChangedListener(clipChangedListener);
+        new Thread(() -> ClipboardWebSocketClient.getInstance().connService(Constant.WS_URL + DeviceUtils.getManufacturer() + "_" + DeviceUtils.getModel(),
+                new ClipboardWebSocketClient.IReceiver() {
+                    @Override
+                    public void onReceiverMsg(String msg) {
+                    }
+
+                    @Override
+                    public void onErr(Exception e) {
+                        Log.e("调试信息", "onErr:  ", e);
+                    }
+
+                    @Override
+                    public void log(String log) {
+                        LogUtils.i("  log = " + log);
+                    }
+
+                    @Override
+                    public void progress(String msg, int currPrs, WebSocketChatMsg fileInfo) {
+
+                    }
+                })).start();
     }
 
     @Override
@@ -44,8 +84,9 @@ public class ClipboardListenerService extends Service {
         if (intent != null) {
             String action = intent.getAction();
             if ("Send".equals(action)) {
-                Log.i("调试信息", "onStartCommand:  点击了发送..."+ClipboardUtils.getText(this));
-            }if ("START".equals(action)) {
+                Log.i("调试信息", "onStartCommand:  点击了发送..." + ClipboardUtils.getText(this));
+            }
+            if ("START".equals(action)) {
                 startForeground(NOTIFICATION_ID, createNotification());
             } else if ("STOP".equals(action)) {
                 clipboardManager.removePrimaryClipChangedListener(clipChangedListener);
@@ -92,12 +133,13 @@ public class ClipboardListenerService extends Service {
 
     /**
      * 创建通知通道
+     *
      * @param channelId
      * @param channelName
      * @return
      */
     @RequiresApi(Build.VERSION_CODES.O)
-    private String createNotificationChannel(String channelId, String channelName){
+    private String createNotificationChannel(String channelId, String channelName) {
         NotificationChannel chan = new NotificationChannel(channelId,
                 channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
@@ -110,5 +152,13 @@ public class ClipboardListenerService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        clipboardManager.removePrimaryClipChangedListener(clipChangedListener);
     }
 }

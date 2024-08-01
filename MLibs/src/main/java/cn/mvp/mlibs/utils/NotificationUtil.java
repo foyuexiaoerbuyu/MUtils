@@ -1,6 +1,8 @@
 package cn.mvp.mlibs.utils;
 
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.app.NotificationChannel;
@@ -13,14 +15,13 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * 适配Android O
@@ -119,7 +120,6 @@ public class NotificationUtil {
      * 检查通知是否开启
      * 新:cn.mvp.mlibs.utils.NotificationUtil#isNotifyEnabled(android.content.Context)
      */
-    @Deprecated
     public boolean checkNotifyEnable() {
         NotificationManagerCompat notification = NotificationManagerCompat.from(context);
         return notification.areNotificationsEnabled();

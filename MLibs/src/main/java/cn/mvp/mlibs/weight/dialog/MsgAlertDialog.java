@@ -8,39 +8,29 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import cn.mvp.mlibs.R;
-import cn.mvp.mlibs.utils.UIUtils;
 
-/**
- * Created by AaronPasi on 2017/9/16.
- */
 public class MsgAlertDialog extends AlertDialog implements View.OnClickListener {
     private TextView mTvContent;
     private Button mBtnCancel, mBtnOk;
-    private Context mContext;
-    private OnOkClickListener mOnOkClickListener;
-    private OnCancelClickListener mOnCancelClickListener;
     private TextView mTvTitle;
     private String mTitle;
     private String mContent;
+    private OnOkClickListener mOnOkClickListener;
+    private OnCancelClickListener mOnCancelClickListener;
 
-    public MsgAlertDialog(Context context) {
+    private MsgAlertDialog(Context context) {
         super(context);
-        mContext = context;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_msg_alert_dialog);
-        mBtnCancel = (Button) findViewById(R.id.view_msg_dialog_btn_cancel);
-        mBtnOk = (Button) findViewById(R.id.view_msg_dialog_btn_ok);
-        mTvTitle = (TextView) findViewById(R.id.view_msg_dialog_tv_title);
-        mTvContent = (TextView) findViewById(R.id.view_msg_dialog_tv_content);
-        //保证EditText能弹出键盘
-//        if (getWindow() != null) {
-//            this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-//        }
-//        this.setCancelable(false);
+        mBtnCancel = findViewById(R.id.view_msg_dialog_btn_cancel);
+        mBtnOk = findViewById(R.id.view_msg_dialog_btn_ok);
+        mTvTitle = findViewById(R.id.view_msg_dialog_tv_title);
+        mTvContent = findViewById(R.id.view_msg_dialog_tv_content);
+
         mTvTitle.setText(mTitle);
         mTvContent.setText(mContent);
         mBtnCancel.setOnClickListener(this);
@@ -55,60 +45,7 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
         } else if (id == R.id.view_msg_dialog_btn_ok) {
             if (mOnOkClickListener != null) mOnOkClickListener.click();
         }
-        this.dismiss();
-    }
-
-    @Override
-    public void setTitle(int titleId) {
-        setTitleStr(UIUtils.getString(titleId));
-    }
-
-    private void setTitleStr(String title) {
-        mTitle = title;
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        if (title != null) {
-            setTitleStr(title.toString());
-        }
-    }
-
-    public TextView getTvContent() {
-        return mTvContent;
-    }
-
-    public void setContent(String content) {
-        mContent = content;
-    }
-
-    public void setMessage1(String message) {
-        mContent = message;
-    }
-
-    public Button getBtnCancel() {
-        return mBtnCancel;
-    }
-
-    public Button getBtnOk() {
-        return mBtnOk;
-    }
-
-    public TextView getTvTitle() {
-        return mTvTitle;
-    }
-
-    public void setOkClick(OnOkClickListener onClickListener) {
-        mOnOkClickListener = onClickListener;
-    }
-
-    public void setCancelClick(OnCancelClickListener onClickListener) {
-        mOnCancelClickListener = onClickListener;
-    }
-
-    @Override
-    public void setMessage(CharSequence message) {
-
+        dismiss();
     }
 
     public interface OnOkClickListener {
@@ -119,4 +56,88 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
         void click();
     }
 
+    public static class Builder {
+        private final Context context;
+        private String title;
+        private String content;
+        private String okBtnName;
+        private String cancelBtnName;
+        private OnOkClickListener onOkClickListener;
+        private OnCancelClickListener onCancelClickListener;
+        private boolean cancelable;
+        private boolean isBtnOk = true;
+        private boolean isBtnCancel = true;
+
+        public Builder(Context context) {
+            this.context = context;
+        }
+
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder setContent(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public Builder setBtnOkVisibility(boolean isBtnOk) {
+            this.isBtnOk = isBtnOk;
+            return this;
+        }
+
+        public Builder setBtnCancelVisibility(boolean isBtnCancel) {
+            this.isBtnCancel = isBtnCancel;
+            return this;
+        }
+
+        public Builder setCancelable(boolean cancelable) {
+            this.cancelable = cancelable;
+            return this;
+        }
+
+        public Builder setOnOkClickListener(OnOkClickListener onOkClickListener) {
+            this.onOkClickListener = onOkClickListener;
+            return this;
+        }
+
+        public Builder setOnCancelClickListener(OnCancelClickListener onCancelClickListener) {
+            this.onCancelClickListener = onCancelClickListener;
+            return this;
+        }
+
+        public Builder setOnOkClickListener(String okBtnName, OnOkClickListener onOkClickListener) {
+            this.onOkClickListener = onOkClickListener;
+            this.okBtnName = okBtnName;
+            return this;
+        }
+
+        public Builder setOnCancelClickListener(String cancelBtnName, OnCancelClickListener onCancelClickListener) {
+            this.onCancelClickListener = onCancelClickListener;
+            this.cancelBtnName = cancelBtnName;
+            return this;
+        }
+
+        public MsgAlertDialog build() {
+            MsgAlertDialog dialog = new MsgAlertDialog(context);
+            dialog.mTitle = this.title;
+            dialog.mContent = this.content;
+            dialog.mOnOkClickListener = this.onOkClickListener;
+            dialog.mOnCancelClickListener = this.onCancelClickListener;
+            dialog.setCancelable(cancelable);
+
+            if (okBtnName != null) {
+                dialog.mBtnOk.setText(okBtnName);
+            }
+
+            if (cancelBtnName != null) {
+                dialog.mBtnCancel.setText(cancelBtnName);
+            }
+
+            dialog.mBtnOk.setVisibility(isBtnOk ? View.VISIBLE : View.GONE);
+            dialog.mBtnCancel.setVisibility(isBtnCancel ? View.VISIBLE : View.GONE);
+            return dialog;
+        }
+    }
 }
