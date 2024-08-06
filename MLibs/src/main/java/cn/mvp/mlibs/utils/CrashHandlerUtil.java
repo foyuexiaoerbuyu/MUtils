@@ -233,11 +233,14 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
 //            String time = formatter.format(new Date());
             String fileName = "crash-" + DateUtil.formatCurrentDate(DateUtil.REGEX_DATE) + ".log";
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                if (!SDCardUtils.isHasPermission(mContext)) {
+                    mPath = mContext.getFilesDir().getPath() + "/crash/";
+                }
                 File dir = new File(mPath);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                File file = new File("mPath + fileName");
+                File file = new File(mPath + fileName);
                 if (!file.exists()) {
                     file.createNewFile();
                 }
