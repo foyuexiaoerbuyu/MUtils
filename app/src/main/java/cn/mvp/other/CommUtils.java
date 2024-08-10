@@ -14,8 +14,11 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -104,6 +107,12 @@ public class CommUtils {
         }
     }
 
+    public static void getChildLog(String msg) {
+        StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[4];
+        String stackTraceMsgArr = stackTraceElement.toString();
+        Log.i("调试信息", stackTraceMsgArr.substring(stackTraceMsgArr.indexOf("(")) + "#" + stackTraceElement.getMethodName() + " msg:" + msg);
+    }
+
     public static void getChildLog(String tag, String msg) {
         StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[4];
         String stackTraceMsgArr = stackTraceElement.toString();
@@ -157,5 +166,52 @@ public class CommUtils {
     public interface IClick<T> {
 
         void callBack(T t, int pos);
+    }
+
+    private static long lastCallTime = 0;
+
+    /**
+     * 执行某个操作，并打印距离上次调用的耗时信息
+     */
+    public static void performOperation(String msg) {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - lastCallTime;
+        if (lastCallTime != 0) {
+            Log.i("打印耗时", getScope() + "  " + msg + " 距离上次调用耗时：" + elapsedTime + " 毫秒" + "  当前时间：" + new SimpleDateFormat("yyyy-MM-dd kk:mm:ss:SSS", Locale.getDefault()).format(new Date()));
+        }
+        lastCallTime = System.currentTimeMillis();
+    }
+
+    /**
+     * 执行某个操作，并打印距离上次调用的耗时信息
+     */
+    public static void performOperation() {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - lastCallTime;
+        if (lastCallTime != 0) {
+            Log.i("打印耗时", getScope() + " 距离上次调用耗时：" + elapsedTime + " 毫秒" + "  当前时间：" + new SimpleDateFormat("yyyy-MM-dd kk:mm:ss:SSS", Locale.getDefault()).format(new Date()));
+        }
+        lastCallTime = System.currentTimeMillis();
+    }
+
+    /** 格式化时间
+     *  @param ms 毫秒值
+     */
+    public static String formatTime(int ms) {
+        int s = ms / 1000; // 总秒数
+        int m = s / 60; // 分钟数
+        int ss = s % 60;// 除分钟数的秒数
+
+        String res;
+        if (m < 10)
+            res = "0" + m + ":";
+        else
+            res = m + ":";
+        if (ss < 10)
+            res += ("0" + ss);
+        else
+            res += ss;
+
+        return res;
     }
 }
