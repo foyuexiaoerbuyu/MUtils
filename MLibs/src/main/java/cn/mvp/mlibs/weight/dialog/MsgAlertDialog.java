@@ -134,9 +134,12 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
             if (cancelBtnName != null) {
                 dialog.mBtnCancel.setText(cancelBtnName);
             }
-
-            dialog.mBtnOk.setVisibility(isBtnOk ? View.VISIBLE : View.GONE);
-            dialog.mBtnCancel.setVisibility(isBtnCancel ? View.VISIBLE : View.GONE);
+            if (dialog.mBtnOk != null) {
+                dialog.mBtnOk.setVisibility(isBtnOk ? View.VISIBLE : View.GONE);
+            }
+            if (dialog.mBtnCancel != null) {
+                dialog.mBtnCancel.setVisibility(isBtnCancel ? View.VISIBLE : View.GONE);
+            }
             return dialog;
         }
     }
