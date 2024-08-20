@@ -100,10 +100,10 @@ public class CommUtils {
 
     public static void log(String tag, String msg) {
         if (msg.length() > 3000) {
-            Log.d(tag, msg.substring(0, 3000));
-            log(msg.substring(3000));
+            Log.d(tag, getScope() + msg.substring(0, 3000));
+            log(tag, msg.substring(3000));
         } else {
-            Log.d(tag, msg);
+            Log.d(tag, getScope() + msg);
         }
     }
 
