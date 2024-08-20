@@ -97,23 +97,23 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
             return this;
         }
 
-        public Builder setOnOkClickListener(OnOkClickListener onOkClickListener) {
+        public Builder setOnOkBtnClickListener(OnOkClickListener onOkClickListener) {
             this.onOkClickListener = onOkClickListener;
             return this;
         }
 
-        public Builder setOnCancelClickListener(OnCancelClickListener onCancelClickListener) {
+        public Builder setOnCancelBtnClickListener(OnCancelClickListener onCancelClickListener) {
             this.onCancelClickListener = onCancelClickListener;
             return this;
         }
 
-        public Builder setOnOkClickListener(String okBtnName, OnOkClickListener onOkClickListener) {
+        public Builder setOnOkBtnClickListener(String okBtnName, OnOkClickListener onOkClickListener) {
             this.onOkClickListener = onOkClickListener;
             this.okBtnName = okBtnName;
             return this;
         }
 
-        public Builder setOnCancelClickListener(String cancelBtnName, OnCancelClickListener onCancelClickListener) {
+        public Builder setOnCancelBtnClickListener(String cancelBtnName, OnCancelClickListener onCancelClickListener) {
             this.onCancelClickListener = onCancelClickListener;
             this.cancelBtnName = cancelBtnName;
             return this;
@@ -134,9 +134,12 @@ public class MsgAlertDialog extends AlertDialog implements View.OnClickListener 
             if (cancelBtnName != null) {
                 dialog.mBtnCancel.setText(cancelBtnName);
             }
-
-            dialog.mBtnOk.setVisibility(isBtnOk ? View.VISIBLE : View.GONE);
-            dialog.mBtnCancel.setVisibility(isBtnCancel ? View.VISIBLE : View.GONE);
+            if (dialog.mBtnOk != null) {
+                dialog.mBtnOk.setVisibility(isBtnOk ? View.VISIBLE : View.GONE);
+            }
+            if (dialog.mBtnCancel != null) {
+                dialog.mBtnCancel.setVisibility(isBtnCancel ? View.VISIBLE : View.GONE);
+            }
             return dialog;
         }
     }

@@ -9,20 +9,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 
-import cn.mvp.mlibs.fileprovider.FileProvider7;
+import java.util.ArrayList;
+
 import cn.mvp.mlibs.log.Log;
 import cn.mvp.mlibs.utils.ents.SmsEnt;
 
-import java.io.File;
-import java.util.ArrayList;
 
-
+/** 除非是默认短信应用否则无效 */
 public class SmsUtils {
 
     /**
      * @return 所有短信
      */
-    private static ArrayList<SmsEnt> getAllSms(Context context) {
+    public static ArrayList<SmsEnt> getAllSms(Context context) {
         ArrayList<SmsEnt> smsEnts = new ArrayList<>();
         ContentResolver cr = context.getContentResolver();
         String[] projection = new String[]{"_id", "address", "person", "body", "date", "type"};
@@ -50,7 +49,7 @@ public class SmsUtils {
      * @param content  短信发送内容("尊敬的x先生您好！您尾号xxxx的卡于 " + new SimpleDateFormat("MM月dd日kk时mm分", Locale.getDefault()).format(new Date()) + "在xx自助设备存现800.00元，交易后余额为1000.000.000.00元【交通银行】")
      * @param smsType  短信类型(接收还是发送:接收短信(1) 发送短信(2) 默认(0))
      */
-    private void sendSms(Context context, String address, String sendTime, String content, int smsType) {
+    public static void sendSms(Context context, String address, String sendTime, String content, int smsType) {
 
         // 创建一个内容提供者，使用系统短信应用提供的ContentResolver向收件箱中插入一条短信
         ContentResolver contentResolver = context.getContentResolver();
@@ -79,20 +78,18 @@ public class SmsUtils {
 
 
 //短信数据库
-//    _id：          短信序号，如100
+//    _id：          短信序号，如100
 //　　thread_id：对话的序号，如100，与同一个手机号互发的短信，其序号是相同的
-//　　address：  发件人地址，即手机号，如+86138138000
-//　　person：   发件人，如果发件人在通讯录中则为具体姓名，陌生人为null
-//　　date：       日期，long型，如1346988516，可以对日期显示格式进行设置
+//　　address：  发件人地址，即手机号，如+86138138000
+//　　person：   发件人，如果发件人在通讯录中则为具体姓名，陌生人为null
+//　　date：       日期，long型，如1346988516，可以对日期显示格式进行设置
 //　　protocol： 协议0SMS_RPOTO短信，1MMS_PROTO彩信
-//　　read：      是否阅读0未读，1已读
-//　　status：    短信状态-1接收，0complete,64pending,128failed
-//　　type：       短信类型1是接收到的，2是已发出
-//　　body：      短信具体内容
-//　　service_center：短信服务中心号码编号，如+8613800755500 
+//　　read：      是否阅读0未读，1已读
+//　　status：    短信状态-1接收，0complete,64pending,128failed
+//　　type：       短信类型1是接收到的，2是已发出
+//　　body：      短信具体内容
+//　　service_center：短信服务中心号码编号，如+8613800755500
 //————————————————
-//版权声明：本文为CSDN博主「Y俊杰」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-//原文链接：https://blog.csdn.net/m0_37136295/article/details/71159070
 
     /**
      * 发送彩信
@@ -112,5 +109,4 @@ public class SmsUtils {
 //        intent.setClassName("com.android.mms","com.android.mms.ui.ComposeMessageActivity");
 //        startActivity(intent);
     }
-
 }

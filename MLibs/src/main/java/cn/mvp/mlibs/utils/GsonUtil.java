@@ -45,14 +45,14 @@ public class GsonUtil {
     /**
      * 使用Gson解析json字符串
      *
-     * @param jsonStr json字符串
-     * @param key     属性key
+     * @param jsonObjStr json字符串
+     * @param key        属性key
      * @return 返回key对应的值
      */
-    public static String parseJson(String jsonStr, String key) {
+    public static String parseJson(String jsonObjStr, String key) {
         //JsonParser.parseString(String.valueOf(obj)).
         JsonParser parser = new JsonParser();
-        JsonObject jsonObject = parser.parse(jsonStr).getAsJsonObject();
+        JsonObject jsonObject = parser.parse(jsonObjStr).getAsJsonObject();
         // 判断字段是否存在
         if (jsonObject.has(key)) {
             // 判断字段是否为空
@@ -69,6 +69,24 @@ public class GsonUtil {
         }.getType();
         Gson gson = new Gson();
         return gson.fromJson(gson.toJson(clazz), type);
+    }
+
+
+    /*
+     *将 JSON 字符串转换为 Map
+     * Map<String, Object> map = GsonUtils.jsonToMap(jsonString, String.class, Object.class);
+     */
+    public static <K, V> Map<K, V> jsonToMap(String jsonString, Class<K> keyClass, Class<V> valueClass) {
+        Gson gson = new Gson();
+        Type type = TypeToken.getParameterized(Map.class, keyClass, valueClass).getType();
+        return gson.fromJson(jsonString, type);
+    }
+
+
+    /** 将 Map 转换为 JSON 字符串 */
+    public static String mapToJson(Map<String, Object> map) {
+        Gson gson = new Gson();
+        return gson.toJson(map);
     }
 
 
