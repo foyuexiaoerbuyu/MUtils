@@ -2,10 +2,12 @@ package cn.mvp.other;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -14,18 +16,24 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommUtils {
     private static int stepNumber = 0;
 
-    /** 匹配字符串中的url */
+    /**
+     * 匹配字符串中的url
+     */
     public static String matchLink(String str, String def) {
         Pattern pattern = Pattern.compile("(?i)\\b((?:https?|ftp)://|www\\.)[-a-z0-9+&@#/%?=~_|!:,.;]*[-a-z0-9+&@#/%=~_|]");
         Matcher matcher = pattern.matcher(str);
@@ -194,8 +202,10 @@ public class CommUtils {
         lastCallTime = System.currentTimeMillis();
     }
 
-    /** 格式化时间
-     *  @param ms 毫秒值
+    /**
+     * 格式化时间
+     *
+     * @param ms 毫秒值
      */
     public static String formatTime(int ms) {
         int s = ms / 1000; // 总秒数
@@ -213,5 +223,51 @@ public class CommUtils {
             res += ss;
 
         return res;
+    }
+
+    // 发送本地广播
+    public static void sendLocalBroadcast(Context context, String action) {
+        Intent intent = new Intent(action);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    // 发送本地广播，携带数据
+    public static void sendLocalBroadcast(Context context, String action, String key, String value) {
+        Intent intent = new Intent(action);
+        intent.putExtra(key, value);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    // 发送本地广播，携带数据
+    public static void sendLocalBroadcast(Context context, String action, Map<String, String> args) {
+        Intent intent = new Intent(action);
+        if (args != null) {
+            for (Map.Entry<String, String> entry : args.entrySet()) {
+                intent.putExtra(entry.getKey(), entry.getValue());
+            }
+        }
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
+    // 注册广播接收器
+    public static void registerReceiver(Context context, BroadcastReceiver receiver, String action) {
+        IntentFilter filter = new IntentFilter(action);
+        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, filter);
+    }
+
+    // 注册广播接收器，可以监听多个 action
+    public static void registerReceiver(Context context, BroadcastReceiver receiver, String... actions) {
+        IntentFilter filter = new IntentFilter();
+        for (String action : actions) {
+            filter.addAction(action);
+        }
+        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, filter);
+    }
+
+    // 注销广播接收器
+    public static void unregisterReceiver(Context context, BroadcastReceiver receiver) {
+        if (receiver != null) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+        }
     }
 }
