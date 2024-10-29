@@ -10,9 +10,9 @@ package cn.mvp.mlibs.utils;
 //import com.blankj.utilcode.util.AppUtils;
 //import com.blankj.utilcode.util.GsonUtils;
 //import com.blankj.utilcode.util.ToastUtils;
-//import com.zhy.http.okhttp.OkHttpUtils;
-//import com.zhy.http.okhttp.callback.FileCallBack;
-//import com.zhy.http.okhttp.callback.StringCallback;
+//import cn.mvp.mlibs.okhttps.OkHttpUtils;
+//import cn.mvp.mlibs.okhttps.callback.FileCallBack;
+//import cn.mvp.mlibs.okhttps.callback.StringCallback;
 //
 //import java.io.File;
 //

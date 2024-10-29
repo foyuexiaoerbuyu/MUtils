@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import cn.mvp.mlibs.weight.adapter.CommonAdapter;
-import cn.mvp.mlibs.weight.adapter.wrapper.LoadMoreWrapper;
+import cn.mvp.mlibs.adapter.CommonAdapter;
+import cn.mvp.mlibs.adapter.wrapper.LoadMoreWrapper;
 
 public class Mrv<E> extends RecyclerView {
 
@@ -32,7 +32,7 @@ public class Mrv<E> extends RecyclerView {
     public void setAdapters(int itemLayout, List<E> datas, IItemConvert<E> itemConvert) {
         mMAdapter = new CommonAdapter<E>(getContext(), itemLayout, datas) {
             @Override
-            protected void convert(cn.mvp.mlibs.weight.adapter.base.ViewHolder holder, E o, int position) {
+            protected void convert(cn.mvp.mlibs.adapter.base.ViewHolder holder, E o, int position) {
                 itemConvert.convert(holder, o, position);
             }
         };
@@ -42,7 +42,7 @@ public class Mrv<E> extends RecyclerView {
     public void setAdapterRef(int itemLayout, List<E> datas, IRefCallBack<E> itemConvert) {
         mMAdapter = new CommonAdapter<E>(getContext(), itemLayout, datas) {
             @Override
-            protected void convert(cn.mvp.mlibs.weight.adapter.base.ViewHolder holder, E o, int position) {
+            protected void convert(cn.mvp.mlibs.adapter.base.ViewHolder holder, E o, int position) {
                 itemConvert.convert(holder, o, position);
             }
         };
@@ -74,11 +74,11 @@ public class Mrv<E> extends RecyclerView {
     }
 
     public interface IItemConvert<E> {
-        void convert(cn.mvp.mlibs.weight.adapter.base.ViewHolder holder, E t, int position);
+        void convert(cn.mvp.mlibs.adapter.base.ViewHolder holder, E t, int position);
     }
 
     public interface IRefCallBack<E> {
-        void convert(cn.mvp.mlibs.weight.adapter.base.ViewHolder holder, E t, int position);
+        void convert(cn.mvp.mlibs.adapter.base.ViewHolder holder, E t, int position);
 
         void onRef();
 

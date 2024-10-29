@@ -1,6 +1,6 @@
 package cn.mvp.test;
 
-import cn.mvp.mlibs.weight.adapter.SelectableItem;
+import cn.mvp.mlibs.adapter.SelectableItem;
 
 public class ItemModel implements SelectableItem {
     private String title;

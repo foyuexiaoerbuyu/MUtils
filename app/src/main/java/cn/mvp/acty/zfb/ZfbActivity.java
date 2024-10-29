@@ -27,9 +27,9 @@ import cn.mvp.mlibs.utils.DateUtil;
 import cn.mvp.mlibs.utils.StatusBarUtil;
 import cn.mvp.mlibs.utils.UIUtils;
 import cn.mvp.mlibs.weight.NoScrollingRecyclerView;
-import cn.mvp.mlibs.weight.adapter.MultiItemTypeAdapter;
-import cn.mvp.mlibs.weight.adapter.base.ItemViewDelegate;
-import cn.mvp.mlibs.weight.adapter.base.ViewHolder;
+import cn.mvp.mlibs.adapter.MultiItemTypeAdapter;
+import cn.mvp.mlibs.adapter.base.ItemViewDelegate;
+import cn.mvp.mlibs.adapter.base.ViewHolder;
 import cn.mvp.mlibs.weight.dialog.InputAlertDialog;
 
 /**
