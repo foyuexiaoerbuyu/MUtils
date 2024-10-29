@@ -528,13 +528,6 @@ public class XLogUtil {
     }
 
     /**
-     * 打印步骤
-     */
-    public static void showStepLogInfo(String msg) {
-        android.util.Log.e(TAG + ":", getScope() + "  " + "步骤   " + stepNumber++ + "  " + msg);
-    }
-
-    /**
      * 打印错误信息
      */
     public static void showArgsInfo(Object... args) {
@@ -706,6 +699,9 @@ public class XLogUtil {
         printLongLog(tag, GsonUtil.toJson(obj));
     }
 
+    /**
+     * https://juejin.cn/post/6887066905967951879
+     */
     public static void printLongLog(String tag, String msg) {
         if (!isShowLog) {
             return;

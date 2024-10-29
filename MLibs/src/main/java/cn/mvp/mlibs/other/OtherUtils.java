@@ -1,5 +1,6 @@
 package cn.mvp.mlibs.other;
 
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -95,7 +96,7 @@ public class OtherUtils {
 
                 Intent pinnedShortcutCallbackIntent = shortcutManager.createShortcutResultIntent(pinShortcutInfo);
                 PendingIntent successCallback = PendingIntent.getBroadcast(UIUtils.getContext(), 0,
-                        pinnedShortcutCallbackIntent, 0);
+                        pinnedShortcutCallbackIntent, PendingIntent.FLAG_IMMUTABLE);
                 shortcutManager.requestPinShortcut(pinShortcutInfo, successCallback.getIntentSender());
             } else {
                 Log.i("调试信息", "createShortcut: 不支持创建快捷方式 ");
