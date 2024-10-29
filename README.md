@@ -6,7 +6,8 @@ https://jitpack.io/#foyuexiaoerbuyu/Mutils/0.35
 发布版本需要注意
 
 ![](.\pic\20240801_144328截图.png)
-
+打包aar
+![](.\pic\2024年10月29日 143102打包aar.png)
 一个也不能少(gradlew[gradle](gradle)<文件夹>,gradlew<文件夹>,gradlew.bat,jitpack.yml)
 
 https://jitpack.io/#foyuexiaoerbuyu/Mutils/0.36
