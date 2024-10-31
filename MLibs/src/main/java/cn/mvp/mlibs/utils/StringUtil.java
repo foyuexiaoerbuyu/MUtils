@@ -206,7 +206,7 @@ public class StringUtil {
         if (str == null) {
             return "";
         }
-        return str.replace(" ", "");
+        return str.trim();
     }
 
 

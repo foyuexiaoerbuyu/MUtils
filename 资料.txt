@@ -7,3 +7,9 @@ https://github.com/MonkeyMushroom/MiClockView
 
 =====================================
 1
+
+central	https://maven.aliyun.com/repository/central
+jcenter	https://maven.aliyun.com/repository/public
+public	https://maven.aliyun.com/repository/public
+google	https://maven.aliyun.com/repository/google
+gradle-plugin	https://maven.aliyun.com/repository/gradle-plugin

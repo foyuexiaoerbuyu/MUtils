@@ -9,7 +9,7 @@ group = 'com.github.foyuexiaoerbuyu'
 
 android {
     compileSdkVersion 33
-    buildToolsVersion "29.0.3"
+//    buildToolsVersion "29.0.3"
 
     // 读取版本属性文件
     def versionPropsFile = file('version.properties')
@@ -19,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "0.02"
 
         buildConfigField("String", "buideTime", "\"" + String.valueOf(versionProps.getProperty('buildTime')) + "\"")
         buildConfigField("String", "versionName", "\"" + String.valueOf(versionProps.getProperty('versionName')) + "\"")

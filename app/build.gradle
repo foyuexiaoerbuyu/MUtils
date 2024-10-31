@@ -4,7 +4,7 @@ apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
     compileSdkVersion 33
-    buildToolsVersion "29.0.3"
+//    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "cn.mvp"
