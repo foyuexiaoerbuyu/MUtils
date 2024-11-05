@@ -21,7 +21,7 @@ import cn.mvp.mlibs.R;
  * https://freewechat.com/a/MzAxMTI4MTkwNQ==/2650826772/1
  * http://www.demodashi.com/demo/16909.html
  * https://download.csdn.net/download/JczmDeveloper/13206695
- * 两端分散对齐TextView
+ * 两端分散对齐TextView 推荐 AlignTextView
  * Created by wjs on 2018/9/3.
  */
 @Deprecated

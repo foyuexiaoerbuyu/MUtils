@@ -18,7 +18,7 @@ import cn.mvp.mlibs.R;
  * https://blog.csdn.net/u013982652/article/details/94404711
  * Android自定义TextView实现必填项前面的*号
  *
- * @deprecated 废弃使用
+ * @deprecated 废弃使用 推荐: MiRequiredTextViewPro
  */
 public class MiRequiredTextView extends androidx.appcompat.widget.AppCompatTextView {
 
