@@ -192,18 +192,16 @@ public class CrashHandlerUtil implements Thread.UncaughtExceptionHandler {
             Log.e(TAG, "an error occured when collect package info", e);
         }
         Field[] fields = Build.class.getDeclaredFields();
-        StringBuilder sbEx = new StringBuilder();
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
-                infos.put(field.getName(), field.get(null).toString());
-                sbEx.append(field.getName()).append(" : ").append(field.get(null)).append("\n");
-            } catch (Exception e) {
-                sbEx.append("an error occured when collect crash info: ").append(e.getLocalizedMessage()).append("\n");
-
+                Object fieldVal = field.get(null);
+                if (fieldVal != null) {
+                    infos.put(field.getName(), fieldVal.toString());
+                }
+            } catch (Exception ignored) {
             }
         }
-        Log.e(TAG, sbEx.toString());
     }
 
     /**
