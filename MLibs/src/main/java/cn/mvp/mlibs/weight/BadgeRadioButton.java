@@ -47,16 +47,19 @@ public class BadgeRadioButton extends AppCompatRadioButton {
     public BadgeRadioButton(Context context) {
         super(context);
         init();
+        updatePadding();
     }
 
     public BadgeRadioButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
+        updatePadding();
     }
 
     public BadgeRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+        updatePadding();
     }
 
     private void init() {
@@ -70,8 +73,11 @@ public class BadgeRadioButton extends AppCompatRadioButton {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.translate(getScrollX(), 0);
+
+        //调整角标位置
         pivotX = getWidth() / 2 + drawableSize / 2 + drawablePadding;
-        pivotY = getHeight() / 2 - drawableSize / 2 - drawablePadding;
+        pivotY = getHeight() / 2 - drawableSize /*/ 2 - drawablePadding*/;
+
         if (isShowDot) {
             canvas.drawCircle(pivotX, pivotY, circleDotRadius, mPaint);
         } else if (isShowNumberDot && !TextUtils.isEmpty(numberText)) {
@@ -117,8 +123,25 @@ public class BadgeRadioButton extends AppCompatRadioButton {
         invalidate();
     }
 
-    public int dp2px(float dpValue) {
+    private int dp2px(float dpValue) {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 加一个默认的顶部内边距,否则显示圆点不全
+     */
+    private void updatePadding() {
+        // 获取当前的内边距
+        int left = getPaddingLeft();
+        int top = getPaddingTop();
+        int right = getPaddingRight();
+        int bottom = getPaddingBottom();
+
+        // 增加顶部内边距
+        int newTopPadding = top + dp2px(12);
+
+        // 设置新的内边距
+        setPadding(left, newTopPadding, right, bottom);
     }
 }
