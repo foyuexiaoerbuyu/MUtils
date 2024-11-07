@@ -11,6 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+
+import java.util.List;
+
 /**
  * https://blog.csdn.net/xiaoerbuyu1233/article/details/143595475
  * <p>
@@ -226,5 +244,39 @@ public class FloatingWindowManager {
 
     public interface OnFloatingClickListener {
         void onClick(FrameLayout floatingView);
+    }
+
+    /**
+     * 显示一个列表对话框，用户点击列表项后会将该项内容复制到剪贴板
+     *
+     * @param context 上下文
+     * @param items   列表项数据
+     */
+    public static void showListDialogCopy(Context context, String title, List<String> items) {
+        // 创建一个AlertDialog.Builder对象
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // 设置对话框标题
+        builder.setTitle(title);
+
+        // 设置列表项
+        builder.setItems(items.toArray(new CharSequence[0]), (dialog, which) -> {
+            // 获取用户选择的项
+            String selectedItem = items.get(which);
+
+            // 复制文本到剪贴板
+            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("label", selectedItem);
+            clipboard.setPrimaryClip(clip);
+
+            // 可选: 提示用户已成功复制
+            Toast.makeText(context, "已复制: " + selectedItem, Toast.LENGTH_SHORT).show();
+
+            // 关闭对话框
+            dialog.dismiss();
+        });
+
+        // 创建并显示对话框
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
