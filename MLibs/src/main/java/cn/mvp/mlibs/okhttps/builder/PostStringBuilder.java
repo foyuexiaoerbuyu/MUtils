@@ -20,6 +20,14 @@ public class PostStringBuilder extends OkHttpRequestBuilder<PostStringBuilder>
         return this;
     }
 
+    /**传json参数给服务器*/
+    public PostStringBuilder contentJson(String content)
+    {
+        this.mediaType = MediaType.parse("application/json; charset=utf-8");
+        this.content = content;
+        return this;
+    }
+
     public PostStringBuilder mediaType(MediaType mediaType)
     {
         this.mediaType = mediaType;
