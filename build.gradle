@@ -1,5 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext.kotlin_version = '1.6.0' // 更新这里的版本号
     repositories {
         maven { url 'https://maven.aliyun.com/repository/central' }
         maven { url 'https://maven.aliyun.com/repository/public' }
@@ -26,7 +27,7 @@ buildscript {
         //https://zhuanlan.zhihu.com/p/507980481 https://blog.csdn.net/csdnzouqi/article/details/126490643
         /*发布依赖包用 https://juejin.cn/post/7107052933149097992#heading-6 https://jitpack.io/#foyuexiaoerbuyu/MUtils/0.1*/
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
