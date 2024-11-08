@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AlertDialog;
@@ -27,19 +28,23 @@ import java.util.Random;
  * <p>
  * 跨页面悬浮窗 Application#onCreate 初始化
  * <p>
- * //FloatingWindowManager
- * //                .getInstance(MyApplication.this).setImg(R.drawable.ic_bank_cards_footer_view_add).setWidthHeight(180, 180)
- * //                .setOnFloatingClickListener((context, floatingView) -> {
- * //                    List<String> items = List.of("随机8位数字", "随机8位字母");
- * //                    FloatingWindowManager.showListDialogCopy(context, "", items, (dialog, which) -> {
- * //                        if (which == 0) {
- * //                            FloatingWindowManager.copyText(context, FloatingWindowManager.getRandomNumber(8));
- * //                        } else if (which == 1) {
- * //                            FloatingWindowManager.copyText(context, FloatingWindowManager.getRandomStr(8));
- * //                        }
- * //                        Toast.makeText(context, "生成完毕", Toast.LENGTH_SHORT).show();
- * //                    });
- * //                });
+ * FloatingWindowManager instance = FloatingWindowManager.getInstance(MyApplication.this);
+ *         instance.setImg(R.drawable.ic_bank_cards_footer_view_add).setWidthHeight(150, 150)
+ *                 .setOnFloatingClickListener((context, floatingView) -> {
+ *                     List<String> items = List.of("随机8位数字", "随机8位字母");
+ *                     instance.showListDialogCopy(context, "", items, (dialog, which) -> {
+ *                         String text = "";
+ *                         if (which == 0) {
+ *                             text = instance.getRandomNumber(8);
+ *                         } else if (which == 1) {
+ *                             text = instance.getRandomStr(8);
+ *                         }
+ *                         instance.copyText(context, text);
+ *                         // 遍历所有子视图
+ *                         instance.setFocusedEditTextContent(text);
+ *                         Toast.makeText(context, "生成完毕", Toast.LENGTH_SHORT).show();
+ *                     });
+ *                 });
  */
 public class FloatingWindowManager {
     private static FloatingWindowManager instance;
@@ -63,11 +68,28 @@ public class FloatingWindowManager {
         return instance;
     }
 
-    public static void copyText(Context context, String text) {
+    public void copyText(Context context, String text) {
         // 复制文本到剪贴板
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("label", text);
         clipboard.setPrimaryClip(clip);
+    }
+
+    public void setFocusedEditTextContent(String content) {
+        // 遍历所有子视图
+        setEditTextContentIfFocused(rootView, content);
+    }
+
+    private void setEditTextContentIfFocused(View view, String content) {
+        if (view instanceof ViewGroup) {  // 如果当前视图是一个容器
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {  // 遍历其子视图
+                View child = viewGroup.getChildAt(i);
+                setEditTextContentIfFocused(child, content);  // 递归调用
+            }
+        } else if (view instanceof EditText && view.isFocused()) {  // 如果当前视图是EditText且有焦点
+            ((EditText) view).setText(content);  // 设置EditText的内容
+        }
     }
 
     private void registerActivityLifecycleCallbacks() {
@@ -262,7 +284,7 @@ public class FloatingWindowManager {
      * @param context 上下文
      * @param items   列表项数据
      */
-    public static void showListDialogCopy(Context context, String title, List<String> items, DialogInterface.OnClickListener onClickListener) {
+    public void showListDialogCopy(Context context, String title, List<String> items, DialogInterface.OnClickListener onClickListener) {
         // 创建一个AlertDialog.Builder对象
 //准备一个String数组
         String[] strs = new String[items.size()];
@@ -293,7 +315,7 @@ public class FloatingWindowManager {
      * @param length 随机数字字符串的长度
      * @return 指定长度的随机数字字符串
      */
-    public static String getRandomNumber(int length) {
+    public String getRandomNumber(int length) {
         if (length <= 0) {
             throw new IllegalArgumentException("Length must be a positive integer");
         }
@@ -311,7 +333,7 @@ public class FloatingWindowManager {
      * @param length 字符串的长度
      * @return 随机字母字符串
      */
-    public static String getRandomStr(int length) {
+    public String getRandomStr(int length) {
 //        if (length < 5 || length > 64) {
 //            throw new IllegalArgumentException("Length must be between 7 and 99 characters.");
 //        }
