@@ -227,8 +227,8 @@ public class OkLogs implements Interceptor {
             // 打印日志
 //            String desc = String.format("分段打印(%s):%s", count++, subStr);
 //            Log.println(priority, tag, desc);
-            String desc = String.format(subStr);
-            Log.println(priority, tag, desc);
+//            String desc = String.format(subStr);
+            Log.println(priority, tag, subStr);
 
             // 截取出尚未打印字节数组
             bytes = Arrays.copyOfRange(bytes, subStr.getBytes().length, bytes.length);

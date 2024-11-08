@@ -746,8 +746,8 @@ public class XLogUtil {
             // 打印日志
 //            String desc = String.format("分段打印(%s):%s", count++, subStr);
 //            Log.println(priority, tag, desc);
-            String desc = String.format(subStr);
-            Log.println(Log.INFO, tag, desc);
+//            String desc = String.format(subStr);
+            Log.println(Log.INFO, tag, subStr);
 
             // 截取出尚未打印字节数组
             bytes = Arrays.copyOfRange(bytes, subStr.getBytes().length, bytes.length);
