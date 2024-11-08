@@ -379,4 +379,27 @@ public class FloatingWindowManager {
         return sb.toString();
     }
 
+    /**
+     * 生成指定长度的随机字母字符串
+     *
+     * @param length 字符串的长度
+     * @param CHARACTERS 随机内容
+     * @return 随机字母字符串
+     */
+    public String getRandomStr(int length,String CHARACTERS) {
+//        if (length < 5 || length > 64) {
+//            throw new IllegalArgumentException("Length must be between 7 and 99 characters.");
+//        }
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            char randomChar = CHARACTERS.charAt(index);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
+    }
+
 }
