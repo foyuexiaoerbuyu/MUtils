@@ -29,22 +29,22 @@ import java.util.Random;
  * 跨页面悬浮窗 Application#onCreate 初始化
  * <p>
  * FloatingWindowManager instance = FloatingWindowManager.getInstance(MyApplication.this);
- *         instance.setImg(R.drawable.ic_bank_cards_footer_view_add).setWidthHeight(150, 150)
- *                 .setOnFloatingClickListener((context, floatingView) -> {
- *                     List<String> items = List.of("随机8位数字", "随机8位字母");
- *                     instance.showListDialogCopy(context, "", items, (dialog, which) -> {
- *                         String text = "";
- *                         if (which == 0) {
- *                             text = instance.getRandomNumber(8);
- *                         } else if (which == 1) {
- *                             text = instance.getRandomStr(8);
- *                         }
- *                         instance.copyText(context, text);
- *                         // 遍历所有子视图
- *                         instance.setFocusedEditTextContent(text);
- *                         Toast.makeText(context, "生成完毕", Toast.LENGTH_SHORT).show();
- *                     });
- *                 });
+ * instance.setImg(R.drawable.ic_bank_cards_footer_view_add).setWidthHeight(150, 150)
+ * .setOnFloatingClickListener((context, floatingView) -> {
+ * List<String> items = List.of("随机8位数字", "随机8位字母");
+ * instance.showListDialogCopy(context, "", items, (dialog, which) -> {
+ * String text = "";
+ * if (which == 0) {
+ * text = instance.getRandomNumber(8);
+ * } else if (which == 1) {
+ * text = instance.getRandomStr(8);
+ * }
+ * instance.copyText(context, text);
+ * // 遍历所有子视图
+ * instance.setFocusedEditTextContent(text);
+ * Toast.makeText(context, "生成完毕", Toast.LENGTH_SHORT).show();
+ * });
+ * });
  */
 public class FloatingWindowManager {
     private static FloatingWindowManager instance;
@@ -272,6 +272,34 @@ public class FloatingWindowManager {
         } else {
             floatingView.setX(screenWidth - floatingView.getWidth());
         }
+    }
+
+    /**
+     * @param edtId 编辑框id
+     * @param text  设置内容
+     * @return 设置内容的view 有可能为空
+     */
+    public View setEditTextContent(int edtId, String text) {
+        // 尝试找到具有给定ID的视图
+        View view = rootView.findViewById(edtId);
+
+        // 检查找到的视图是否为 null
+        if (view == null) {
+            // 如果找不到视图，则打印错误信息
+            Log.e("SetTextError", "No view found with id: " + edtId);
+            return view;
+        }
+
+        // 检查找到的视图是否是 EditText
+        if (view instanceof EditText) {
+            // 设置文本
+            ((EditText) view).setText(text);
+        } else {
+            // 如果视图不是 EditText，则打印警告信息
+            Log.w("SetTextWarning", "View with id: " + edtId + " is not an EditText.");
+            return view;
+        }
+        return view;
     }
 
     public interface OnFloatingClickListener {
