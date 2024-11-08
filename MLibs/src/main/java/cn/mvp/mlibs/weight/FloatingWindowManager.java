@@ -6,7 +6,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -45,7 +47,7 @@ public class FloatingWindowManager {
     private FrameLayout floatingView;
     private ViewGroup rootView;
     private OnFloatingClickListener listener;
-    private int width = 200, height = 200;
+    private int width = 150, height = 150;
     private Application.ActivityLifecycleCallbacks activityLifecycleCallbacks;
 
     private FloatingWindowManager(Context context) {
@@ -137,8 +139,13 @@ public class FloatingWindowManager {
 
         // 设置布局参数
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height); // 宽度和高度
-        layoutParams.gravity = Gravity.TOP | Gravity.START;
+        layoutParams.gravity = Gravity.TOP | Gravity.END;
         floatingView.setLayoutParams(layoutParams);
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+//        float density = dm.density;//屏幕密度
+//        int densityDpi = dm.densityDpi;//像素密度(Android常用的dp/dip单位)
+        floatingView.setY(dm.heightPixels - 200);//设置起始位置Y坐标
         return this;
     }
 
