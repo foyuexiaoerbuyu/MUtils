@@ -2,20 +2,10 @@ package cn.mvp.mlibs.weight;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-
-import android.app.Activity;
-import android.app.Application;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,25 +13,31 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Random;
 
 /**
  * https://blog.csdn.net/xiaoerbuyu1233/article/details/143595475
  * <p>
  * 跨页面悬浮窗 Application#onCreate 初始化
  * <p>
- * FloatingWindowManager
- * .getInstance(App.this).setImg(R.drawable.ic_test).setWidthHeight(280,280)
- * .setOnFloatingClickListener(new FloatingWindowManager.OnFloatingClickListener() {
- *
- * @Override public void onClick(FrameLayout floatingView) {
- * Toast.makeText(floatingView.getContext(), "测试点击悬浮窗", Toast.LENGTH_SHORT).show();
- * }
- * });
+ * //FloatingWindowManager
+ * //                .getInstance(MyApplication.this).setImg(R.drawable.ic_bank_cards_footer_view_add).setWidthHeight(180, 180)
+ * //                .setOnFloatingClickListener((context, floatingView) -> {
+ * //                    List<String> items = List.of("随机8位数字", "随机8位字母");
+ * //                    FloatingWindowManager.showListDialogCopy(context, "", items, (dialog, which) -> {
+ * //                        if (which == 0) {
+ * //                            FloatingWindowManager.copyText(context, FloatingWindowManager.getRandomNumber(8));
+ * //                        } else if (which == 1) {
+ * //                            FloatingWindowManager.copyText(context, FloatingWindowManager.getRandomStr(8));
+ * //                        }
+ * //                        Toast.makeText(context, "生成完毕", Toast.LENGTH_SHORT).show();
+ * //                    });
+ * //                });
  */
 public class FloatingWindowManager {
     private static FloatingWindowManager instance;
@@ -63,6 +59,13 @@ public class FloatingWindowManager {
             instance = new FloatingWindowManager(context);
         }
         return instance;
+    }
+
+    public static void copyText(Context context, String text) {
+        // 复制文本到剪贴板
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", text);
+        clipboard.setPrimaryClip(clip);
     }
 
     private void registerActivityLifecycleCallbacks() {
@@ -148,7 +151,7 @@ public class FloatingWindowManager {
                     return true;
                 }
                 if (listener != null) {
-                    floatingView.getHandler().post(() -> listener.onClick(floatingView));
+                    floatingView.getHandler().post(() -> listener.onClick(floatingView.getRootView().getContext(), floatingView));
                 }
                 return true;
             }
@@ -243,7 +246,7 @@ public class FloatingWindowManager {
     }
 
     public interface OnFloatingClickListener {
-        void onClick(FrameLayout floatingView);
+        void onClick(Context context, FrameLayout floatingView);
     }
 
     /**
@@ -252,31 +255,71 @@ public class FloatingWindowManager {
      * @param context 上下文
      * @param items   列表项数据
      */
-    public static void showListDialogCopy(Context context, String title, List<String> items) {
+    public static void showListDialogCopy(Context context, String title, List<String> items, DialogInterface.OnClickListener onClickListener) {
         // 创建一个AlertDialog.Builder对象
+//准备一个String数组
+        String[] strs = new String[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            strs[i] = items.get(i);
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         // 设置对话框标题
         builder.setTitle(title);
-
         // 设置列表项
-        builder.setItems(items.toArray(new CharSequence[0]), (dialog, which) -> {
-            // 获取用户选择的项
-            String selectedItem = items.get(which);
-
-            // 复制文本到剪贴板
-            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("label", selectedItem);
-            clipboard.setPrimaryClip(clip);
-
-            // 可选: 提示用户已成功复制
-            Toast.makeText(context, "已复制: " + selectedItem, Toast.LENGTH_SHORT).show();
-
+        builder.setItems(strs, (dialog, which) -> {
             // 关闭对话框
             dialog.dismiss();
+            if (onClickListener != null) {
+                onClickListener.onClick(dialog, which);
+            }
         });
 
         // 创建并显示对话框
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    /**
+     * 生成指定长度的随机数字字符串
+     *
+     * @param length 随机数字字符串的长度
+     * @return 指定长度的随机数字字符串
+     */
+    public static String getRandomNumber(int length) {
+        if (length <= 0) {
+            throw new IllegalArgumentException("Length must be a positive integer");
+        }
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(random.nextInt(10)); // 生成0到9之间的随机整数
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 生成指定长度的随机字母字符串
+     *
+     * @param length 字符串的长度
+     * @return 随机字母字符串
+     */
+    public static String getRandomStr(int length) {
+//        if (length < 5 || length > 64) {
+//            throw new IllegalArgumentException("Length must be between 7 and 99 characters.");
+//        }
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            char randomChar = CHARACTERS.charAt(index);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
+    }
+
 }
