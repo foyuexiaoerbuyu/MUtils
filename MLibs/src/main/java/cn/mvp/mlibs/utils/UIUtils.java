@@ -309,12 +309,6 @@ public class UIUtils {
         return (int) (px / scaledDensity + 0.5f);
     }
 
-//    /**
-//     * view显示隐藏取反
-//     */
-//    public static void setVisibility(View view) {
-//        view.setVisibility(view.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-//    }
 
     /**
      * 设置view显示隐藏
